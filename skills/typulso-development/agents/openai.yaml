@@ -1,0 +1,7 @@
+interface:
+  display_name: "Développement Typulso"
+  short_description: "Développer Typulso avec des contrats et tests cohérents"
+  brand_color: "#1E48AD"
+  default_prompt: "Utilise $typulso-development pour implémenter ce parcours et vérifier les permissions, les états et le rendu."
+policy:
+  allow_implicit_invocation: true

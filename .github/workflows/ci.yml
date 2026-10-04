@@ -1,0 +1,62 @@
+name: Vérifications Typulso
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: typulso
+          POSTGRES_PASSWORD: ci_password
+          POSTGRES_DB: typulso_test
+        ports: [5432:5432]
+        options: >-
+          --health-cmd "pg_isready -U typulso -d typulso_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 12
+    env:
+      DATABASE_URL: postgresql://typulso:ci_password@127.0.0.1:5432/typulso_test
+      APP_URL: http://127.0.0.1:3000
+      NEXT_PUBLIC_REALTIME_URL: http://127.0.0.1:3001
+      REALTIME_PORT: 3001
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.1
+      - run: bun install --frozen-lockfile
+      - run: bun run db:migrate
+      - run: bun run format:check
+      - run: bun run lint
+      - run: bun run typecheck
+      - run: bun run test
+      - run: bun run build
+      - run: bun run build:realtime
+      - name: Démarrer les deux services
+        run: |
+          bun run start > /tmp/typulso-web.log 2>&1 &
+          bun run start:realtime > /tmp/typulso-realtime.log 2>&1 &
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent http://127.0.0.1:3000/api/health && curl --fail --silent http://127.0.0.1:3001/health; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/typulso-web.log /tmp/typulso-realtime.log
+          exit 1
+      - run: bun run test:integration
+      - run: bunx playwright install --with-deps chromium
+      - run: bun run test:e2e

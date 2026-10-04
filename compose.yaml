@@ -1,0 +1,82 @@
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: typulso
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-typulso_local}
+      POSTGRES_DB: typulso
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U typulso -d typulso"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+  migrate:
+    build:
+      context: .
+      target: migrator
+    environment:
+      DATABASE_URL: postgresql://typulso:${POSTGRES_PASSWORD:-typulso_local}@postgres:5432/typulso
+    depends_on:
+      postgres:
+        condition: service_healthy
+  web:
+    build:
+      context: .
+      target: web
+      args:
+        NEXT_PUBLIC_REALTIME_URL: ${NEXT_PUBLIC_REALTIME_URL:-http://127.0.0.1:3001}
+    environment:
+      DATABASE_URL: postgresql://typulso:${POSTGRES_PASSWORD:-typulso_local}@postgres:5432/typulso
+      APP_URL: ${APP_URL:-http://127.0.0.1:3000}
+      NEXT_PUBLIC_REALTIME_URL: ${NEXT_PUBLIC_REALTIME_URL:-http://127.0.0.1:3001}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID:-}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET:-}
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID:-}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET:-}
+      TRUST_PROXY: ${TRUST_PROXY:-false}
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+  realtime:
+    build:
+      context: .
+      dockerfile: Dockerfile.realtime
+    environment:
+      DATABASE_URL: postgresql://typulso:${POSTGRES_PASSWORD:-typulso_local}@postgres:5432/typulso
+      APP_URL: ${APP_URL:-http://127.0.0.1:3000}
+      REALTIME_PORT: 3001
+    ports:
+      - "127.0.0.1:3001:3001"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3001/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+volumes:
+  postgres_data:

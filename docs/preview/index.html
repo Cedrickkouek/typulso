@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr-CA" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Maquette complète de la plateforme de courses de frappe : pages, parcours et états.">
+  <title>Arène de frappe — toutes les pages</title>
+  <link rel="stylesheet" href="../assets/design-tokens.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="pages.css">
+  <script src="pages.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#page-content">Aller au contenu</a>
+  <aside class="design-toolbar" aria-label="Outils de la maquette">
+    <span class="design-version">V05 <span id="design-label">MAQUETTE · données d’exemple</span></span>
+    <div class="design-tools">
+      <label><span id="screen-label">Page</span><select id="screen-picker"></select></label>
+      <label><span id="scenario-label">État</span><select id="scenario-picker"></select></label>
+      <button class="design-icon" id="map-button">Toutes les pages</button>
+    </div>
+  </aside>
+  <header class="site-header" id="site-header"></header>
+  <main id="page-content" class="page-shell" tabindex="-1"></main>
+  <footer class="site-footer" id="site-footer"></footer>
+  <dialog id="site-dialog" class="site-dialog" aria-labelledby="dialog-title"><div id="dialog-content"></div></dialog>
+  <div id="site-toast" class="site-toast" role="status" aria-live="polite" hidden></div>
+  <noscript><p class="page-shell">Active JavaScript pour parcourir les maquettes. Les <a href="../16-design-pages-et-etats.md">spécifications de chaque page</a> restent accessibles.</p></noscript>
+</body>
+</html>

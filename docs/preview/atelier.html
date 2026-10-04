@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fr-CA" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Arène de frappe — planche de conception</title>
+  <link rel="stylesheet" href="../assets/design-tokens.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="prototype.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#app-content">Aller à l’aperçu</a>
+  <div class="studio">
+    <div class="studio-label"><span>V04</span> ATELIER DE DESIGN · composants &amp; rythme</div>
+    <div class="controls">
+      <label>Nom à comparer <select id="name-choice"><option value="Typulso">Typulso</option><option value="Rytapo">Rytapo</option><option value="Frappiq">Frappiq</option><option value="Keymigo">Keymigo</option><option value="Clavibe">Clavibe</option><option value="Tapory">Tapory</option><option value="Touchego">Touchego</option></select></label>
+      <button id="theme-button" class="subtle" aria-pressed="false"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg><span>Passer en sombre</span></button>
+      <label class="wire-toggle"><input id="wireframe" type="checkbox"> Structure en gris</label>
+    </div>
+  </div>
+  <main class="shell" id="app-content" tabindex="-1">
+    <div class="brandbar">
+      <div class="brand"><img src="../assets/logo-symbol.svg" alt="Esquisse du symbole"><span data-brand>typulso</span></div>
+      <span class="pill"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></svg> Prototype · données fictives</span>
+    </div>
+    <div class="intro">
+      <div><p class="eyebrow">Le plaisir de jouer. Le rythme de progresser.</p><h1>Ton clavier.<br><span>Toute une arène.</span></h1><p>Rassemble le groupe. Trouve ton rythme. Rejoue pour aller plus loin.</p></div>
+      <div class="key-scene" aria-hidden="true"><span class="scene-key key-a">A</span><span class="scene-key key-z">Z</span><span class="scene-sticker">À TES TOUCHES !</span><span class="scene-spark">✳</span></div>
+    </div>
+    <div class="view-nav">
+      <div class="tabs" role="tablist" aria-label="Vues de conception">
+        <button id="tab-lobby" role="tab" aria-controls="lobby" aria-selected="true" tabindex="0" data-view="lobby"><span class="tab-number" aria-hidden="true">01</span> Salon</button>
+        <button id="tab-race" role="tab" aria-controls="race" aria-selected="false" tabindex="-1" data-view="race"><span class="tab-number" aria-hidden="true">02</span> Course</button>
+        <button id="tab-results" role="tab" aria-controls="results" aria-selected="false" tabindex="-1" data-view="results"><span class="tab-number" aria-hidden="true">03</span> Résultats</button>
+        <button id="tab-logo" role="tab" aria-controls="logo" aria-selected="false" tabindex="-1" data-view="logo">Logo</button>
+        <button id="tab-palette" role="tab" aria-controls="palette" aria-selected="false" tabindex="-1" data-view="palette">Palette</button>
+      </div>
+      <span class="view-meta">Un même univers,<br>du salon à la dernière touche.</span>
+    </div>
+    <section id="lobby" class="view panel" role="tabpanel" aria-labelledby="tab-lobby" tabindex="0">
+      <div class="panel-top">
+        <div class="room-title"><div class="room-symbol" aria-hidden="true"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M6 13h.01M10 13h.01M14 13h.01M18 13h.01M8 16h8"/></svg></div><div><h2>Le sprint des mots</h2><div class="small">Semi-public · hôte : Nova</div></div></div>
+        <div class="room-summary"><span class="room-count">06</span><div class="small">personnes au salon<br><strong id="ready-count">3 / 5 joueurs prêts</strong></div></div>
+      </div>
+      <div class="lobby-grid">
+        <div class="lobby-main">
+          <div class="lobby-banner"><div><strong>La prochaine touche, c’est ensemble.</strong><span>Le groupe se rassemble. Ta place est réservée.</span></div><span class="banner-spark" aria-hidden="true">✳</span></div>
+          <div class="invite-strip">
+            <div><p class="eyebrow">Le code du groupe</p><div class="lobby-code"><strong class="code">K7M2PX</strong><button id="copy-code" class="subtle copy-button" aria-label="Copier le code d’exemple"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="3"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button></div></div>
+            <button id="invite-button" class="subtle"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m20 0v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Inviter le groupe</button>
+          </div>
+          <div class="section-heading"><h3>Dans les starting-blocks</h3><span class="small">5 joueurs · 1 spectateur</span></div>
+          <div class="player-grid">
+            <div class="player"><div class="avatar" style="--avatar:var(--sky)">N</div><strong>Nova</strong><span class="player-role">Hôte</span><span class="badge badge-ready"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg> Prêt</span></div>
+            <div id="self-player" class="player player-self"><div class="avatar" style="--avatar:var(--accent)">T</div><strong>Toi</strong><span class="player-role">Ta place</span><span id="ready-label" class="badge">En attente</span></div>
+            <div class="player"><div class="avatar" style="--avatar:var(--coral)">M</div><strong>Milo</strong><span class="player-role">Joueur</span><span class="badge badge-ready"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg> Prêt</span></div>
+            <div class="player"><div class="avatar" style="--avatar:var(--lavender)">L</div><strong>Lune</strong><span class="player-role">Joueuse</span><span class="badge badge-ready"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg> Prêt</span></div>
+            <div class="player"><div class="avatar" style="--avatar:#b9d7d4">P</div><strong>Pixel</strong><span class="player-role">Spectateur</span><span class="badge">Observe</span></div>
+            <div class="player"><div class="avatar" style="--avatar:#afb8cc">B</div><strong>Bot doux</strong><span class="player-role">Adversaire simulé</span><span class="badge">Exemple</span></div>
+          </div>
+        </div>
+        <aside class="lobby-aside" aria-label="Exercice et état prêt">
+          <div class="exercise-preview"><span class="exercise-key" aria-hidden="true">é</span><p class="eyebrow">Le texte de cette course</p><h3>Les petites victoires</h3><p>Chaque touche te rapproche<br>du prochain défi…</p></div>
+          <div class="settings"><div class="setting"><span>Langue</span><strong>Français</strong></div><div class="setting"><span>Durée</span><strong>60 secondes</strong></div><div class="setting"><span>Erreurs</span><strong>Non bloquantes</strong></div><div class="setting"><span>Mode</span><strong>Classique · sans bonus</strong></div></div>
+          <div class="ready-action"><button id="ready-button" class="primary full" aria-pressed="false"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg><span>Je suis prêt</span></button><p class="small">Nova donne le départ quand le groupe est prêt.</p></div>
+        </aside>
+      </div>
+      <div class="lobby-bottom"><div class="status"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span id="lobby-status" aria-live="polite">Ta place est là. <strong>Le groupe attend le départ.</strong></span></div><button class="ghost" data-go="race">Essayer la course <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></div>
+    </section>
+    <section id="race" class="view panel" role="tabpanel" aria-labelledby="tab-race" tabindex="0" hidden>
+      <div class="panel-top race-top"><div><h2>Le sprint des mots</h2><div class="small">Exercice local · adversaires et minuterie d’exemple</div></div><div class="race-top-actions"><button id="focus-button" class="subtle" aria-pressed="false"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m13-5h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3m13-5v3a2 2 0 0 1-2 2h-3"/><circle cx="12" cy="12" r="3"/></svg><span>Concentration</span></button><button id="reset-typing" class="ghost">Recommencer</button></div></div>
+      <div class="race-dashboard"><div class="metric-top"><div class="metric"><strong id="speed">64</strong><span>MPM d’exemple</span></div><div class="metric"><strong id="accuracy">98 %</strong><span>Précision locale</span></div></div><div class="timer" aria-label="Minuterie d’exemple : 45 secondes"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>00:45</div></div>
+      <div class="race"><div class="race-rules"><span>Français</span><span>Classique</span><span>60 secondes</span><span>Erreurs visibles</span></div>
+        <div id="typing-text" class="typing-text" aria-hidden="true"></div>
+        <div class="input-label"><label for="typing-input">À toi de jouer</label><span>Le texte reste stable.</span></div>
+        <div class="typing-field"><input id="typing-input" class="typing-input" aria-describedby="typing-prompt typing-help" type="text" placeholder="Commence à taper ici…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="150"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M6 9h.01M10 9h.01M14 9h.01M18 9h.01M6 13h.01M10 13h.01M14 13h.01M18 13h.01M8 16h8"/></svg></div>
+        <p id="typing-prompt" class="visually-hidden">Texte à reproduire : Chaque touche te rapproche du prochain défi. Trouve ton rythme et garde les yeux sur la ligne.</p>
+        <div class="helper"><span id="typing-help">Les erreurs sont soulignées; tu peux les corriger.</span><span id="typing-feedback" role="status" aria-live="polite" aria-atomic="true">Essaie quelques mots à ton rythme.</span></div>
+      </div>
+      <div class="tracks"><div class="track-label"><h3>La course autour de toi</h3><button id="ranking-button" class="ghost" aria-expanded="false" aria-controls="more-ranking"><span>Voir les 8 positions</span><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button></div>
+        <div class="lane" style="--lane-color:var(--blue);--progress:74%"><div class="avatar" style="--avatar:var(--sky)" aria-hidden="true">N</div><div class="lane-name"><span class="lane-rank">01</span> Nova</div><div class="lane-line" role="progressbar" aria-label="Progression d’exemple de Nova" aria-valuemin="0" aria-valuemax="100" aria-valuenow="74"><div class="lane-fill"></div><div class="lane-cursor"></div></div><span class="percent">74 %</span></div>
+        <div id="my-lane" class="lane" style="--progress:68%"><div class="avatar" style="--avatar:var(--accent)" aria-hidden="true">T</div><div class="lane-name you"><span class="lane-rank">02</span> Toi</div><div id="my-progress" class="lane-line" role="progressbar" aria-label="Ta progression locale" aria-valuemin="0" aria-valuemax="100" aria-valuenow="68"><div class="lane-fill"></div><div class="lane-cursor"></div></div><span id="my-percent" class="percent">68 %</span></div>
+        <div class="lane" style="--lane-color:var(--error);--progress:61%"><div class="avatar" style="--avatar:var(--coral)" aria-hidden="true">M</div><div class="lane-name"><span class="lane-rank">03</span> Milo</div><div class="lane-line" role="progressbar" aria-label="Progression d’exemple de Milo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="61"><div class="lane-fill"></div><div class="lane-cursor"></div></div><span class="percent">61 %</span></div>
+        <div id="more-ranking" class="complete-list small" hidden><ol start="4"><li>Lune · 55 %</li><li>Pixel · 49 %</li><li>Jules · 45 %</li><li>Aster · 39 %</li><li>Bot doux · 31 %</li></ol></div>
+      </div>
+    </section>
+    <section id="results" class="view panel" role="tabpanel" aria-labelledby="tab-results" tabindex="0" hidden>
+      <div class="panel-top result-header"><div><h2>Chaque touche compte.</h2><div class="small">Classement et progrès fictifs pour comparer le design</div></div><span class="pill"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V3m0 0c4-3 8 3 12 0v10c-4 3-8-3-12 0"/></svg> Sprint français</span></div>
+      <ol class="podium" role="list" aria-label="Podium d’exemple"><li class="podium-person first"><span class="sr-only">Première place.</span><div class="avatar" style="--avatar:var(--sky)" aria-hidden="true">N</div><strong>Nova</strong><p>71 MPM · 99 %</p><div class="podium-step" aria-hidden="true">01</div></li><li class="podium-person second"><span class="sr-only">Deuxième place.</span><div class="avatar" style="--avatar:var(--accent)" aria-hidden="true">T</div><strong>Toi</strong><p>64 MPM · 98 %</p><div class="podium-step" aria-hidden="true">02</div></li><li class="podium-person third"><span class="sr-only">Troisième place.</span><div class="avatar" style="--avatar:var(--coral)" aria-hidden="true">M</div><strong>Milo</strong><p>59 MPM · 97 %</p><div class="podium-step" aria-hidden="true">03</div></li></ol>
+      <div class="result-summary"><div><p class="eyebrow">Ta petite victoire</p><h3>3 erreurs de moins. Bien joué.</h3><p>Ton rythme se précise.<br>Exemple de progrès sur deux exercices comparables.</p></div><div class="result-stats"><div class="metric"><strong>64</strong><span>MPM</span></div><div class="metric"><strong>98 %</strong><span>Précision</span></div><div class="metric"><strong>é</strong><span>À pratiquer</span></div></div></div>
+      <div class="result-footer"><span class="small">Une autre partie, une autre occasion de progresser.</span><button class="primary" data-go="lobby">On rejoue ? <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></div>
+    </section>
+    <section id="logo" class="view panel" role="tabpanel" aria-labelledby="tab-logo" tabindex="0" hidden>
+      <div class="panel-top"><div><h2>Un signe qui suit le rythme.</h2><div class="small">Esquisses assistant · identité humaine finale à construire</div></div></div>
+      <div class="logo-panel"><div class="logo-signature"><img src="../assets/logo-symbol.svg" alt="Esquisse curseur en course"><strong data-brand>typulso</strong></div><div class="logo-grid"><div class="logo-option"><img src="../assets/logo-mono.svg" alt="Version monochrome"><h3>La touche ouverte</h3><p>Une géométrie simple, assez accueillante pour le salon et assez nette pour un favicon.</p></div><div class="logo-option"><div style="font-size:68px;font-family:Menlo;color:var(--blue);height:80px">_|</div><h3>La pulsation et le curseur</h3><p>Le mouvement vient de la frappe; un tracé traverse la touche et finit au curseur.</p></div><div class="logo-option"><div style="font-size:48px;font-weight:700;letter-spacing:-3px;height:80px;display:flex;align-items:center" data-brand>typulso</div><h3>Le nom reste ouvert</h3><p>Compare les pistes en haut. La signature sera redessinée après le choix et les contributions de l'équipe.</p></div></div><p class="small" style="margin-top:24px">Le cahier attend une conception humaine du nom et du logo. Ces esquisses sont attribuées à l'assistant et ne prouvent pas cette exigence. Les contributions de l'équipe devront être conservées.</p></div>
+    </section>
+    <section id="palette" class="view panel" role="tabpanel" aria-labelledby="tab-palette" tabindex="0" hidden>
+      <div class="panel-top"><div><h2>De la couleur, avec un rôle.</h2><div class="small">Couleurs par rôle · deux thèmes · échelles limitées</div></div></div>
+      <div class="palette-grid"><div class="swatch-item"><div class="swatch" style="background:#171c2b"></div><h3>Encre · concentration</h3><p>#171C2B</p></div><div class="swatch-item"><div class="swatch" style="background:#d7ff3f"></div><h3>Citron · action</h3><p>#D7FF3F</p></div><div class="swatch-item"><div class="swatch" style="background:#82b4ff"></div><h3>Bleu ciel · illustration</h3><p>#82B4FF</p></div><div class="swatch-item"><div class="swatch" style="background:#ff9478"></div><h3>Corail · avatars</h3><p>#FF9478</p></div></div>
+      <div class="palette-grid extra-colors"><div class="swatch-item"><div class="swatch" style="background:#ff8fce"></div><h3>Rose · rassemblement</h3><p>#FF8FCE</p></div><div class="swatch-item"><div class="swatch" style="background:#bba3ff"></div><h3>Lavande · jeu</h3><p>#BBA3FF</p></div><div class="swatch-item"><div class="swatch" style="background:var(--blue)"></div><h3>Bleu · liens et focus</h3><p>Clair #1E48AD<br>Sombre #A2C6FF</p></div><div class="swatch-item"><div class="swatch" style="background:var(--error)"></div><h3>Erreur · texte souligné</h3><p>Clair #9A261D<br>Sombre #FFAB91</p></div></div><div class="type-demo"><p class="eyebrow">Identité / interface</p><h3>Prêt ? À tes touches.</h3><p class="eyebrow">Exercice / chiffres</p><div class="mono">chaque touche te rapproche|<br>é è ê ë à â ç ù œ · 0123456789</div><p class="small">Space Grotesk et IBM Plex Mono proposées. Cet aperçu utilise Arial et Menlo pour fonctionner sans réseau.</p></div>
+    </section>
+    <div class="studio-note"><span><strong>Planche de discussion.</strong> Interactions locales et données fictives.</span><a href="../13-recherche-composants.md">Recherche &amp; décisions de cette version →</a></div>
+    <details class="preview-context"><summary>Ce que cet aperçu permet de vérifier</summary><p>Nom et symbole provisoires. Cet aperçu teste la hiérarchie, les thèmes, les composants et quelques interactions. Il ne crée pas de salle réelle. Le code, les adversaires, les rangs, les MPM, la minuterie et les résultats sont des exemples. La saisie calcule uniquement une progression et une précision locales. Le message de progrès final nécessitera un historique comparable réel.</p></details>
+  </main>
+  <dialog id="invite-dialog" class="invite-dialog" aria-labelledby="invite-title" aria-describedby="invite-description">
+    <div class="dialog-top"><div><h2 id="invite-title">Place au groupe.</h2><div id="invite-description" class="small">Un code, et tout le monde se retrouve.</div></div><button id="close-invite" class="close-dialog" aria-label="Fermer l’invitation" autofocus><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div>
+    <div class="dialog-code"><strong class="code">K7M2PX</strong><button id="copy-dialog" class="subtle" aria-label="Copier le code d’exemple depuis l’invitation"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="3"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button></div>
+    <p class="dialog-note">Cette salle semi-publique se rejoint avec un code. Le code affiché sert à la démonstration; aucune salle réelle n’est ouverte.</p>
+    <p id="invite-feedback" class="dialog-feedback" role="status" aria-live="polite" aria-atomic="true"></p>
+    <button id="finish-invite" class="primary full">Revenir au salon <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true" hidden><svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg><span id="toast-message"></span></div>
+</body>
+</html>

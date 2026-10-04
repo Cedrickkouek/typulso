@@ -1,0 +1,4 @@
+interface:
+  display_name: "Site design spec"
+  short_description: "Transforme un brief en direction de site"
+  default_prompt: "Use $site-design-spec to turn this website brief into a polished design direction and prototype plan."

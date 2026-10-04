@@ -1,0 +1,55 @@
+/* Proposition de tokens; à intégrer et tester dans le futur projet. */
+:root {
+  --background: #f4f3ed;
+  --surface: #ffffff;
+  --text: #171c2b;
+  --muted: #3e4c64;
+  --accent: #d7ff3f;
+  --accent-text: #171c2b;
+  --blue: #1e48ad;
+  --error: #9a261d;
+  --pink: #ff8fce;
+  --lavender: #bba3ff;
+  --sky: #82b4ff;
+  --coral: #ff9478;
+  --brand-blue: #1e48ad;
+  --on-color: #171c2b;
+  --border: #66748b;
+  --divider: #d9dee7;
+  --track: #66748b;
+  --player-line: #425600;
+  --typing-pending: #3e4c64;
+  --font-ui: 'Space Grotesk', Arial, sans-serif;
+  --font-typing: 'IBM Plex Mono', Menlo, Consolas, monospace;
+  --radius-control: 12px;
+  --radius-panel: 24px;
+  --radius-expressive: 24px;
+  --control-height: 44px;
+  --shadow-panel: 0 2px 6px #171c2b06, 0 18px 48px #171c2b0a;
+  --shadow-control: 0 2px 0 #171c2b;
+  --motion-fast: 160ms;
+  --motion-enter: 220ms;
+  --ease-out: cubic-bezier(.2,.8,.2,1);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+}
+[data-theme='dark'] {
+  --background: #171c2b;
+  --surface: #232b3e;
+  --text: #f6f7fb;
+  --muted: #c1cade;
+  --blue: #a2c6ff;
+  --error: #ffab91;
+  --border: #7e8fae;
+  --divider: #394258;
+  --track: #7e8fae;
+  --player-line: #d7ff3f;
+  --typing-pending: #c7d1e4;
+  --shadow-panel: 0 2px 6px #00000020, 0 18px 48px #00000024;
+}
