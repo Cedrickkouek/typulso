@@ -3218,18 +3218,21 @@ fieldset {
   }
 }
 .site-dialog {
+  --dialog-gutter: clamp(16px, 3vw, 32px);
+  margin: auto;
   background: var(--surface);
   color: var(--text);
   padding: 28px;
-  width: min(540px, calc(100% - 32px));
-  max-height: calc(100dvh - 40px);
+  width: min(540px, calc(100% - 2 * var(--dialog-gutter)));
+  max-width: calc(100% - 2 * var(--dialog-gutter));
+  max-height: calc(100dvh - 2 * var(--dialog-gutter));
   border: 1px solid var(--border);
   border-radius: 24px;
   box-shadow: 0 24px 80px #00000040;
   overflow: auto;
 }
 .site-dialog.wide {
-  width: min(920px, calc(100% - 32px));
+  width: min(920px, calc(100% - 2 * var(--dialog-gutter)));
 }
 .site-dialog::backdrop {
   background: #171c2b99;

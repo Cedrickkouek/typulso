@@ -10,8 +10,7 @@ export function SiteFooter() {
   const { t } = useTranslation();
   const path = usePathname();
   const compact =
-    path === "/entrainement" ||
-    (path.startsWith("/salles/") && path !== "/salles/nouvelle" && path.split("/").length === 3);
+    path.startsWith("/salles/") && path !== "/salles/nouvelle" && path.split("/").length === 3;
   const helpfulLinks = [
     { href: "/aide", label: t("Comment jouer", "How to play") },
     { href: "/touches", label: t("Clavier & accessibilité", "Keyboard & accessibility") },

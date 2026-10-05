@@ -221,7 +221,7 @@ Les tests React, les essais de lecteur d’écran et les mesures de performance 
 
 ## Pied de page et jeu implémentés · 4 octobre 2026
 
-Le catalogue initial ci-dessus reste la spécification de référence; le [rapport d’implémentation](18-implementation.md) décrit les composants React réalisés. Le footer comporte une signature, un motif de touches, deux groupes de liens dans une navigation nommée « Navigation de bas de page » et une action citron. Les salles et l’entraînement utilisent sa variante compacte « Aide pour jouer ». Destinations existantes, traductions FR/EN, icônes décoratives, focus visible et cibles de 44 px sont conservés.
+Le catalogue initial ci-dessus reste la spécification de référence; le [rapport d’implémentation](18-implementation.md) décrit les composants React réalisés. Le footer comporte une signature, un motif de touches, deux groupes de liens dans une navigation nommée « Navigation de bas de page » et une action citron. L’entraînement utilise le footer complet, comme les pages ordinaires. Les salles utilisent sa variante compacte « Aide pour jouer ». Destinations existantes, traductions FR/EN, icônes décoratives, focus visible et cibles de 44 px sont conservés.
 
 `RaceDashboard` partage quatre mesures entre course et échauffement; `ArcadeControls` affiche l’énergie réelle et les conditions des capacités; `RaceTracks` conserve des lignes stables avec position selon progression, état et piste de chaque participant. Le résultat personnel précède le podium, qui utilise les rangs officiels. La palette initiale, les textes encre sur les surfaces pastel et les préférences de mouvement restent la base.
 

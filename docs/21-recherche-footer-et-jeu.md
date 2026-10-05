@@ -156,7 +156,7 @@ Le plan recommandé inclut aussi un participant lent, une erreur corrigée, une 
 
 ## Première intégration de présentation · 4 octobre 2026
 
-Le footer associe désormais une signature Typulso plus grande, un motif de touches original, deux groupes de destinations existantes et l’action verte de retour sur la piste. Une variante compacte conserve l’aide et les préférences sur l’entraînement et les salles. La règle CSS du mode concentration qui masque le footer est conservée; son activation n’est pas testée pendant cette recette.
+Le footer associe désormais une signature Typulso plus grande, un motif de touches original, deux groupes de destinations existantes et l’action verte de retour sur la piste. L’entraînement utilise le footer complet, comme les pages ordinaires. Une variante compacte conserve l’aide et les préférences dans les salles. La règle CSS du mode concentration qui masque le footer est conservée; son activation n’est pas testée pendant cette recette.
 
 La course place les mesures dans une bande compacte, la frappe au centre et l’arcade sous la saisie. Les lignes restent ordonnées de façon stable avec rang, état et repère personnel explicites. Les résultats affichent d’abord le pseudo, le rang officiel et les quatre mesures personnelles, puis les destinations de suite, le podium et le classement. Le podium emploie uniquement les rangs serveur 1–3; la Heatmap reste intacte. La palette, les contrats de données, les capacités et les droits de l’hôte restent ceux du produit existant.
 

@@ -233,3 +233,25 @@ La règle CSS du mode concentration qui masque le footer est conservée dans le 
 
 Seules des captures neutres de footer et d’échauffement sont livrées, sans identités de recette : [footer clair](assets/app-v01/footer-refresh-clair.jpg), [footer sombre](assets/app-v01/footer-refresh-sombre.jpg), [footer mobile](assets/app-v01/footer-refresh-mobile.jpg) et [échauffement](assets/app-v01/jeu-refresh-clair.jpg).
 
+
+
+### Footer complet sur Practice · 4 octobre 2026
+
+Le choix de variante est corrigé à la demande de l’utilisateur : `/entrainement` affiche le même footer complet que les pages ordinaires, y compris pendant l’échauffement. La variante compacte reste réservée aux salles. Le rendu est observé en anglais sombre à **1 536 px**, puis à **900 px** et en anglais clair à **390 px**; aucune largeur du document supérieure au viewport sur les formats mesurés. `bun run check` réussit : formatage, lint, TypeScript, **53 tests unitaires** et compilations Next.js/temps réel. Les tests PostgreSQL ne sont pas relancés pour ce changement de sélection visuelle.
+
+[Footer complet de Practice](assets/app-v01/practice-footer-complet.jpg).
+
+
+### Dialogues centrés et espacés · 4 octobre 2026
+
+La remise à zéro des marges de Tailwind plaçait les dialogues au bord du viewport. Le style partagé rétablit `margin: auto` et réserve 16 à 32 px sur chaque côté. Le dialogue « Your people & roles » est ouvert dans une vraie salle locale; les règles de salle servent à vérifier le défilement d’un contenu long. Aucune règle n’est enregistrée pendant cette recette.
+
+| Viewport CSS | Dialogue observé | Résultat |
+|---|---|---|
+| 1 066 × 750 px | Participants · sombre | Largeur 540 px, centré; aucun débordement interne horizontal. |
+| 659 × 743 px | Participants · clair | Largeur 540 px, marges latérales 59,5 px; centré verticalement. |
+| 390 × 844 px | Participants · clair | Marges latérales 16 px; titre et fermeture restent dans le panneau. |
+| 320 × 500 px | Participants puis règles · clair | Marges latérales 16 px; le formulaire long conserve aussi 16 px en haut et en bas et défile à l’intérieur. |
+| 844 × 390 px | Règles · clair | Largeur 540 px, marges verticales d’environ 25,3 px; défilement interne sans débordement horizontal. |
+
+Échap ferme les dialogues et rend le focus au bouton qui les ouvre. `bun run check` réussit : formatage, lint, TypeScript, **53 tests unitaires** (**1 044 assertions**) et compilations Next.js/temps réel. Les **9 tests PostgreSQL sont ignorés dans la commande unitaire**; ils ne sont pas relancés pour cette correction CSS. Le compte local de recette est déconnecté et l’aperçu revient à l’entraînement après les vérifications.
