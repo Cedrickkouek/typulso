@@ -1,7 +1,7 @@
 # ADR 0002 · App Router à la racine et service temps réel séparé
 
 - **Date :** 3 octobre 2026
-- **Statut :** retenu pour la première implémentation
+- **Statut :** retenu et utilisé dans l’application actuelle; confirmé par la revue documentaire du 7 octobre 2026
 
 ## Contexte
 
@@ -15,4 +15,4 @@ La base SQLite de démonstration du projet de cours n'est pas reprise. Les migra
 
 ## Conséquences
 
-Une installation et un lockfile suffisent. Le domaine est testable sans navigateur; les permissions restent côté serveur. Le déploiement nécessite deux services et une base. Cette décision remplace seulement l'arborescence envisagée dans les documents 05 et 10, pas les invariants de l'ADR 0001. Un monorepo pourra être introduit quand des consommateurs supplémentaires le justifieront.
+Une installation et un lockfile suffisent. Le domaine est testable sans navigateur; les permissions restent côté serveur. Le déploiement nécessite deux services et une base. Les documents 05 et ADR 0001 ont été harmonisés avec le code le 7 octobre; le document 10 conserve le plan initial daté. Cette décision remplace seulement l’arborescence envisagée dans les documents 05 et 10, pas les invariants de l'ADR 0001. Un monorepo pourra être introduit quand des consommateurs supplémentaires le justifieront.

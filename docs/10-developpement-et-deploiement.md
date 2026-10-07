@@ -1,5 +1,7 @@
 # Développement, qualité et déploiement
 
+> **Lecture actuelle · 7 octobre 2026 :** ce document conserve la conception ou les observations à leur date. L’état du code et des choix implémentés figure dans [18](18-implementation.md); les procédures utilisables dans [19](19-deploiement.md); les preuves locales, CI et Railway dans [CP1](08-plan-checkpoint.md) et la synthèse de [20](20-verification-implementation.md). Une maquette ou un test prévu ne constitue pas une preuve de production.
+
 > **Statut : plan d'exécution futur · 1er octobre 2026**  
 > Aucun scaffold applicatif, compte d'hébergement, dépôt GitHub ou site de production n'est créé par ce dossier de conception. Les commandes ci-dessous deviendront utilisables lorsque les scripts correspondants auront été ajoutés au projet.
 

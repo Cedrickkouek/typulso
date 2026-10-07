@@ -1,149 +1,68 @@
-# Machines à états
+# Machines à états de l’application
 
-> **Statut : règles proposées pour l'implémentation**  
-> Les réponses client sur les invités, la reconnexion et la succession de l'hôte sont retenues. Les durées et règles de clôture ci-dessous restent des arbitrages de l'équipe à valider.
+> **Implémentation actuelle · 7 octobre 2026 · version applicative vérifiée 4d23075.**
 
-[← Architecture](05-architecture.md) · [Modèle de données](06-modele-donnees.md) · [Expérience utilisateur](04-experience-utilisateur.md)
+[← Architecture](05-architecture.md) · [Modèle](06-modele-donnees.md) · [Contrat](../types/game.ts) · [Commandes serveur](../lib/server/rooms.ts) · [Moteur](../lib/domain/engine.ts)
 
-## 1. Trois cycles indépendants
+## Dimensions réellement utilisées
 
-Une salle existe avant et après une course. Une personne peut rester membre tout en observant une course. La connexion réseau constitue encore une autre dimension. Ces états seront distingués pour éviter qu'une reconnexion devienne une nouvelle admission ou qu'une revanche perde les membres du salon.
-
-| Dimension | États |
+| Dimension | Valeurs / représentation |
 |---|---|
-| Salle | `open`, `closed` |
-| Course | `countdown`, `running`, `completed`, `cancelled` |
-| Appartenance | `joined`, `left`, `kicked` |
-| Connexion | `online`, `disconnected` |
-| Rôle pour la prochaine course | `participant`, `spectator` |
-| Entrée dans la course actuelle | `ready`, `racing`, `finished`, `abandoned` |
+| Phase publique de salle (`RoomPhase`) | `lobby`, `countdown`, `racing`, `results`, `closed`, `interrupted` |
+| Phase de la ligne `races` | `countdown`, `racing`, `results`, `interrupted` |
+| Appartenance relationnelle (`room_members.status`) | `active`, `left`, `kicked` |
+| Statut du joueur public | `active`, `finished`, `left`, `disconnected` |
+| Rôle | `participant`, `spectator` |
+| État complémentaire | Connexion, prêt, participation à la manche et abandon sont des champs distincts. |
+| Hôte | Identifiant unique porté par la salle; un rôle temporaire, indépendant du compte et du rôle scolaire. |
 
-Le rôle d'hôte est une référence unique de la salle vers un membre. Il ne remplace ni son rôle de participant/spectateur, ni son état de connexion.
+Le statut public détaillé et le statut relationnel ne sont pas interchangeables. Par exemple, une courte coupure peut laisser le membre actif dans la table alors que le snapshot indique sa déconnexion.
 
-## 2. Salle
-
-```mermaid
-stateDiagram-v2
-    [*] --> Open : Compte cree la salle
-    Open --> Open : Admission / configuration / transfert
-    Open --> Closed : Hote ferme
-    Open --> Closed : Aucun humain admissible
-    Open --> Closed : Expiration
-    Closed --> [*]
-```
-
-| Commande | Garde côté serveur | Effet |
-|---|---|---|
-| `room.create` | Session de compte valide | Insérer salle et premier membre; attribuer l'autorité d'hôte dans la même transaction. |
-| `room.join` | Admission permise, capacité disponible, pas d'exclusion | Ajouter le membre; spectateur de la course actuelle si son admission suit le départ. |
-| `room.configure` | Hôte actuel, salle ouverte, aucune course en compte à rebours ou en cours | Valider et publier les réglages; refuser une version de formulaire périmée. |
-| `room.assignRole` | Hôte actuel et membre présent | Modifier l'admissibilité à la prochaine course; ne pas inscrire un nouveau joueur dans une course commencée. |
-| `room.kick` | Hôte actuel et cible autorisée | Exclure, abandonner son entrée éventuelle, révoquer son accès à la salle. |
-| `room.leave` | Membre identifié | Marquer le départ; abandonner l'entrée en cours et transmettre l'autorité si nécessaire. |
-| `room.close` | Hôte actuel | Fermer les admissions, annuler la course active et prévenir tous les membres. |
-
-Une salle expirera après 24 heures selon la proposition actuelle. Une salle fermée reste consultable seulement pour les données autorisées; son code et ses invitations ne fonctionnent plus.
-
-### Transfert de l'hôte
-
-La capture client no 1 impose qu'une courte déconnexion permette de revenir et qu'un départ volontaire transmette le rôle au participant le plus ancien, ou à une personne désignée avant le départ.
-
-La politique proposée est la suivante :
-
-1. Pour un départ volontaire, choisir immédiatement le successeur désigné s'il est présent, humain, admissible et connecté.
-2. Sinon, choisir le participant humain connecté dont `joined_at` est le plus ancien; départager une égalité par identifiant stable.
-3. Les invités peuvent recevoir cette autorité dans la salle existante. Ils restent incapables de créer une nouvelle salle.
-4. En cas de déconnexion involontaire, conserver l'hôte pendant une grâce de **60 secondes**. Les réglages et le départ sont alors suspendus; une course déjà lancée continue sous l'arbitrage du serveur.
-5. Au-delà de la grâce, effectuer le même transfert. Si tous les successeurs potentiels sont déconnectés, attendre la fin de leur propre grâce; sans participant admissible, fermer la salle.
-
-Les bots ne deviennent jamais hôtes. Le traitement d'une salle composée uniquement de spectateurs est proposé ainsi : fermer la salle si aucun participant humain n'est admissible, plutôt qu'attribuer silencieusement des droits à un spectateur. Cette exception devra être confirmée dans les essais de parcours.
-
-## 3. Course
+## Salle et manche
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Countdown : Hote lance / regles figees
-    Countdown --> Running : Heure serveur startsAt atteinte
-    Countdown --> Cancelled : Salle fermee / concurrents insuffisants / panne
-    Running --> Completed : Tous les entrants ont un etat terminal
-    Running --> Completed : Limite de temps atteinte
-    Running --> Completed : Cloture de securite proposee
-    Running --> Cancelled : Salle fermee / redemarrage serveur
-    Completed --> [*] : Resultats persistants
-    Cancelled --> [*] : Motif affiche / aucune victoire
+    [*] --> lobby : Compte cree la salle
+    lobby --> countdown : Hote demarre / participants prets
+    countdown --> racing : Heure de depart serveur
+    racing --> results : Tous termines ou arretes / echeance
+    results --> lobby : Revanche
+    lobby --> closed : Fermeture ou absence de successeur
+    results --> closed : Fermeture ou expiration
+    countdown --> interrupted : Fermeture / expiration / redemarrage
+    racing --> interrupted : Fermeture / expiration / redemarrage
+    closed --> [*]
+    interrupted --> [*]
 ```
 
-Au lancement, le serveur fige les participants admissibles, le texte exact, les règles d'erreur, le mode de jeu, la formule de classement et les échéances. Le compte à rebours est proposé à trois secondes. Une date `startsAt` commune est publiée; chaque navigateur affiche le temps restant en estimant son décalage d'horloge. Le serveur refuse les frappes reçues avant le départ.
-
-Une course comprend au moins deux concurrents, dont un humain; le second peut être un bot pour la pratique individuelle. Toute admission après le début du compte à rebours observe la course actuelle; cette garde empêche une inscription changeante pendant le départ. L'hôte ne peut plus modifier les règles figées.
-
-### Fin sans blocage par une personne inactive
-
-La règle du cahier « tous les participants actifs ont fini ou le temps expire » est conservée. `finished` et `abandoned` sont des états terminaux; une personne AFK ou hors ligne n'attend pas indéfiniment.
-
-| Situation | Proposition de traitement |
+| Commande / événement | Garde et effet actuels |
 |---|---|
-| Tous les participants sont arrivés ou ont abandonné | Terminer immédiatement et persister les résultats une seule fois. |
-| Limite de temps choisie par l'hôte | Terminer à l'échéance serveur, y compris si certains participants n'ont pas terminé. |
-| Déconnexion | Conserver progression et entrée pendant 60 secondes; abandonner à l'échéance si aucune reprise valide. |
-| Pas de frappe ni correction pendant 45 secondes | Montrer un avertissement; 15 secondes supplémentaires sans activité entraînent l'abandon. |
-| Pas de limite choisie | Proposition à valider : clôturer 60 secondes après la première arrivée, avec un plafond de sécurité de 10 minutes depuis le départ. |
-| Aucun participant n'a terminé | Le plafond de sécurité proposé ou l'abandon de toutes les entrées finit la course. |
+| `create` | Compte requis. Insère salle et membre, puis attribue l’hôte dans la même transaction. |
+| `join` | Accès public/code/invitation autorisé, salle admissible et capacité disponible. Une arrivée pendant la manche observe celle-ci. |
+| `configure` | Hôte, phase `lobby`, réglages valides et version cohérente lorsqu’elle est fournie. Les règles sont immuables après le départ. |
+| `ready` | Participation admissible au salon; état prêt partagé. |
+| `start` | Hôte, salon, au moins un participant, tous les participants actifs prêts et connectés. Texte serveur et départ à +3 secondes. |
+| Horloge | Passe `countdown` à `racing`; termine à l’échéance ou quand les participants ne doivent plus continuer. |
+| `input` | Membre de la manche, phase et identifiant de course valides, séquence attendue et limites respectées. Les entrées après l’échéance n’ajoutent pas de lettres. |
+| `ability` | Arcade uniquement; course active, joueur admissible, énergie/usage/cible conformes. Les effets n’altèrent pas le texte partagé. |
+| `role`, `kick`, `invite` | Droits d’hôte et gardes propres à la commande; aucune admission implicite dans une manche déjà lancée. |
+| `leave` | Départ reconnu, arrêt de participation si nécessaire, succession immédiate de l’hôte concerné. |
+| `rematch` | Hôte en `results`; réinitialise la manche et les états de préparation vers `lobby`. |
+| `close` | Hôte; `closed` hors course, `interrupted` si compte à rebours/course actifs. |
+| Redémarrage | Les courses `countdown`/`racing` deviennent interrompues; aucun résultat de victoire n’est créé. |
 
-Les deux délais de clôture sans limite ne proviennent pas d'une réponse client. Ils constituent une option explicite, à comparer à l'option « abandon automatique seulement ». S'ils sont retenus, ils doivent être affichés dans les réglages avant le départ et figés dans `config_snapshot`. Aucune échéance invisible ne sera ajoutée après le lancement.
+Les codes ont une durée de salle de **24 heures** dans l’implémentation; l’accès aux salles expirées est refusé. L’interface renvoie une salle fermée ou devenue inaccessible vers Jouer. Les résultats déjà enregistrés restent consultables selon les droits du compte; une interruption ne crée pas de résultat fictif.
 
-Les entrées incomplètes conservent leur vitesse et leur précision mesurées. Elles ne sont pas présentées comme ayant terminé le texte. Le podium applique la politique du [cahier consolidé](01-cahier-des-charges.md); la formule et les critères de départage seront validés avant de coder le moteur. Les statistiques de frappe restent distinctes du résultat arcade.
+## Succession de l’hôte
 
-Une revanche crée une nouvelle course et de nouvelles entrées dans la même salle. Elle ne remet pas les anciens résultats à zéro.
+Le [sélecteur serveur](../lib/server/rooms.ts) considère les humains connectés encore admissibles; les bots sont exclus. Pour un départ volontaire, un `successorId` explicitement demandé est retenu s’il est admissible. Sinon l’ordre est : **participants avant spectateurs, admission la plus ancienne, identifiant stable pour départager**. Un spectateur humain connecté peut donc succéder si aucun participant ne convient; l’ancienne proposition de fermeture systématique dans ce cas n’est pas la règle implémentée. Un invité peut devenir hôte de la salle existante, sans obtenir le droit de créer une autre salle.
 
-## 4. Appartenance, connexion et participation
+Une déconnexion involontaire garde la place pendant **60 secondes**. Au-delà, le membre est marqué parti; si c’est l’hôte, la succession s’applique. Sans successeur connecté admissible, la salle est fermée ou interrompue selon sa phase. Une commande `sync` ou une admission reconnue pendant la grâce restaure la connexion et la progression acquittée.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Joined : Admission valide
-    Joined --> Left : Depart volontaire
-    Joined --> Kicked : Exclusion par hote
-    Left --> Joined : Nouvelle admission permise
-    Kicked --> [*] : Rejoin refuse
-```
+## Inactivité et fin
 
-```mermaid
-stateDiagram-v2
-    [*] --> Online : Connexion authentifiee
-    Online --> Disconnected : Perte du transport
-    Disconnected --> Online : Session valide / reprise avant echeance
-    Disconnected --> Expired : Grace depassee
-    Expired --> [*]
-```
+La politique du [moteur](../lib/domain/engine.ts) prévoit une indication d’inactivité après **45 secondes** et un abandon après **60 secondes**. Le ticker serveur, exécuté toutes les **250 ms**, applique ces règles et la deadline. Les résultats sont calculés avec l’heure de fin de course, même si un tick ou une commande arrive plus tard. L’unicité `(race_id, actor_id)` protège l’enregistrement contre une insertion répétée.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Ready : Participant fige au lancement
-    Ready --> Racing : Depart serveur
-    Ready --> Abandoned : Depart / exclusion / grace depassee
-    Racing --> Finished : Texte termine et valide
-    Racing --> Abandoned : Depart / exclusion / AFK / grace depassee
-    Finished --> [*]
-    Abandoned --> [*]
-```
+## Couverture réelle
 
-Une perte de connexion ne change pas immédiatement `racing` en `abandoned`. La personne reprend la même entrée si sa session est valide avant l'échéance. Après l'abandon, elle peut revenir comme spectatrice de la course actuelle; sa progression ancienne n'est pas réactivée. La fin d'un transport Socket.IO n'est jamais utilisée comme identifiant permanent de personne.
-
-## 5. Reprise et déploiement
-
-Lors d'une reconnexion, le serveur vérifie session, appartenance, exclusion et échéance. Il renvoie une projection complète filtrée selon les droits, avec version de salle, entrée courante, dernière séquence reconnue et échéances serveur. Le navigateur remplace l'état périmé puis retransmet seulement les commandes déjà émises dont l'acquittement reste inconnu. Les doublons retrouvent leur réponse sans augmenter le score.
-
-Un redémarrage du service ferme les connexions mais ne supprime pas le salon persistant. Lors de la reprise du processus, les courses `countdown` ou `running` seront annulées atomiquement avec le motif `server_restart`; leurs entrées encore actives deviennent `abandoned`. Les entrées n'alimentent pas les victoires ou moyennes; les membres reconnectés reviennent au salon. Le transfert d'hôte attend les grâces de reconnexion après la reprise. Cette limite sera annoncée dans l'exploitation et testée.
-
-## 6. Scénarios de vérification futurs
-
-| Scénario | Résultat attendu |
-|---|---|
-| Un invité émet `room.create` | Refus serveur sans salle créée. |
-| L'hôte transmet à un invité puis quitte | L'invité administre cette salle et ne peut pas en créer une autre. |
-| L'hôte perd le réseau pendant 20 secondes | Identité et autorité restaurées; une course déjà lancée a continué. |
-| L'hôte reste absent plus de 60 secondes | Un unique successeur admissible est choisi et publié. |
-| Une personne arrive pendant la course | Observation actuelle, admissibilité possible à la suivante. |
-| Une même commande de départ est envoyée deux fois | Une seule course créée, même réponse acquittée. |
-| Une personne reste AFK et une autre termine | Clôture selon règles figées; aucun blocage infini. |
-| Service redémarré après une frappe acquittée | Salon durable, course annulée clairement, aucune victoire fabriquée. |
+Les tests du domaine, les tests PostgreSQL et HTTP/Socket.IO et les parcours CI vérifient transitions, permissions, départ, séquence, résultat et succession. La [recette Railway](08-plan-checkpoint.md) vérifie le salon à deux sessions jusqu’à l’état prêt; elle ne vérifie pas toutes les phases de course, la coupure réseau ou le transfert d’hôte en production. Le test de charge et les essais de redémarrage en exploitation restent à mener.

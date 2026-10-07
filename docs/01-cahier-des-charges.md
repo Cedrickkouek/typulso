@@ -4,6 +4,8 @@
 > Version consolidée du 2 octobre 2026 · Référentiel produit proposé  
 > Public principal : jeunes de 12 à 17 ans · Langues : français et anglais
 
+**Actualisation du 7 octobre 2026.** Ce cahier conserve les exigences et leurs identifiants sources. La [matrice actuelle](02-matrice-exigences.md) et le [dossier CP1](08-plan-checkpoint.md) donnent leur état de réalisation et les preuves locales, CI et production. Typulso est l’identité utilisée dans l’application; l’utilisateur a demandé le choix entre classique et arcade. Les [contributions créatives](03-direction-artistique.md) sont attribuées séparément; l’utilisation d’un logo n’établit pas sa création humaine. Les arbitrages historiques ci-dessous se lisent avec ce registre actuel.
+
 **Intention.** Transformer la pratique du clavier en une compétition conviviale qui donne envie de recommencer, tout en montrant clairement les progrès en vitesse et en précision.
 
 Ce document reprend le [cahier initial](../sources/cahier-des-charges.md), complète ses formulations à partir de l'[analyse des besoins](../sources/analyse-des-besoins-cahier-des-charges.md) et intègre les réponses client et la grille du checkpoint fournies en captures. Il conserve les identifiants du cahier initial. Les réponses client confirmées sont séparées des propositions de conception. La consolidation, les noms proposés, le logo et les choix techniques n'ont pas encore fait l'objet d'une validation complète par l'utilisateur.

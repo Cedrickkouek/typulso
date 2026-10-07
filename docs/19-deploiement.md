@@ -1,8 +1,26 @@
-# Installer et préparer le déploiement
+# Installer, déployer et exploiter Typulso
 
-> **Première livraison visée : lundi 5 octobre 2026, avant 23 h 55 à Toronto.**
+> **Actualisé le 7 octobre 2026 · production Railway observée.**\
+> Échéance initialement annoncée : 5 octobre, avant 23 h 55 à Toronto; cette recette ne prouve pas une remise à cette date.
 
 [← Projet](../README.md) · [Architecture](18-implementation.md) · [Vérifications effectives](20-verification-implementation.md)
+
+## Production observée · 7 octobre 2026
+
+| Élément | Preuve actuelle |
+|---|---|
+| Site | [Typulso sur Railway](https://typulso-production.up.railway.app/) |
+| Dépôt | [Cedrickkouek/typulso](https://github.com/Cedrickkouek/typulso), privé |
+| Version applicative vérifiée | [4d23075](https://github.com/Cedrickkouek/typulso/commit/4d23075557799c02acbb8253bd830409f8ebe446) |
+| CI | [Exécution 37648917231](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231), réussie |
+| Déploiements | Statuts Railway web et realtime réussis sur ce commit. |
+| Fonctionnement en ligne | HTTPS, healthcheck web avec base disponible, compte créé et relu après reconnexion, salon/code et mises à jour entre deux sessions HTTP/Socket.IO. |
+
+Les [14 vérifications de production](08-plan-checkpoint.md) sont distinctes de la CI, qui emploie une base isolée. Les valeurs privées de connexion, le domaine du service temps réel et les réglages du compte Railway ne sont pas publiés ici. Les exemples ci-dessous sont des **instructions de configuration**, pas une capture exhaustive des variables de production.
+
+L’origine web observée est `https://typulso-production.up.railway.app`. `APP_URL` doit correspondre exactement à l’adresse officielle utilisée; une autre origine provoque le refus de connexion. Si PostgreSQL signale `relation "rate_limits" does not exist`, vérifier que l’application vise la bonne base et que les migrations ont été appliquées à cette base. Ajouter `DATABASE_URL` ne crée pas les tables à lui seul. Ne pas réinitialiser une base contenant des données pour résoudre ce problème.
+
+La restauration des sauvegardes, la charge à 30 personnes, les coûts et les vrais retours OAuth ne sont pas attestés par cette recette. Le guide conserve les opérations nécessaires pour les vérifier.
 
 ## Installation
 
@@ -76,7 +94,7 @@ Ce chemin suit l'[image PostgreSQL officielle](https://hub.docker.com/_/postgres
 
 ## Déployer sur Railway
 
-Préparation du 7 octobre 2026 : deux images Docker et les migrations sont prévues pour Railway. Aucun service Railway ni abonnement n'a été créé par cette préparation. La publication et la recette sur les URLs réelles restent à réaliser.
+La préparation Docker du 7 octobre a été suivie du déploiement Railway par le porteur du projet. L’état observé et les preuves figurent en début de document. La procédure ci-dessous permet de reproduire les trois services; elle n’affirme pas que tous les réglages ou sauvegardes du compte d’hébergement ont été audités.
 
 Vérification locale du 7 octobre : `bun run check` réussi (formatage, lint, types, 69 tests unitaires, builds web et realtime). Les deux images ont été construites puis démarrées avec Node.js 24 et un PostgreSQL 18 temporaire isolé. Migration initiale appliquée et rejouée sans changement, deux healthchecks avec base disponible, accueil HTTP 200 et inscription HTTP 201 avec Argon2 natif. La commande par défaut de l'image web est bien `node server.js`. Les conteneurs et le réseau de cet essai ont été supprimés; la base locale existante n'a pas été utilisée. Les tests d'intégration multijoueurs n'ont pas été relancés pour cette préparation de livraison.
 
@@ -153,25 +171,22 @@ Les endpoints `/api/health` et `/health` vérifient aussi la base. Exécuter les
 
 Les tests navigateur sont dans `e2e/`. Avec les deux services lancés et une base de test dédiée : installer Chromium avec `bunx playwright install chromium`, puis lancer `bun run test:e2e`. Ils vérifient navigation responsive, langue/thème, deux contextes indépendants de salle et entraînement mesuré. Leur exécution automatique est prévue dans la CI; la recette visuelle locale est consignée séparément dans le rapport.
 
-## Recette du lundi
+## Recette et exploitation
 
-| Preuve | Vérification sur le site réellement déployé |
+| Vérification | État au 7 octobre |
 |---|---|
-| HTTPS | Certificat valide sur l'application et le serveur temps réel. |
-| PostgreSQL | Health des deux services et persistance après redémarrage du web. |
-| Compte | Inscrire un compte, se déconnecter puis se reconnecter; aucune adresse courriel requise. |
-| Salle | Un compte crée une salle par code, un second navigateur la rejoint en invité. |
-| Temps réel | Les deux voient les membres, l'état prêt et les réglages autorisés. |
-| Permissions | Un invité ne crée pas de salle; un participant ne change pas les réglages de l'hôte. |
-| Reprise | Reconnexion courte sans duplicata, puis départ volontaire et transfert d'hôte. |
-| Interface | FR/EN, clair/sombre, navigation compacte à largeur intermédiaire et mobile. |
-| CI | Exécution GitHub Actions verte sur le commit remis. |
-| Documentation | Index des exigences, DA, modèle, machines à états et ADR accessibles depuis le README. |
+| HTTPS et PostgreSQL | Healthcheck web en ligne réussi, compte relu après reconnexion et salle persistée/utilisée. |
+| Salon et permissions | Création/admission par code, arrivée, durée, état prêt et refus du non-hôte vérifiés par deux sessions de production. |
+| Interface FR/EN et thèmes | Recettes locales et scénario navigateur CI réussis; revue exhaustive en production non réalisée. |
+| CI | [Exécution réussie sur 4d23075](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231), avec migrations, intégration et navigateur. |
+| Reconnexion, succession, courses et arcade | Contrôles locaux/CI consignés; recette complète de ces parcours en production encore ouverte. |
+| Sauvegarde/restauration | Configuration et essai de restauration à vérifier; aucune réussite déclarée. |
+| Capacité, latence, coût | Limite de 30 configurée; mesures de charge, latence et budget d’exploitation non consignées. |
 
-Le test de charge à 30 personnes, l'équilibrage arcade et les essais avec le public restent des recettes distinctes. Ne pas confondre limite configurée et capacité mesurée.
+Le test de charge, l’équilibrage arcade et les essais avec le public restent des recettes distinctes. Une migration et un déploiement réussis ne constituent pas un essai de restauration.
 
 ## Dépôt et remise
 
-Le dossier est prêt à être versionné avec ses Markdown et actifs locaux. Créer le dépôt GitHub, vérifier qu'aucun secret ou donnée de test n'est suivi, puis pousser la branche `main`. Ne pas ajouter `node_modules`, `.next`, `.env.local`, les logs et le cluster temporaire. Le README GitHub est l'entrée principale; `docs/README.md` affiche la documentation.
+Le dépôt GitHub existe et contient l’application et le dossier; il reste **privé**. Vérifier les droits de l’évaluateur avant la remise. Cette actualisation documentaire ne change pas sa visibilité et ne déclare pas un audit exhaustif des secrets de tout l’historique Git.
 
-Les liens réels GitHub et HTTPS seront ajoutés à la remise lorsqu'ils existeront. La grille exige ces liens; le code local et ce guide ne constituent pas une preuve de publication.
+Le [dossier CP1](08-plan-checkpoint.md) rassemble les liens réels du site, du dépôt, du commit applicatif vérifié et de la CI. Les fichiers d’environnement, bases locales, journaux et identités de recette restent hors des documents livrés. Toute soumission scolaire reste une action distincte à effectuer par le porteur du projet.

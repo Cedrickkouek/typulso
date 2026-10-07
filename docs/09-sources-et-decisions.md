@@ -1,7 +1,11 @@
 # Sources, décisions et points ouverts
 
-> Registre préparé le 1er octobre 2026 · America/Toronto  
-> Objectif : permettre à un lecteur du futur dépôt de distinguer une exigence source, une réponse confirmée, une proposition et une preuve de réalisation.
+> Registre initial du 1er octobre 2026 · actualisation du 7 octobre · America/Toronto\
+> Objectif : distinguer exigence source, réponse confirmée, proposition et preuve de réalisation.
+
+**État actuel :** l’application et le dépôt existent. Les [preuves CP1](08-plan-checkpoint.md), la [matrice](02-matrice-exigences.md) et la synthèse du [rapport 20](20-verification-implementation.md) remplacent les statuts de livraison historiques ci-dessous. Le choix classique/arcade a été demandé explicitement par l’utilisateur le 6 octobre, puis intégré. Railway a été choisi par l’utilisateur; le site et le salon sont vérifiés pour la portée consignée. L’identité utilisée est Typulso; les contributions humaines connues et la provenance assistée sont décrites dans la [DA](03-direction-artistique.md). Les pièces originales humaines encore inconnues restent ouvertes.
+
+Les tableaux qui suivent gardent le cadrage initial et la provenance des sources. Leur statut de proposition ne doit pas être lu comme l’état actuel du code.
 
 ## Portée autorisée et source des instructions
 

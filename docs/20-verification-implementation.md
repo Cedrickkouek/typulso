@@ -1,4 +1,44 @@
-# Vérification de la première implémentation
+# Vérification de l’application — synthèse et historique
+
+> **Synthèse actualisée le 7 octobre 2026 · America/Toronto.**\
+> Version applicative des preuves : [4d23075557799c02acbb8253bd830409f8ebe446](https://github.com/Cedrickkouek/typulso/commit/4d23075557799c02acbb8253bd830409f8ebe446).
+
+[← Documentation](README.md) · [Architecture](18-implementation.md) · [Déploiement](19-deploiement.md) · [Exigences](02-matrice-exigences.md) · [Dossier CP1](08-plan-checkpoint.md)
+
+## État vérifié au 7 octobre
+
+| Environnement | Résultat effectivement observé | Portée |
+|---|---|---|
+| Local | Format, lint, types, 69 tests unitaires réussis, 0 échec, 1 116 assertions; builds web et temps réel. Les 11 entrées ignorées de la passe unitaire relèvent des suites de base exécutées séparément. | Code et compilation, sans preuve implicite de production. |
+| Local PostgreSQL/HTTP/Socket.IO | Passe dédiée : 9 tests, 0 échec, 99 assertions; scénario arcade à trois sessions, saisie réelle, cible, rejeu, piège/protection et records comparables. | Tests sur base locale; détails dans la recette arcade datée plus bas. |
+| GitHub Actions | [Vérifications Typulso · 37648917231](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231), succès sur le commit 4d23075. Début 7 octobre 16:02:42 UTC, état final réussi à 16:05:38 UTC. | PostgreSQL isolé, services web/realtime lancés dans la CI; toutes les étapes réussies, dont migrations, format, lint, types, unités, builds, intégration et trois scénarios Playwright. |
+| Railway | Déploiements web et realtime réussis selon les statuts du commit; [site HTTPS](https://typulso-production.up.railway.app/) fonctionnel. | La recette en ligne vérifie les parcours explicitement décrits ci-dessous. |
+
+Les trois [scénarios navigateur CI](../e2e/parcours.spec.ts) couvrent navigation responsive (900, 390 et 320 px), langue FR→EN/thème; salon à deux contextes avec admission par code, état partagé, permissions, prêt et transfert d’hôte; pratique locale avec mesures et recommencement. Ils **ne s’exécutent pas contre Railway**.
+
+### Production : compte et salon partagé
+
+La recette du 7 octobre réalise **14 vérifications HTTP/Socket.IO** avec un compte temporaire et une session invitée indépendante : HTTPS/healthcheck web avec base disponible; inscription; déconnexion puis reconnexion au même compte; profil relu; session invitée; salle créée par le compte; code de six caractères; admission invitée; arrivée reçue par l’hôte; durée 60→45 acceptée; nouvelle durée reçue par l’invité; commande du non-hôte refusée; prêt accepté; prêt reçu par l’hôte. Le [dossier CP1](08-plan-checkpoint.md) détaille ces assertions.
+
+Cette preuve utilise les vrais services et données de production. Elle ne constitue pas une recette visuelle à deux navigateurs, une course complète ou un test de redémarrage. Après l’essai, la salle a été fermée, les sockets arrêtés et les sessions déconnectées. Un compte de vérification sans course reste dans la base; aucune identité ou secret de recette n’est publié.
+
+### Production : actifs de la version livrée
+
+Le favicon `/favicon.ico` a répondu HTTP 200, type `image/x-icon`, et ses octets correspondent au fichier livré avec les tailles 16/32/48 px. La page publique déclare le favicon dans ses métadonnées. Les actifs du nouveau terrain de jeu du salon sont présents dans les bundles servis. L’accès visuel à la salle de production demande une identité : la recette UI du salon décrite plus bas reste une preuve **locale**.
+
+### Contrôle de la consolidation documentaire · 7 octobre
+
+Le contrôle du dépôt a été relancé pour cette consolidation : format, lint, types, **69 tests unitaires réussis, 11 entrées ignorées, 0 échec, 1 116 assertions**, et builds web/realtime réussis. PostgreSQL local n’était pas démarré pendant cette passe : deux requêtes du build ont signalé une connexion refusée sur `127.0.0.1:5432`, sans empêcher la compilation. Aucun test d’intégration n’a été relancé pour ces seuls changements documentaires; les preuves de la passe dédiée antérieure et de la CI restent distinctes.
+
+Les liens relatifs des Markdown suivis par Git ont été contrôlés : **577 références locales, aucune cible manquante**. Ce contrôle vérifie la présence des fichiers dans le dépôt; il ne valide pas les ancres internes ni l’accès aux URLs externes. Les documents d’architecture, schéma, phases et ADR ont été relus contre le code, puis les anciens plans ont été marqués avec leur date et leur portée.
+
+### Limites actuelles
+
+La charge et la lisibilité à 30 participants, la latence mesurée, toutes les courses/reconnexions en production, les vrais retours GitHub/Discord, les sauvegardes/restaurations, l’équilibrage arcade et les essais avec les 12–17 ans restent non vérifiés dans ce bilan. Le dépôt est privé. Les choix et critiques humains sont consignés dans la [DA](03-direction-artistique.md); les créations originales de nom/logo de l’équipe restent à documenter avec leurs auteurs.
+
+## Archive — première recette du 3 octobre 2026
+
+Les sections qui suivent conservent l’historique des contrôles et itérations à leur date. Les valeurs « 53 tests », « aucune CI distante » ou « non publié » décrivent le 3 octobre et sont remplacées pour l’état actuel par la synthèse ci-dessus. Les captures de prototype ou d’application locale n’acquièrent pas le statut de preuves de production.
 
 > **3 octobre 2026 · recette locale de la version 0.1**
 
@@ -71,7 +111,7 @@ Le focus clavier de l’action principale a été observé : contour visible de 
 
 Ces relevés ciblés soutiennent la lisibilité observée; ils ne constituent pas une certification d'accessibilité. Focus clavier, tableaux, mouvement réduit et noms accessibles sont présents dans l'implémentation et demandent aussi une recette avec les appareils et technologies d'assistance ciblés.
 
-## À vérifier avant et après publication
+## Actions ouvertes au 3 octobre — consulter la synthèse actuelle
 
 - **Lundi :** URL HTTPS valide, WSS, base durable, migrations, sauvegardes, deux navigateurs sur le site public, création/rejoindre par code, droits et reconnexion.
 - **GitHub :** dépôt, commit, revue des sources à partager, clonage neuf, CI verte et deux liens réels de remise.

@@ -1,10 +1,12 @@
 # Architecture de l'implémentation
 
-> **3 octobre 2026 · première version applicative**
+> **Structure applicative · actualisée le 7 octobre 2026 · commit applicatif vérifié 4d23075**
 
 [← Documentation](README.md) · [ADR de structure](adr/0002-structure-app-router.md) · [Déploiement](19-deploiement.md) · [Vérifications](20-verification-implementation.md)
 
-La conception est conservée dans les documents 01–17. Ce document précise la structure utilisée pour le code; les rapports précédents restent des vérifications du prototype HTML. Les résultats d'exécution de l'application sont consignés séparément.
+Ce document décrit le code réellement présent. Les documents 05/06/07 et l’ADR temps réel ont été harmonisés avec cette structure le 7 octobre; les explorations et recettes anciennes gardent leur date. Le [dossier CP1](08-plan-checkpoint.md) et la synthèse du [rapport 20](20-verification-implementation.md) relient le commit applicatif **4d23075**, la CI distante réussie et le salon vérifié sur Railway. Le dépôt est privé.
+
+Les dernières itérations incluent la frappe directement dans le texte sans rectangle de saisie visible, les repères de progression des autres joueurs, les pistes animées, les sons et capacités classique/arcade, le terrain de jeu du salon et le favicon reprenant le logo. Leur intégration ne signifie pas que tous les parcours ont été vérifiés en production.
 
 ## Un dépôt simple, deux processus
 
@@ -173,7 +175,7 @@ Le composant partagé du profil et des résultats propose une vue clavier AZERTY
 Les quatre catégories de taux d’erreur servent de filtres exclusifs dans les deux vues. Un second clic sur la catégorie active ou « Tout afficher » réinitialise le filtre. Les touches exclues sont estompées et retirées de l’arbre accessible, en conservant la géométrie du clavier; le tableau ne montre que les lignes correspondantes. Les catégories suivent le pourcentage arrondi affiché, et les touches sans tentative ne font pas partie du filtre « 0 % ».
 
 
-Les menus déroulants natifs des champs partagent un chevron adapté au thème, à 18 px du bord droit, avec 56 px de réserve côté texte. Angles de 16 px, ombre légère, survol et focus visibles. La sélection native conserve son comportement clavier et mobile; le mode de couleurs forcées rétablit la flèche système.
+**Historique de l’itération du 6 octobre :** les champs natifs avaient d’abord reçu un chevron espacé, des angles arrondis et des états de focus. Ils ont ensuite été remplacés par le composant personnalisé décrit ci-dessous; cette note n’est pas le contrat actuel.
 
 
 ### Listes d’options personnalisées

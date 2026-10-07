@@ -1,5 +1,7 @@
 # Composants d’interface
 
+> **Lecture actuelle · 7 octobre 2026 :** ce document conserve la conception ou les observations à leur date. L’état du code et des choix implémentés figure dans [18](18-implementation.md); les procédures utilisables dans [19](19-deploiement.md); les preuves locales, CI et Railway dans [CP1](08-plan-checkpoint.md) et la synthèse de [20](20-verification-implementation.md). Une maquette ou un test prévu ne constitue pas une preuve de production.
+
 > **Statut : catalogue initial du 1er octobre 2026, complété par les intégrations du 4 octobre.** Les comportements proposés ci-dessous restent des critères de réalisation et de vérification. Les sections d’intégration et le [rapport d’implémentation](18-implementation.md) précisent ce qui existe dans l’application React.
 
 Cette bibliothèque donne à Typulso — nom de travail — une identité accueillante : des surfaces calmes pour lire et taper, des accents francs pour agir, des détails de touches de clavier pour reconnaître la marque. Les composants suivent les [parcours utilisateur](04-experience-utilisateur.md), l’[architecture prévue](05-architecture.md) et la [recherche de composants](13-recherche-composants.md).

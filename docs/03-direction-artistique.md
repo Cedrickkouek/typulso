@@ -1,9 +1,61 @@
 # Direction artistique
 
-> **Dossier de proposition · 1er octobre 2026 · v0.4**  
-> Public : 12–17 ans · Produit : courses de frappe · Nom et logo : en exploration
+> **Démarche et direction artistique · actualisées le 7 octobre 2026**\
+> Public : 12–17 ans · Identité utilisée : Typulso · Attribution originale humaine à compléter
 
 ![Planche de direction artistique](assets/moodboard.png)
+
+## Registre créatif actuel · 7 octobre 2026
+
+L’application livrée utilise **Typulso** et le symbole clavier/pulsation visible dans le [logo du site](../public/logo.svg), l’en-tête et le [favicon](../app/favicon.ico). Cette identité est celle adoptée dans les itérations du projet; elle n’est pas présentée comme une marque juridiquement disponible ni comme un logo original dessiné humainement. Les pistes Rytapo/Typulso/Frappiq et les esquisses des sections historiques ci-dessous montrent l’exploration assistée initiale.
+
+### Contributions identifiables dans les échanges
+
+| Contribution | Auteur / provenance établie | Effet sur la version actuelle |
+|---|---|---|
+| Demande d’une personnalité colorée, vibrante, amusante et ludique. | Utilisateur, direction confirmée dans les échanges du projet. | Palette expressive et repères de clavier; recherche visuelle orientée vers le jeu collectif. |
+| « make the Logo and website name Bigger »; demandes répétées de texte plus lisible, surtout en sombre. | Utilisateur, retours du 6 octobre. | Marque agrandie, contrastes des textes renforcés et couleurs de progression cohérentes dans les thèmes. |
+| Ajouter des motifs de clavier, lettres et symboles sur le fond général, puis les densifier. | Utilisateur, demande du 6 octobre. | Motif de page hors des surfaces de composants, lié au thème de la frappe. |
+| Aérer l’aide, équilibrer la hauteur des cartes, répartir les contenus, améliorer menus, statistiques et tableau de résultats. | Utilisateur, séries de critiques et captures du 6–7 octobre. | Hiérarchie, espaces, alignement et composants remaniés; actions et chiffres mieux repérés. |
+| Écrire sans cliquer dans une case, puis supprimer cette case visible. | Utilisateur, clarification progressive du 6 octobre. | Saisie native intégrée au texte; point de concentration principal conservé. |
+| Progression plus animée : tête, voiture ou forme originale; repères des autres joueurs avançant/reculant sur le texte. | Utilisateur, direction d’expérience du 6 octobre. | Pistes avec concurrents animés et curseurs de progression; les lettres privées des autres ne sont pas transmises. |
+| « Un mélange, avec le choix entre classique et arcade ». | Utilisateur, réponse explicite au choix d’ambiance le 6 octobre. | Deux modes : frappe classique et capacités arcade; la proposition du laboratoire a ensuite été demandée dans le projet. |
+| Ajouter un favicon correspondant au logo du site. | Utilisateur, demande du 7 octobre. | Favicon intégré et contrôlé dans les actifs servis en production. |
+| Propositions de noms, esquisses SVG, moodboard, recherches, traduction des retours en composants et code. | Assistant IA, création assistée et réalisation technique. | Matière de discussion puis intégration selon les demandes du porteur du projet. |
+
+Les citations courtes ci-dessus proviennent des demandes de l’utilisateur dans cette conversation. Elles établissent des décisions, intentions et critiques humaines. Elles n’établissent pas l’auteur d’une idée de nom antérieure, d’un croquis initial ou d’un redessin original. Aucune contribution d’un autre membre n’est attribuée sans information fournie par l’équipe.
+
+### Nom, signe et choix visuels utilisés
+
+**Nom utilisé : Typulso.** Le territoire proposé relie la frappe au rythme et à la pulsation. Les alternatives et raisons initiales figurent dans l’exploration historique. L’emploi répété de Typulso dans l’application et les retours sur son logo atteste l’identité utilisée; il ne remplace pas une note personnelle de l’équipe sur sa propre création du nom.
+
+**Signe utilisé : clavier/pulsation.** Le symbole et sa surface citron restent reconnaissables dans la navigation, le pied de page et l’icône de navigateur. Les esquisses documentées ont été produites avec l’assistant; les éventuelles transformations humaines doivent être ajoutées avec leur auteur et leur fichier source.
+
+La palette de production et les thèmes sont définis dans [app/globals.css](../app/globals.css). Les valeurs ci-dessous décrivent le code actuel; les mesures de la palette historique restent datées dans leur section.
+
+| Usage | Valeur actuelle | Rôle |
+|---|---|---|
+| Citron | `#D7FF3F` | Action, identité et progression, conservé dans les deux thèmes. |
+| Rose | `#FF8FCE` | Accent expressif, repères de concurrents et surfaces ponctuelles. |
+| Lavande | `#BBA3FF` | Terrain de frappe et accent secondaire. |
+| Bleu ciel / corail | `#82B4FF` / `#FF9478` | Repères de statistiques et d’événements. |
+| Texte / fond clair | `#171C2B` / `#F4F3ED` | Lecture principale; surfaces de cartes blanches. |
+| Texte / surface sombre | `#F6F7FB` / `#232B3E` | Lecture sur les composants sombres; fond général `#171C2B`. |
+| Texte secondaire | Clair `#303E55`, sombre `#E0E6F1` | Lisibilité renforcée après les retours de l’utilisateur. |
+
+**Typographies :** Space Grotesk pour l’interface, IBM Plex Mono pour la frappe et les repères techniques. Les polices sont livrées avec l’application par les packages Fontsource. Le [moodboard](assets/moodboard.png) et les [registres de recherche](12-recherche-inspiration.md) conservent la provenance des références; les actifs d’autres jeux ne sont pas utilisés comme logo du projet.
+
+### Démarche et pièce humaine à compléter
+
+La démarche suivie est documentée : exigences et public → références et propositions assistées → critiques/choix du porteur du projet → itérations dans l’application → vérifications techniques et visuelles datées. Les validations techniques ne sont pas des essais d’amusement auprès des 12–17 ans.
+
+Pour la partie originale humaine attendue par UX-03, il manque encore les informations suivantes, si elles existent : **auteurs de l’équipe, idées de noms réellement proposées, croquis initiaux, redessins ou modifications du symbole, choix final motivé et dates**. Une question a été adressée au porteur du projet lors de cette actualisation; aucune réponse factuelle n’est remplacée par une attribution inventée. Les retours connus ci-dessus sont déjà consignés et ne sont pas présentés comme des croquis.
+
+**État du dossier :** nom, logo utilisé, moodboard, palette, typographies et contribution humaine de direction/critique sont présents. La création originale du nom/logo par l’équipe reste **non établie** tant que ses pièces et auteurs ne sont pas fournis. Voir le [bilan CP1](08-plan-checkpoint.md).
+
+## Exploration initiale conservée · 1er–2 octobre
+
+Les sections numérotées qui suivent conservent les propositions et décisions ouvertes à leur date. Les mentions « en exploration », « choisir » ou « intégrer ensuite » décrivent cette étape historique; pour l’application actuelle, se référer au registre ci-dessus.
 
 ## 1. L'idée qui tient l'ensemble
 

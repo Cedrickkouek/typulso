@@ -1,110 +1,59 @@
-# ADR 0001 — Temps réel avec serveur autoritaire dédié
+# ADR 0001 — service Socket.IO dédié et serveur autoritaire
 
-| Champ | Valeur |
-|---|---|
-| Date | 1er octobre 2026 |
-| Statut | Proposé; à confirmer au scaffold et par les essais |
-| Décision | Petit service Node.js persistant avec Socket.IO, état durable PostgreSQL, une instance initiale |
-| Exigences | Synchronisation de salle au checkpoint 1; course, reconnexion et capacité d'une classe dans la version finale |
+> **Statut : retenu et implémenté · actualisé le 7 octobre 2026.**\
+> Décision initiale : 1er octobre. Structure effective : racine App Router selon l’ADR 0002.\
+> Version applicative des preuves : 4d23075.
 
-[← Architecture](../05-architecture.md) · [Modèle de données](../06-modele-donnees.md) · [Machines à états](../07-machines-etats.md)
+[← Architecture](../05-architecture.md) · [Structure App Router](0002-structure-app-router.md) · [États](../07-machines-etats.md) · [Preuves](../08-plan-checkpoint.md)
 
-## Contexte
+## Contexte et options
 
-Les participants doivent voir les admissions et les réglages immédiatement, puis recevoir les progressions pendant la course. La courte déconnexion doit conserver l'identité. Le serveur doit arbitrer les règles et transmettre l'autorité d'hôte selon la réponse client. La cible initiale est 30 connexions humaines dans une salle; sa réalisation reste à mesurer.
+Une classe doit partager présences, règles et progression d’une course, avec un hôte temporaire et des permissions serveur. Polling HTTP et SSE imposent des compromis de fréquence ou deux chemins de commandes/diffusion. WebSocket natif demande d’écrire gestion de canaux, reconnexion et acquittements. Un broker ou une plateforme gérée ajouterait une dépendance d’exploitation sans retirer le besoin d’un moteur autoritaire.
 
-Le temps réel est bidirectionnel : les clients envoient des commandes et le serveur diffuse un état partagé. Il faut maîtriser les doublons, les reconnexions et les pannes sans introduire plusieurs services de coordination dès le premier checkpoint.
+**Décision :** un processus Node.js [Socket.IO](../../server/index.ts) distinct reçoit les commandes et diffuse les états; Next.js conserve pages et routes HTTP. Les deux utilisent PostgreSQL. Ce choix permet une horloge de course persistante et un contrôle explicite du cycle du moteur. La décision ne dépend pas d’une affirmation générale sur les capacités WebSocket d’un autre hébergeur.
 
-## Options examinées
+## Contrat effectivement utilisé
 
-| Option | Avantages | Coût ou limite pour ce projet |
-|---|---|---|
-| Polling HTTP | Facile à déployer et à inspecter | Multiplication des requêtes; fluidité limitée du classement. |
-| SSE avec commandes HTTP | Diffusion serveur simple | Deux chemins de transport à coordonner; reprise et arbitrage métier restent à construire. |
-| WebSocket natif | Protocole léger et flexible | Reconnexion, acquittements, canaux et reprise à écrire. |
-| Socket.IO dédié | Canaux de salle, reconnexion du transport, acquittements et types partagés | Processus persistant à exploiter; livraison et reprise métier doivent être explicites. |
-| MQTT avec broker | Distribution pub/sub | Broker et modèle de permissions supplémentaires, sans avantage décisif pour une classe. |
-| Service temps réel géré | Exploitation réduite | Quotas, dépendance et offre gratuite à vérifier; moteur autoritaire toujours nécessaire. |
-
-## Décision proposée
-
-Un service `apps/realtime` recevra les commandes, exécutera les règles de `packages/domain`, persistera la décision puis publiera les événements de salle. Next.js conservera son serveur web standard. L'état des connexions et les files de commandes seront en mémoire; l'état reconnu des salles sera dans PostgreSQL.
-
-Ce choix ne repose pas sur une interdiction générale de WebSocket chez un hébergeur. Les offres évoluent; la documentation actuelle de Vercel mentionne un support WebSocket en bêta. Un transport accepté par une plateforme ne garantit toutefois pas la continuité d'un processus ni sa mémoire. Nous choisissons un service dédié pour gérer explicitement le cycle du moteur; un Route Handler Next.js ne sera jamais présumé permanent. [Limites Vercel Functions](https://vercel.com/docs/functions/limitations).
-
-L'interface web peut être hébergée séparément ou avec le service temps réel derrière le même domaine. La configuration du proxy et des connexions persistantes devra être vérifiée sur l'hébergeur retenu.
-
-## Garanties réellement construites
-
-Socket.IO conserve l'ordre des messages reçus, mais sa livraison par défaut est **au plus une fois** : une interruption peut perdre un message. Les acquittements et tentatives ne procurent pas seuls une exécution unique. Le protocole applicatif ajoutera une identité de commande et une réponse durable pour dédoublonner les répétitions. [Garanties de livraison Socket.IO](https://socket.io/docs/v4/delivery-guarantees/).
-
-La fonctionnalité de récupération de connexion Socket.IO peut aider lors d'une interruption courte, mais sa réussite n'est pas garantie. Elle sera une optimisation; la reprise reposera toujours sur une session vérifiée et un instantané PostgreSQL. Les vérifications d'autorisation ne seront pas sautées à la reconnexion. [Récupération de connexion Socket.IO](https://socket.io/docs/v4/connection-state-recovery/).
-
-### Contrat de commande
+Le [contrat partagé](../../types/game.ts) définit :
 
 ```ts
-type CommandEnvelope<T> = Readonly<{
-  protocolVersion: 1;
+interface RoomCommand {
   commandId: string;
+  kind: CommandKind;
   roomId?: string;
-  raceId?: string;
-  inputSequence?: number;
-  expectedRoomVersion?: number;
-  payload: T;
-}>;
+  expectedVersion?: number;
+  payload?: Record<string, unknown>;
+}
 ```
 
-- L'acteur vient de la session vérifiée, jamais d'un champ libre du message.
-- `roomId` est obligatoire pour les mutations d'une salle connue; une création ou une admission par code utilise son contrat spécifique puis reçoit l'identifiant autorisé du serveur.
-- `commandId` sert au dédoublonnage durable.
-- `inputSequence` ordonne les lots d'une entrée de course; un trou demande une resynchronisation.
-- `expectedRoomVersion` protège les modifications de réglages contre un formulaire périmé. Il n'est pas imposé à chaque frappe, car les autres participants font avancer la version globale.
-- `raceId` empêche qu'un lot tardif de la course précédente modifie la revanche.
-- Le serveur borne taille, fréquence, caractères et structure des messages.
+Le client émet `command` et reçoit un acquittement `CommandResponse` : soit `{ ok: true, data: { room, invitationUrl? } }`, soit `{ ok: false, error }`. Les types de commandes comprennent `create`, `join`, `sync`, `configure`, `ready`, `start`, `input`, `leave`, `kick`, `role`, `invite`, `rematch`, `close`, `ability` et `quick`.
 
-### Traitement transactionnel
+L’acteur vient du ticket/session vérifié, pas du message. `commandId` identifie la répétition; `expectedVersion` protège les mutations de contrôle lorsqu’il est fourni. L’identifiant de course et la séquence de frappe sont dans le **payload de `input`**, pas dans une ancienne enveloppe `protocolVersion`/`inputSequence`. Le serveur valide forme, taille, débit, admission, phase et droits.
 
-1. Vérifier transport, ticket, session, origine, appartenance et droits de commande.
-2. Entrer dans la file de la salle; verrouiller sa ligne dans PostgreSQL. Pour la création, verrouiller le compte et dédoublonner par acteur et identifiant de commande avant l'insertion.
-3. Retrouver le reçu si `commandId` a déjà été traité; retourner son résultat.
-4. Valider l'état et la séquence, puis appliquer le réducteur pur.
-5. Insérer ensemble instantané versionné, événement filtré et reçu d'acquittement.
-6. Valider la transaction. Publier la version et acquitter la commande.
+## Traitement et durabilité
 
-Si le processus tombe entre le commit et la diffusion, l'état est conservé. Une répétition retrouve le reçu; une reconnexion charge la version actuelle. Le journal joue aussi le rôle de file de publication durable : au retour du processus, ses événements non diffusés peuvent être retransmis. Les clients ignorent toute version déjà appliquée. Aucune promesse de livraison réseau « exactement une fois » n'est faite.
+1. Valider la session, l’origine et la structure; appliquer la limite de débit.
+2. Ouvrir la transaction; retrouver le reçu d’une commande répétée et verrouiller les données concernées, notamment la ligne de salle.
+3. Vérifier version, permissions, phase et règles de course; appliquer la commande.
+4. Enregistrer état de salle, membres, données de course/résultat utiles, projection versionnée et reçu.
+5. Valider la transaction, puis diffuser l’instantané filtré et acquitter.
 
-### Synchronisation serveur → navigateur
+`command_receipts` évite le double effet d’une répétition reconnue. **Exception volontaire :** le reçu d’une invitation ne conserve ni URL ni jeton secret en clair. Son rejeu renvoie `invitation_already_issued`; une nouvelle invitation requiert un autre identifiant de commande.
 
-**Précision de l'implémentation du 3 octobre 2026.** L'acquittement d'une création d'invitation n'est pas rejoué à l'identique : son reçu ne conserve jamais le jeton ni son URL en clair. Une répétition renvoie `invitation_already_issued` et ne crée aucun second lien. Après une perte d'acquittement, l'hôte peut demander une nouvelle invitation avec un autre `commandId`. Les autres commandes conservent leur réponse de dédoublonnage. Le contrat effectivement utilisé et les limites de la première version figurent dans [l'architecture d'implémentation](../18-implementation.md).
+L’état validé survit à une perte de diffusion. Au retour, le client demande `sync` et reçoit l’état courant. `room_events` garde des projections versionnées mais **n’est pas une outbox rejouant automatiquement chaque événement perdu**. Le projet ne promet pas une livraison réseau exactement une fois.
 
-Chaque événement porte `roomId`, `version`, `type` et `payload`. Le navigateur accepte la version attendue, ignore les doublons et demande un instantané après un trou. L'instantané remplace l'état courant avec sa version; les événements plus anciens sont ignorés. Après chaque reconnexion, un instantané est demandé même si le transport annonce une récupération réussie.
+## Diffusion et reprise
 
-Un membre reçoit uniquement les données autorisées. Les tickets, invitations, identifiants de session et tampons privés de frappe ne sont pas des événements publics. L'identifiant `socket.id` n'est pas l'identité d'un membre.
+Le serveur publie `room:state` : un **snapshot complet par destinataire**, plutôt qu’une suite de deltas `type/payload` à rejouer. Les clients utilisent la version pour ne pas remplacer un état récent par un ancien. Le ticker fonctionne toutes les **250 ms**; les commandes de contrôle déclenchent une diffusion après leur transaction. Cette période ne prouve ni une latence maximale ni une capacité à 30 joueurs.
 
-## Fréquence et sensation de jeu
+La reprise du transport est complétée par un ticket autorisé et `sync`; la correction métier ne repose pas sur une récupération automatique du transport. Aucune saisie privée d’un autre joueur, empreinte de session ou secret d’invitation n’est publié. Seules les positions et métriques autorisées accompagnent le texte.
 
-Proposition initiale : saisie locale immédiate, lots de frappe environ toutes les 200 ms et classement partagé autour de 5 Hz. Les changements de rôle, de configuration et de phase sont publiés dès leur commit. Les compteurs et positions sont validés par le serveur; le navigateur interpole uniquement l'animation.
+## Conséquences et limites
 
-À 30 participants envoyant cinq lots par seconde, la charge de conception atteint environ 150 lots entrants par seconde, plus leurs diffusions. Ce calcul décrit le scénario de test, pas une preuve de capacité. Chaque lot acquitté aura été persisté; si cette stratégie dépasse le budget de latence, toute modification des garanties sera documentée avant optimisation.
+Une seule instance temps réel est prévue. Plusieurs instances exigeraient une coordination des diffusions, de l’horloge et de la propriété des salles. PostgreSQL arbitre les mutations avec des verrous transactionnels; aucune file de salle en mémoire n’est présentée comme une garantie durable.
 
-## Déconnexion, panne et montée en charge
+Une courte coupure dispose de 60 secondes de grâce. Au redémarrage du processus, les courses actives sont interrompues, les salons conservés et aucune victoire inventée. Une reprise équitable de course demanderait une nouvelle décision sur l’horloge et la reconnexion. Le [guide Railway](../19-deploiement.md) prévoit le processus persistant et la migration préalable.
 
-Une interruption client dispose d'une grâce proposée de 60 secondes. Le client suspend les entrées classées hors ligne et demande l'état reconnu à son retour. Un départ volontaire ne bénéficie pas de cette grâce. Le transfert d'hôte et la clôture suivent les [machines à états](../07-machines-etats.md).
+## Preuves disponibles
 
-Pour la première version, un redémarrage du serveur annule les courses actives, conserve les salons et n'attribue aucune victoire. Cette limite est explicite. Une reprise de course après panne exigera une nouvelle décision sur l'horloge, les participants et l'équité.
-
-Une seule instance temps réel sera déployée initialement. Plusieurs instances imposeraient au minimum un propriétaire unique de chaque salle, une coordination des diffusions et des garanties de reprise vérifiées pour l'adaptateur choisi. Aucun Redis, broker ou cluster n'est ajouté sans besoin mesuré.
-
-## Vérification prévue
-
-| Essai | Preuve à enregistrer |
-|---|---|
-| Deux navigateurs créent/rejoignent une salle | Réglages et membres identiques; refus serveur des commandes non autorisées. |
-| Commande répétée après perte de l'acquittement | Un seul effet, même réponse et version cohérente. |
-| Paquet supprimé ou numéro sauté | Détection du trou et instantané rétablissant l'état. |
-| Déconnexion puis retour | Identité, entrée et progression reconnue restaurées. |
-| Invitation consommée simultanément | Une seule admission; un refus ne brûle pas un autre jeton. |
-| 30 clients sur le scénario documenté | Latence au 95e percentile, mémoire, CPU, débit DB, erreurs et reconnexions. |
-| Redémarrage après commit | Salon durable; annulation claire de course; aucun score doublé. |
-
-L'objectif proposé d'affichage est un 95e percentile sous 300 ms sur le réseau et l'hébergement de test. La mesure inclura le traitement, la base et la diffusion. Les résultats, conditions et limites seront ajoutés à ce document après exécution.
+Les contrôles locaux et la CI distante couvrent sessions, deux connexions, admission, commandes refusées, répétition, invitation unique, séquence, fin et résultats. Le 7 octobre, le salon par code et ses modifications ont aussi été vérifiés en production avec un compte et un invité HTTP/Socket.IO; voir [CP1](../08-plan-checkpoint.md). Les scénarios de charge à 30 clients, la latence au 95e percentile et toutes les pannes de production restent **à mesurer**, et ne sont pas cochés comme réussis.

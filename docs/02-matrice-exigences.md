@@ -1,7 +1,7 @@
 # Matrice des exigences
 
 > Référentiel : [cahier consolidé](01-cahier-des-charges.md) · Version du 2 octobre 2026  
-> **Mise à jour du 3 octobre 2026 : implémentation locale vérifiée pour les parcours consignés ci-dessous; publication GitHub et production encore à effectuer.**
+> **Actualisation du 7 octobre 2026 : registre de réalisation relié au commit applicatif 4d23075, à la CI distante réussie et aux contrôles Railway.**
 
 Cette matrice conserve les **49 exigences** et les **10 hypothèses** numérotées du cahier initial. Elle ajoute **8 précisions client** et **10 exigences de checkpoint**. Les IDs de l'analyse détaillée ne sont pas utilisés comme alias : certains désignent d'autres besoins. Le [registre des sources](09-sources-et-decisions.md) explique cette règle.
 
@@ -19,7 +19,9 @@ Le [PDF fourni le 2 octobre](../sources/cahier-des-charges-2026-10-02.pdf) préc
 | **Proposé** | Choix de conception ou valeur encore à confirmer |
 | **Confirmé par source** | Réponse client lisible dans une capture; ne signifie pas « implémenté » |
 
-Les tableaux de cadrage et leurs méthodes prévues restent historiques. Le **registre de réalisation** en fin de document donne maintenant les liens de code et les preuves locales obtenues. Une fonctionnalité présente dans le code ne signifie pas que toute sa méthode de validation, les essais humains ou sa production ont été réalisés. Le [rapport applicatif](20-verification-implementation.md) distingue ces niveaux.
+Les tableaux de cadrage et leurs méthodes prévues restent historiques. Le **registre de réalisation** en fin de document donne les liens de code et les preuves locales, CI et production obtenues. Une fonctionnalité présente dans le code ne signifie pas que toute sa méthode de validation, les essais humains ou sa production ont été réalisés. Le [rapport applicatif](20-verification-implementation.md) distingue ces niveaux.
+
+**Lecture historique :** les tableaux de cadrage ci-dessous conservent les besoins, priorités et méthodes de validation issus des sources du 2 octobre. Leurs mentions « cadré », « prévu » ou « liens manquants » ne décrivent pas l’état actuel de livraison. Le **registre de réalisation du 7 octobre** en fin de document donne cet état, sans déclarer tous les besoins conformes.
 
 ## Exigences produit
 
@@ -148,56 +150,58 @@ Les poids sont associés à des **critères**, pas additionnés à chaque ligne.
 | HYP-03 | Minimum deux concurrents dont un humain | À valider | Décider si un bot suffit comme second; tester solo/pratique. |
 | HYP-04 | Cible 30 personnes, extension mesurée | Cible de cadrage, non mesurée | Test de charge et limites publiées. |
 | HYP-05 | Invités conservés seulement en session | À préciser | Définir stockage, expiration et suppression; vérifier avec plusieurs onglets/reconnexions. |
-| HYP-06 | Règles immuables au départ | Proposition cohérente avec RACE-01 | Refus serveur de modification après départ. |
-| HYP-07 | Arcade séparé de l'entraînement sans bonus | À valider | Confirmer les modes et la comparaison des statistiques. |
+| HYP-06 | Règles immuables au départ | Choix implémenté | Refus serveur après départ; tests et contrat actuels documentés. |
+| HYP-07 | Arcade séparé de l’entraînement sans bonus | Classique/arcade demandé par l’utilisateur le 6 octobre et intégré | Mesures brutes conservées; records comparés à règles et langue identiques. |
 | HYP-08 | Corpus libres/autorisés, texte hôte | À documenter | Sources/licences du corpus connues avant intégration; politique du personnalisé. |
 | HYP-09 | Tactile au minimum spectateur | À décider pour participation | Essai ergonomique; annoncer clairement les modes supportés. |
 | HYP-10 | Effets désactivables | Conservée comme exigence | Contrôle des préférences et alternatives lisibles. |
 
-## Registre de réalisation · 3 octobre 2026
+## Registre de réalisation · 7 octobre 2026
 
-Environnement : application compilée locale `http://127.0.0.1:3000`, service Socket.IO `:3001`, PostgreSQL 18 dédié sur `:55432`. Les fichiers sont dans un **arbre Git local non commité**, sans URL GitHub ou HTTPS publique. Les contrôles automatisés et la recette visuelle sont détaillés dans le [rapport 20](20-verification-implementation.md). Les sources ci-dessous permettent d'examiner la réalisation; elles ne valent pas certificat de conformité complet.
+Version applicative : [4d23075](https://github.com/Cedrickkouek/typulso/commit/4d23075557799c02acbb8253bd830409f8ebe446). Le dépôt GitHub est privé. La [CI distante](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231) a réussi sur ce commit, avec PostgreSQL isolé et trois parcours navigateur. Le [site Railway](https://typulso-production.up.railway.app/) a été contrôlé par 14 vérifications HTTP/Socket.IO avec deux sessions indépendantes. Le [rapport 20](20-verification-implementation.md) précise les recettes locales et leur date; le [dossier CP1](08-plan-checkpoint.md) décrit exactement la portée en ligne.
 
-| Exigence(s) | Code ou document | Preuve / couverture locale | Limite restante |
+Dans le tableau, **local/CI** et **production** désignent des preuves distinctes. Un code présent ou une limite configurée ne vaut pas validation complète.
+
+| Exigence(s) | Réalisation et référence | Preuve obtenue | Limite restante |
 |---|---|---|---|
-| AUTH-01, AUTH-02 | [Authentification](../lib/server/auth.ts), [OAuth](../lib/server/oauth.ts), [écrans](../components/entry-pages.tsx) | Compte local et invité vérifiés en HTTP/Socket.IO; écran de connexion parcouru. Fournisseurs affichés avec indisponibilité explicite. | GitHub/Discord à configurer et tester avec leurs vrais retours. |
-| AUTH-03, AUTH-04 | [Authentification](../lib/server/auth.ts), [tests PostgreSQL](../tests/backend.database.test.ts) | Hachage, session, révocation et refus de création invité contrôlés. | Pas de récupération de mot de passe; conservation invité à préciser pour exploitation. |
-| ROLE-01, ROLE-02 | [Commandes serveur](../lib/server/rooms.ts), [gestion du salon](../components/room-page.tsx) | Aucun rôle scolaire permanent; droits d'hôte et refus du non-hôte testés. Gestion des rôles/exclusion implémentée. | Recette humaine de tous les cas de gestion à compléter. |
-| ROOM-01 | [Admission serveur](../lib/server/rooms.ts), [tests d'intégration](../tests/integration.test.ts) | Code réel, public/privé filtrés, invitation individuelle consommée une seule fois; concurrence testée en PostgreSQL. | Recette des trois modes sur HTTPS. QR facultatif non ajouté. |
-| ROOM-02, ROOM-03 | [Courses](../components/course-pages.tsx), [commande quick](../lib/server/rooms.ts) | Rejoint une salle publique admissible ou crée pour un compte; invité ne crée pas. | Parcours de partie rapide et concurrence à exercer en production. |
-| ROOM-04 | [Temps réel](../server/index.ts), [intégration](../tests/integration.test.ts) | Deux sessions indépendantes partagent arrivées, prêt et règles avec contrôle serveur. | Latence en ligne à mesurer. |
-| ROOM-05, ROOM-06, ROOM-07 | [Cycle des salles](../lib/server/rooms.ts), [tests PostgreSQL](../tests/backend.database.test.ts), [moteur](../lib/domain/engine.ts) | Reprise et transfert après grâce testés; arrivée tardive spectatrice, abandon et AFK implémentés/testés dans le domaine. | Coupure réseau réelle et toutes les transitions UI à exercer en ligne. |
-| ROOM-08, RACE-04 | [Limite et projections](../lib/server/rooms.ts), [vue course](../components/room-page.tsx) | Limite de 30 configurée; interface responsive examinée. | **Aucun test de charge ni revue à 30 personnes réalisé.** |
-| ROOM-09 | [Revanche et fermeture](../lib/server/rooms.ts), [résultats salon](../components/room-page.tsx) | Commandes et interface implémentées, règles de cycle testées. | Recette multi-utilisateur de revanche/fermeture à compléter. |
-| CONF-01, CONF-02, CONF-04, CONF-05 | [Génération](../lib/domain/text.ts), [validation](../lib/domain/settings.ts), [tests](../tests/domain.test.ts) | Corpus local original, graine, contraintes, langues, modes, caractères exclus et bornes contrôlés; prévisualisation réelle parcourue. | Élargissement et revue éditoriale du corpus. |
-| CONF-03, UX-02 | [Préférences](../lib/client/preferences.ts), [interface](../components/providers.tsx) | FR/EN indépendants du texte, clair/sombre et largeurs 320–1440 examinés. | Recette tactile sur appareils réels. |
-| CONF-06, CONF-09 | [Moteur et minuterie](../lib/domain/engine.ts), [serveur](../lib/server/rooms.ts) | Expiration et fin déterminées côté serveur; course persistée vérifiée. Minuterie facultative et objectif MPM implémentés. | Cas sans minuterie et inactivité prolongée à exercer visuellement. |
-| CONF-07, CONF-08, RACE-03 | [Moteur](../lib/domain/engine.ts), [tests](../tests/domain.test.ts), [frappe client](../lib/client/typing-engine.ts) | Correction bloquante/libre, Unicode, compteurs et score MPM × précision² vérifiés. | Formule proposée à confirmer par essais humains. |
-| CONF-10 | [Zone de frappe](../components/typing-zone.tsx), [limites](18-implementation.md) | Collage/raccourci/drop refusés dans l'interface; taille/séquence contrôlées au serveur. | Le navigateur ne prouve pas qu'une frappe vient d'un humain; assistance et contournements restent des limites explicites. |
-| RACE-01, RACE-02 | [Transport](../lib/client/realtime.ts), [service](../server/index.ts), [intégration](../tests/integration.test.ts) | Départ commun, saisie, progression autoritaire et résultat testés à deux sessions. | Latences variées, pertes réseau et charge à mesurer. |
-| RACE-05 | [Préférences](../lib/client/preferences.ts), [styles](../app/globals.css) | Son/mouvement réglables, persistance locale et réduction de mouvement implémentés. | Revue humaine des effets arcade avec chaque préférence. |
-| BOT-01, BOT-02 | [Bots](../lib/domain/bots.ts), [tests](../tests/domain.test.ts), [entraînement](../components/practice-page.tsx) | Variations et erreurs reproductibles testées; un bot dans une vraie salle observé. Échauffement local distinct des résultats en compte. | Plausibilité avec joueurs et plusieurs niveaux à évaluer. |
-| BONUS-01, BONUS-02, BONUS-03 | [Capacités](../lib/domain/engine.ts), [architecture](18-implementation.md), [tests](../tests/domain.test.ts) | Accélération/bouclier, énergie, déficit et plafond de 6 points testés; métriques brutes conservées. | Équilibrage et rattrapage avec public réel non validés. |
-| STAT-01, STAT-02, STAT-03 | [Résultats](../components/results.tsx), [API personnelle](../app/api/results/[id]/route.ts), [moteur](../lib/domain/engine.ts) | Classement, métriques et heatmap calculés; résultat en base et restriction à son acteur testés. | Revue des égalités et accessibilité de la heatmap en ligne. |
-| STAT-04, STAT-05, STAT-06 | [Profil/historique](../components/profile-pages.tsx), [API](../app/api/profile/route.ts) | Historique et agrégats PostgreSQL réels; aucun score d'exemple ajouté. | Rétention/suppression à définir; amélioration dans le temps à tester avec plusieurs vraies sessions. |
-| UX-01, UX-03 | [Direction artistique](03-direction-artistique.md), [pages](16-design-pages-et-etats.md) | Base artistique intégrée; contrastes ciblés et responsive contrôlés. | Essais 12–17 ans et contribution humaine au nom/logo encore requis. |
-| TECH-01 | [Dépendances](../package.json), [schema](../db/schema.ts), [ADR structure](adr/0002-structure-app-router.md) | Versions verrouillées, typage/lint, builds, migrations et PostgreSQL réel vérifiés. | Reproduction sur machine vierge/conteneurs à vérifier. |
-| TECH-02, TECH-03 | [ADR temps réel](adr/0001-temps-reel.md), [guide](19-deploiement.md) | Choix des deux processus et limites documentés; fonctionnement local vérifié. | **Hébergeur, coût approuvé, HTTPS et WSS non établis.** |
-| TECH-04, TECH-05 | [README](../README.md), [CI](../.github/workflows/ci.yml), [tests navigateur](../e2e/parcours.spec.ts) | Dépôt local, documentation, contrôles locaux et CI/E2E préparés. Fichiers d'environnement ignorés. | **Publication, clonage GitHub et exécution CI/E2E distante à faire.** |
+| AUTH-01, AUTH-02 | [Comptes/invités](../lib/server/auth.ts), [OAuth](../lib/server/oauth.ts), [écrans](../components/entry-pages.tsx) | Local/CI : sessions et méthodes disponibles; production : inscription locale, déconnexion/reconnexion au même compte, profil relu et session invitée. | Vrais retours GitHub/Discord non vérifiés. |
+| AUTH-03, AUTH-04 | [Auth](../lib/server/auth.ts), [tests PostgreSQL](../tests/backend.database.test.ts) | Local/CI : hachage, révocation, tickets et refus de création en invité. Production : compte persistant entre deux sessions. | Récupération de mot de passe absente; rétention et suppression des invités à préciser. |
+| ROLE-01, ROLE-02 | [Commandes](../lib/server/rooms.ts), [salon](../components/room-page.tsx) | Autorité temporaire d’hôte; permissions locales/CI. Production : commande de configuration refusée au non-hôte. | Recette humaine complète des exclusions/rôles en production non exécutée. |
+| ROOM-01 | [Admission](../lib/server/rooms.ts), [intégration](../tests/integration.test.ts) | Local/CI : accès, invitation individuelle et consommation concurrente. Production : création et admission par code réel. | Accès privé/public et QR éventuel non validés dans cette recette de production; QR facultatif absent. |
+| ROOM-02, ROOM-03 | [Jouer](../components/course-pages.tsx), [commande quick](../lib/server/rooms.ts) | Code et contrôles locaux/CI de la partie rapide et de la liste publique. | Partie rapide concurrente en production non exercée. |
+| ROOM-04 | [Socket.IO](../server/index.ts), [intégration](../tests/integration.test.ts) | Local/CI et production : arrivée, état prêt et changement de durée propagés entre deux sessions. | Latence en ligne non mesurée. |
+| ROOM-05, ROOM-06, ROOM-07 | [Cycle](../lib/server/rooms.ts), [tests DB](../tests/backend.database.test.ts), [moteur](../lib/domain/engine.ts) | Local/CI : reprise/grâce, succession, admission tardive, abandon et inactivité selon les suites. | Coupure réelle, succession et tous les parcours UI en production à contrôler. |
+| ROOM-08, RACE-04 | [Capacité](../lib/server/rooms.ts), [course](../components/room-page.tsx) | Limite serveur de 30; recettes responsive locales et scénario navigateur CI. | **Aucune mesure de charge ou revue de lisibilité à 30 participants.** |
+| ROOM-09 | [Revanche/fermeture](../lib/server/rooms.ts), [salon](../components/room-page.tsx) | Cycle implémenté/testé localement; sortie de salle fermée parcourue localement. Salle de production de vérification fermée après l’essai. | Revanche multijoueur et rendu de fermeture en production non exercés. |
+| CONF-01, CONF-02, CONF-04, CONF-05 | [Contenu](../lib/domain/text.ts), [réglages](../lib/domain/settings.ts), [tests domaine](../tests/domain.test.ts) | Génération commune déterministe avec thèmes/contraintes et personnalisé, validée localement/CI; aucun service IA utilisé pour générer pendant les courses. | Pas d’audit externe des corpus ni de recette de toutes les combinaisons en production. |
+| CONF-03, UX-02 | [Préférences](../lib/client/preferences.ts), [configuration](../components/room-configuration.tsx), [E2E](../e2e/parcours.spec.ts) | Interface FR/EN indépendante de la langue du contenu; clair/sombre, responsive et passage FR→EN exécutés en CI. | Revue exhaustive de toutes les pages et traductions en production non réalisée. |
+| CONF-06, CONF-09 | [Fin serveur](../lib/server/rooms.ts), [moteur](../lib/domain/engine.ts) | Minuterie facultative, fin autoritaire et entrées tardives testées localement/CI; production : durée du salon modifiée et propagée. | Champ d’objectif de vitesse présent dans la configuration; effet en partie et recette complète d’expiration en production non attestés ici. |
+| CONF-07, CONF-08 | [Moteur](../lib/domain/engine.ts), [tests](../tests/domain.test.ts) | Erreurs bloquantes/non bloquantes, métriques et classement réel testés localement/CI. | Résistance à la frappe aléatoire et équité à confirmer auprès du public. |
+| CONF-10 | [Frappe native](../components/typing-zone.tsx), [client](../lib/client/typing-engine.ts), [tests](../tests/typing-client.test.ts) | Collage refusé, corrections et Unicode testés; saisie directe intégrée au texte dans les recettes locales. | Le blocage du collage ne prouve pas la prévention de toute automatisation; technologies d’assistance à exercer davantage. |
+| RACE-01, RACE-02, RACE-03 | [Moteur/serveur](../lib/server/rooms.ts), [pistes](../components/race-interface.tsx), [repères](../lib/client/peer-cursor.ts) | Départ, séquence, compteurs, progression et résultats testés localement/CI; repères des coéquipiers intégrés sans lettres privées. | Course complète multi-navigateur sur Railway non incluse dans la recette CP1. |
+| RACE-05 | [Sons](../lib/client/race-audio.ts), [préférences](../components/settings-pages.tsx) | Douze sons optionnels, volume et mouvement réduit intégrés; contrôles UI locaux consignés. | Écoute humaine, confort et tous les réglages en production non validés. |
+| BOT-01, BOT-02 | [Bots](../lib/domain/bots.ts), [tests](../tests/domain.test.ts) | Bots serveur variables, niveaux et pratique; règles locales/CI et course locale avec bot. | Plausibilité et difficulté avec le public à mesurer. |
+| BONUS-01, BONUS-02, BONUS-03 | [Arcade](../lib/domain/arcade.ts), [tests](../tests/arcade.test.ts), [réseau](../tests/integration.test.ts), [recherche](22-sensations-et-competition.md) | Pulsation, Bouclier, Virgule piégée; énergie, cible, usage unique, garde classique, piège et protection vérifiés localement/CI. Passe réseau arcade avec trois sessions et frappe réelle. | Rattrapage et équilibre entre niveaux non validés avec le public; recette arcade de production non revendiquée. |
+| STAT-01, STAT-02, STAT-03 | [Résultats](../components/results.tsx), [API personnelle](../app/api/results/[id]/route.ts), [heatmap](../lib/client/keyboard-heatmap.ts) | Calculs/classement/permissions locaux et CI; AZERTY/QWERTY, légende filtrable et explication MPM intégrés. | Revue complète des égalités et de l’accessibilité en production à faire. |
+| STAT-04, STAT-05, STAT-06 | [Profil](../components/profile-pages.tsx), [API](../app/api/profile/route.ts) | Résultats/agrégats PostgreSQL réels locaux/CI; records comparables testés. Production : profil du compte relu, sans course créée par la recette. | Rétention/suppression et progression dans le temps avec utilisateurs réels à définir/valider. |
+| UX-01, UX-03 | [Direction artistique](03-direction-artistique.md), [styles](../app/globals.css), [logo](../public/logo.svg), [favicon](../app/favicon.ico) | Identité intégrée, retours humains consignés; contraste/responsive locaux et CI. Production : favicon/actifs contrôlés. | Tests auprès des 12–17 ans absents; création originale humaine du nom/logo non établie. |
+| TECH-01 | [Versions](../package.json), [schéma](../db/schema.ts), [structure](adr/0002-structure-app-router.md) | Format, lint, types, builds, PostgreSQL et migrations locaux/CI; deux images Docker construites et démarrées localement. | Installation indépendante par un autre membre sur une machine neuve à confirmer. |
+| TECH-02, TECH-03 | [ADR](adr/0001-temps-reel.md), [déploiement](19-deploiement.md) | Railway choisi par l’utilisateur; déploiements web/realtime réussis; HTTPS, base et salon Socket.IO fonctionnels sur les URLs publiques. | Coût réel, sauvegardes/restauration, latence et charge non contrôlés. |
+| TECH-04, TECH-05 | [GitHub](https://github.com/Cedrickkouek/typulso), [workflow](../.github/workflows/ci.yml), [CI réussie](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231) | Dépôt distant, documents et contrôles automatiques publiés sur la branche principale privée; CI/e2e exécutés. Environnements locaux ignorés par Git. | **Exigence de dépôt public non satisfaite : dépôt privé, visibilité conservée.** Accès de l’évaluateur à vérifier; aucun audit exhaustif d’historique des secrets revendiqué. |
 
 ### Précisions client et checkpoint
 
-Les CLIENT-01/02/03/04/05/06 sont reliés aux lignes ROLE/ROOM ci-dessus. CLIENT-07 correspond à l'implémentation arcade proposée et conserve sa validation humaine à faire. CLIENT-08 utilise une durée proposée de **24 h**, contrôlée serveur, indépendante de l'usage unique; voir [architecture](18-implementation.md).
+CLIENT-01/02/03/04/05/06 sont reliés aux lignes ROLE/ROOM et à la [succession réelle](07-machines-etats.md). CLIENT-07 est suivi par les trois capacités arcade, choisies dans la direction classique/arcade demandée par l’utilisateur; l’équilibrage reste à valider. CLIENT-08 utilise une expiration d’invitation de 24 heures, distincte de son usage unique.
 
-| Critère | Preuve présente | Ce qui reste à démontrer |
+| Critère | Preuve actuelle | Limite |
 |---|---|---|
-| CP1-01, CP1-05 | Application et base réelles localement | HTTPS et PostgreSQL durable sur la production. |
-| CP1-02, CP1-06 | Authentification locale et salle/code/temps réel à deux sessions testés | Mêmes parcours sur URL publique. |
-| CP1-03 | DA, moodboard, palette, typographies et interface | Choix final et provenance humaine du nom/logo. |
-| CP1-04 | Salon et moteur de course implémentés | Recette de première livraison selon périmètre de CP1. |
-| CP1-07 | Modèle, états et ADR mis en accord avec le code dans le document 18 | Revue sur le commit publié. |
-| CP1-08 | Workflow et contrôles locaux | Lien vers une exécution GitHub Actions verte. |
-| CP1-09 | FR/EN, thèmes, tests et ce registre | Validation sur production et matériels ciblés. |
-| CP1-10 | Cahier et documents Markdown intégrés | Deux vraies URLs GitHub/site à remettre. |
+| CP1-01, CP1-05 | HTTPS Railway, healthcheck PostgreSQL, écriture d’un compte et relecture après reconnexion. | Restauration et exploitation à long terme non vérifiées. |
+| CP1-02, CP1-06 | Compte local/invité, création et admission par code, arrivée/règles/prêt propagés en production. | Recette protocolaire HTTP/Socket.IO, pas deux navigateurs visuels de production. |
+| CP1-03 | Identité utilisée, moodboard, palette, typographies et contributions connues documentées. | Idées/croquis originaux et auteurs humains à compléter s’ils existent. |
+| CP1-04 | Salon et moteur présents; salon minimal effectivement contrôlé. | Pas de revendication que toute la version finale est validée. |
+| CP1-07 | Documents 05/06/07/ADR conformes à la structure et aux états du commit applicatif vérifié. | Les limites de reprise et de charge restent explicites. |
+| CP1-08 | Lien vers la CI verte du commit 4d23075. | Accès au dépôt privé requis. |
+| CP1-09 | FR/EN, thèmes, contrôles locaux/CI et matrice actualisée. | Revue exhaustive en production non effectuée. |
+| CP1-10 | Cahier et [dossier avec les vraies URLs](08-plan-checkpoint.md). | Accès de l’évaluateur et remise scolaire à organiser par le porteur du projet. |
 
-Les hypothèses de cadrage restent identifiées plus haut; leur présence ne vaut pas décision client. Les valeurs techniques retenues sont exposées comme choix d'implémentation dans le document 18.
+Les poids de grille restent **20 + 20 + 20 + 20 + 10 + 10 = 100**. Ce registre ne calcule pas une note. Les hypothèses sources restent identifiées plus haut; leurs paramètres implémentés sont décrits dans les documents actuels.

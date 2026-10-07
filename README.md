@@ -2,7 +2,11 @@
 
 **Un clavier. Toute une arène.**
 
-Une application de courses de frappe pour jouer ensemble et progresser, avec une direction colorée, vibrante et ludique. **Typulso est un nom de travail**; le choix final et la création humaine du logo restent à documenter avec l'équipe.
+Une application de courses de frappe pour jouer ensemble et progresser, avec une direction colorée, vibrante et ludique. L’application livrée utilise le nom **Typulso** et son logo clavier/pulsation. Les choix et retours du porteur du projet sont consignés dans la [démarche créative](docs/03-direction-artistique.md); l’origine humaine d’éventuels croquis ou idées de marque reste à compléter avec l’équipe.
+
+[Jouer en production](https://typulso-production.up.railway.app/) · [Dépôt GitHub](https://github.com/Cedrickkouek/typulso) · [CI vérifiée](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231) · [Dossier du checkpoint 1](docs/08-plan-checkpoint.md)
+
+**État vérifié le 7 octobre 2026 :** inscription et connexion locales, PostgreSQL et salon rejoint par code contrôlés sur Railway avec deux sessions HTTP/Socket.IO indépendantes. Les modes classique/arcade, les sons optionnels, les statistiques et la frappe directe sont intégrés au code; les contrôles de parties détaillés restent des preuves locales et de CI. Le dépôt est privé : sa consultation demande les droits GitHub appropriés.
 
 ![Direction artistique](docs/assets/moodboard.png)
 
@@ -40,7 +44,7 @@ server/              Service Socket.IO persistant
 db/                  Schéma et migrations SQL
 types/game.ts        Contrat partagé
 tests/               Tests du moteur, du serveur et d'intégration
-e2e/                 Parcours navigateur prévus dans la CI
+e2e/                 Parcours navigateur exécutés dans la CI
 docs/                Direction artistique, architecture, exigences, ADR
 .agents/skills/      Méthode de développement du projet
 skills/              Copies portables des skills
@@ -56,8 +60,8 @@ bun run check
 bun run test:integration
 ```
 
-La configuration GitHub Actions exécute ces contrôles avec PostgreSQL. Sa présence dans le dépôt ne prouve pas une exécution distante. Le [rapport de livraison](docs/20-verification-implementation.md) consigne les vérifications effectivement réalisées.
+GitHub Actions a exécuté avec succès les contrôles, les migrations, l’intégration avec PostgreSQL et les trois scénarios navigateur au [commit applicatif 4d23075](https://github.com/Cedrickkouek/typulso/commit/4d23075557799c02acbb8253bd830409f8ebe446). La [CI consultable](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231) utilise une base isolée; elle ne teste pas le site Railway. Le [rapport de vérification](docs/20-verification-implementation.md) distingue ces preuves des contrôles réalisés en production.
 
-## Première livraison · lundi 5 octobre 2026
+## Checkpoint 1 · état du 7 octobre 2026
 
-La première version doit être accessible en **HTTPS**, avec authentification, PostgreSQL et salle rejointe par code en temps réel. Le [guide de déploiement](docs/19-deploiement.md) décrit les deux services et la configuration. Le domaine public, l'hébergement, les applications OAuth et les liens de remise seront renseignés après leur création et leurs contrôles; aucun lien de production fictif n'est affiché.
+Les [six critères et leurs preuves](docs/08-plan-checkpoint.md) sont reliés aux documents et au commit applicatif vérifié. L’échéance annoncée était le 5 octobre; ce dossier actualisé ne constitue pas une preuve de remise à cette date. Les contributions créatives connues sont attribuées; les croquis humains et leurs auteurs restent à renseigner si l’équipe en a réalisés. Le test de charge à 30 personnes, les vrais retours OAuth et la restauration des sauvegardes ne sont pas déclarés vérifiés.
