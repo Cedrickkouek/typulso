@@ -200,3 +200,8 @@ Le composant `RaceFilters` regroupe langue et mode dans une carte avec signature
 
 
 Sur grand écran, les filtres occupent désormais la colonne centrale d’une grille à colonnes latérales égales ; le titre reste à gauche et les actions à droite. Le bouton de langue de l’en-tête utilise deux lignes de 16 px, espacées de 2 px, et un padding de 4 px ; FR/EN reste contenu dans la cible tactile de 44 px (52 px sur bureau).
+
+
+## Favicon du site · 7 octobre
+
+`app/favicon.ico` reprend exactement `public/logo.svg`, avec trois images de 16, 32 et 48 px. La convention de métadonnées Next.js déclare automatiquement cette icône dans toutes les pages avec une URL versionnée. Vérification de la version compilée : accueil, profil et salle contiennent le lien ; `/favicon.ico` répond en HTTP 200, type `image/x-icon`, avec les trois tailles et le même contenu que le fichier source. `bun run check` réussit (formatage, lint, TypeScript, 69 tests unitaires, compilations web et temps réel).
