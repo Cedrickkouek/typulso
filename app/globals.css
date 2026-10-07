@@ -4704,7 +4704,8 @@ button:disabled {
 }
 
 .saved-results-wrap {
-  border-radius: 18px;
+  border: 0;
+  border-radius: 0;
 }
 .saved-results-table caption {
   padding: 22px 24px;
