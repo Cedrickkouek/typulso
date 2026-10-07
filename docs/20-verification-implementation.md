@@ -383,3 +383,10 @@ Le rectangle de saisie et son icône ont été retirés de `TypingZone`. La text
 Chaque jauge de course est accompagnée d’une touche souriante sur roues, colorée comme l’avatar. Sa position et la longueur du rail citron utilisent la progression réelle (bornée entre 0 et 100), avec transition de 350 ms. Le rebond ne s’active que pendant une course pour un joueur actif connecté et s’arrête quand il termine ; les préférences de mouvement réduit et effets désactivés retirent transitions et rebond. Le drapeau marque l’arrivée. Aucun changement au calcul des scores ou aux permissions.
 
 Vérification des vrais composants via un aperçu temporaire explicitement fictif, retiré après inspection : positions 0/25/70/100 %, avatar à 100 % contenu dans la piste, animation arrêtée au terme ; rendus sombre à 1280 px et clair à 390 px, aucun débordement horizontal. Aucune course multijoueur réelle lancée pour cette inspection.
+
+
+### Repères des coéquipiers dans le texte — 6 octobre 2026
+
+Le passage partagé affiche les initiales colorées des autres participants à leur position de progression publique, avec légende nom/pourcentage. Les participants partis sont exclus ; les joueurs hors ligne gardent leur dernière position confirmée et sont indiqués hors ligne. Les repères à la même position sont regroupés (deux initiales puis nombre supplémentaire). Le texte observé après sa propre arrivée et la vue spectateur utilisent le même composant. Aucune saisie privée supplémentaire ne traverse le serveur : positions calculées à partir du snapshot déjà public. La projection tient compte des points de code normalisés du serveur et des graphèmes de l’affichage.
+
+Tests : recul après suppression, bornes, texte vide, accents combinés et emoji composé. Aperçu temporaire fictif des vrais composants retiré après inspection : repère Lina à 50 % (index 57), puis 10 % (index 11) ; repère de fin à 100 %. Rendus sombre bureau et clair mobile à 390 px sans débordement horizontal. Le scénario réseau entre deux sessions réelles n’a pas été exécuté pendant cette vérification.
