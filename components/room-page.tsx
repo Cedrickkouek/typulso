@@ -11,6 +11,7 @@ import { command, currentRoom, reconnectRealtime, useRealtime } from "@/lib/clie
 import { useSession, useTranslation } from "./providers";
 import { AuthGate, Avatar, Dialog, ErrorNotice, Field, Heading, Loading, Notice } from "./ui";
 import { TypingZone } from "./typing-zone";
+import { TypingPassage } from "./typing-passage";
 import { ResultsPanel } from "./results";
 import { RoomConfiguration } from "./room-configuration";
 import { ArcadeControls, RaceDashboard, RaceTracks } from "./race-interface";
@@ -500,6 +501,8 @@ export function RoomPage({ id }: { id: string }) {
               <TypingZone
                 key={`${room.race.id}:${inputEpoch}`}
                 text={room.race.text}
+                players={room.players}
+                selfId={user.id}
                 blocking={room.settings.errorMode === "blocking"}
                 startTime={room.race.startsAt}
                 disabled={!realtime.connected || restoringInput || !!inputError}
@@ -526,7 +529,7 @@ export function RoomPage({ id }: { id: string }) {
                     )}
                   </p>
                 </Notice>
-                <p className="preview-text">{room.race.text}</p>
+                <TypingPassage text={room.race.text} players={room.players} selfId={user.id} />
               </div>
             )}
             {room.settings.gameMode === "arcade" && participant && (

@@ -177,9 +177,9 @@ export function PracticePage() {
             <section className="box mt-6">
               <h2>{t("Ton échauffement en chiffres", "Your warm-up in numbers")}</h2>
               <p className="small">
-                {Math.round(metrics.wpm)} {t("MPM", "WPM")} · {Math.round(metrics.accuracy)} % ·{" "}
-                {metrics.errors} {t("erreurs", "mistakes")} · {metrics.corrections}{" "}
-                {t("corrections", "corrections")}
+                {Math.round(metrics.wpm)} {t("MPM (mots par minute)", "WPM (words per minute)")} ·{" "}
+                {Math.round(metrics.accuracy)} % · {metrics.errors} {t("erreurs", "mistakes")} ·{" "}
+                {metrics.corrections} {t("corrections", "corrections")}
               </p>
               <div className="mt-5">
                 <Heatmap metrics={metrics.heatmap} />

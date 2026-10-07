@@ -220,7 +220,13 @@ export function RoomConfiguration({
           ))}
         </div>
       </fieldset>
-      <Field id="edit-target" label={t("Objectif MPM (facultatif)", "WPM target (optional)")}>
+      <Field
+        id="edit-target"
+        label={t(
+          "Objectif en MPM — mots par minute (facultatif)",
+          "WPM target — words per minute (optional)",
+        )}
+      >
         <input
           id="edit-target"
           type="number"

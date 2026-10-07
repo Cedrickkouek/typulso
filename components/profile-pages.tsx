@@ -84,7 +84,7 @@ export function ProfilePage({ history = false }: { history?: boolean }) {
     }),
   );
   return (
-    <>
+    <div className={history ? undefined : "profile-page-layout"}>
       {history ? (
         <Heading
           title={t("Tes courses, touche après touche.", "Your races, key by key.")}
@@ -188,7 +188,7 @@ export function ProfilePage({ history = false }: { history?: boolean }) {
           <Heatmap metrics={Array.from(aggregate.values())} />
         </div>
       )}
-    </>
+    </div>
   );
 }
 export function ProfileMetrics({ stats }: { stats: ProfileData["stats"] }) {
@@ -200,7 +200,7 @@ export function ProfileMetrics({ stats }: { stats: ProfileData["stats"] }) {
         { value: stats.wins, label: t("Victoires", "Wins"), icon: Trophy, tone: "lime" },
         {
           value: Math.round(stats.averageWpm),
-          label: t("MPM moyens", "Average WPM"),
+          label: t("MPM moyens (mots par minute)", "Average WPM (words per minute)"),
           icon: Gauge,
           tone: "lavender",
         },
@@ -212,7 +212,7 @@ export function ProfileMetrics({ stats }: { stats: ProfileData["stats"] }) {
         },
         {
           value: Math.round(stats.bestWpm),
-          label: t("Meilleur MPM", "Best WPM"),
+          label: t("Meilleur MPM (mots par minute)", "Best WPM (words per minute)"),
           icon: Zap,
           tone: "lime",
         },
@@ -281,7 +281,9 @@ export function ResultTable({ results }: { results: StoredResult[] }) {
               </th>
               <td>
                 <span className="saved-results-speed">{Math.round(result.wpm)}</span>
-                <span className="saved-results-unit">{t("MPM", "WPM")}</span>
+                <span className="saved-results-unit">
+                  {t("MPM (mots par minute)", "WPM (words per minute)")}
+                </span>
               </td>
               <td>
                 <strong className="saved-results-accuracy">{Math.round(result.accuracy)} %</strong>

@@ -470,8 +470,8 @@ export function CreatePage() {
                 <Field
                   id="target-wpm"
                   label={t(
-                    "Objectif personnel en MPM (facultatif)",
-                    "Personal WPM target (optional)",
+                    "Objectif personnel en MPM — mots par minute (facultatif)",
+                    "Personal WPM target — words per minute (optional)",
                   )}
                 >
                   <input

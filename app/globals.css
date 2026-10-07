@@ -10,7 +10,7 @@
   --background: #f4f3ed;
   --surface: #ffffff;
   --text: #171c2b;
-  --muted: #3e4c64;
+  --muted: #303e55;
   --accent: #d7ff3f;
   --accent-text: #171c2b;
   --blue: #1e48ad;
@@ -24,7 +24,7 @@
   --border: #66748b;
   --divider: #d9dee7;
   --track: #66748b;
-  --player-line: #425600;
+  --player-line: var(--accent);
   --typing-pending: #3e4c64;
   --text-label: 0.9375rem;
   --text-support: 1rem;
@@ -53,13 +53,13 @@
   --background: #171c2b;
   --surface: #232b3e;
   --text: #f6f7fb;
-  --muted: #c1cade;
+  --muted: #e0e6f1;
   --blue: #a2c6ff;
   --error: #ffab91;
   --border: #7e8fae;
   --divider: #394258;
   --track: #7e8fae;
-  --player-line: #d7ff3f;
+  --player-line: var(--accent);
   --typing-pending: #c7d1e4;
   --shadow-panel: 0 2px 6px #00000020, 0 18px 48px #00000024;
 }
@@ -4911,6 +4911,9 @@ button:disabled {
 .profile-stat-card[data-tone="pink"] {
   --stat-color: var(--pink);
 }
+.profile-stat-card[data-tone="coral"] {
+  --stat-color: var(--coral);
+}
 .profile-stat-icon {
   display: grid;
   place-items: center;
@@ -4936,4 +4939,52 @@ button:disabled {
     padding: 20px 12px;
     gap: 14px;
   }
+}
+
+/* Sparse decorative motifs live on the page canvas, beneath component surfaces. */
+body {
+  background-image: url("/keyboard-pattern-light.svg");
+  background-size: 900px 658px;
+  background-repeat: repeat;
+}
+[data-theme="dark"] body {
+  background-image: url("/keyboard-pattern-dark.svg");
+}
+@media (max-width: 540px) {
+  body {
+    background-size: 690px 504px;
+  }
+}
+@media print {
+  body {
+    background-image: none;
+  }
+}
+
+.profile-page-layout {
+  display: grid;
+  row-gap: 56px;
+}
+.profile-page-layout > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.profile-page-layout > .profile-metric-grid {
+  gap: 20px;
+}
+@media (max-width: 540px) {
+  .profile-page-layout {
+    row-gap: 40px;
+  }
+  .profile-page-layout > .profile-metric-grid {
+    gap: 16px;
+  }
+}
+
+.typing-capture {
+  padding: 0;
+  border: 0;
+}
+.race:has(.typing-capture:focus-visible) .typing-instruction {
+  color: var(--blue);
 }

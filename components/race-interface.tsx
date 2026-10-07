@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Bot, Check, Shield, Timer, WifiOff, Zap } from "lucide-react";
+import { Bot, Check, Flag, Shield, Timer, WifiOff, Zap } from "lucide-react";
 import type { PlayerSnapshot, RoomSnapshot } from "@/types/game";
 import { useTranslation } from "./providers";
 import { Avatar, Metric } from "./ui";
@@ -43,7 +43,7 @@ export function RaceDashboard({
             <span>{timeLabel}</span>
           </div>
         </div>
-        <Metric value={wpm} label={t("MPM", "WPM")} />
+        <Metric value={wpm} label={t("MPM (mots par minute)", "WPM (words per minute)")} />
         <Metric value={accuracy} label={t("Précision", "Accuracy")} />
         <Metric value={progress} label={t("Progression", "Progress")} />
       </div>
@@ -185,6 +185,19 @@ export function RaceTracks({ room, selfId }: { room: RoomSnapshot; selfId: strin
         {players.map((player, index) => {
           const personal = player.id === selfId;
           const position = 1 + players.filter((other) => other.progress > player.progress).length;
+          const progress = Math.max(0, Math.min(100, player.progress));
+          const moving =
+            room.phase === "racing" &&
+            player.connected &&
+            !player.finished &&
+            player.status === "active";
+          const racerColor = [
+            "var(--accent)",
+            "var(--pink)",
+            "var(--lavender)",
+            "var(--sky)",
+            "var(--coral)",
+          ][index % 5];
           return (
             <li className={`race-track-row ${personal ? "race-track-self" : ""}`} key={player.id}>
               <span
@@ -232,11 +245,54 @@ export function RaceTracks({ room, selfId }: { room: RoomSnapshot; selfId: strin
                 className="race-track-line"
                 role="progressbar"
                 aria-label={`${t("Progression de", "Progress of")} ${player.username}`}
-                aria-valuenow={Math.round(player.progress)}
+                aria-valuenow={Math.round(progress)}
                 aria-valuemin={0}
                 aria-valuemax={100}
               >
-                <span style={{ width: `${player.progress}%` }} />
+                <div className="race-track-rail" aria-hidden="true">
+                  <span style={{ width: `${progress}%` }} />
+                </div>
+                <Flag className="race-finish-flag" size={19} aria-hidden="true" />
+                <span
+                  className="key-racer"
+                  data-moving={moving || undefined}
+                  data-finished={player.finished || undefined}
+                  style={{ left: `calc(${progress}% - ${progress * 0.48}px)`, color: racerColor }}
+                  aria-hidden="true"
+                >
+                  <svg className="key-racer-body" viewBox="0 0 48 48" fill="none">
+                    <path
+                      className="key-racer-trail"
+                      d="M1 16h5M0 23h6M2 30h4"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                    <rect
+                      x="9"
+                      y="5"
+                      width="34"
+                      height="30"
+                      rx="8"
+                      fill="currentColor"
+                      stroke="#171c2b"
+                      strokeWidth="1.5"
+                    />
+                    <path d="M13 30h26" stroke="#171c2b" strokeWidth="1.5" opacity=".3" />
+                    <circle cx="21" cy="16" r="2" fill="#171c2b" />
+                    <circle cx="32" cy="16" r="2" fill="#171c2b" />
+                    <path
+                      d="M22 22q4.5 5 9 0"
+                      stroke="#171c2b"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                    <circle cx="17" cy="37" r="5" fill="#171c2b" />
+                    <circle cx="36" cy="37" r="5" fill="#171c2b" />
+                    <circle cx="17" cy="37" r="2" fill="currentColor" />
+                    <circle cx="36" cy="37" r="2" fill="currentColor" />
+                  </svg>
+                </span>
               </div>
               <span className="race-track-percent">{Math.round(player.progress)} %</span>
             </li>

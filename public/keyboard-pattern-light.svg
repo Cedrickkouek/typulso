@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="760" viewBox="0 0 1040 760" fill="none">
+  <g stroke="#496398" stroke-width="1.6" opacity="0.12">
+    <g transform="translate(55 96) rotate(-12)"><rect width="48" height="48" rx="12"/><path d="M7 40h34"/><text x="24" y="31" text-anchor="middle" stroke="none" fill="#496398" font-family="monospace" font-size="23">a</text></g>
+    <g transform="translate(735 40) rotate(10)"><rect width="46" height="46" rx="11"/><text x="23" y="31" text-anchor="middle" stroke="none" fill="#496398" font-family="monospace" font-size="25">?</text></g>
+    <g transform="translate(910 275) rotate(12)"><rect width="56" height="46" rx="11"/><path d="M37 12v14H18m7-7-7 7 7 7"/></g>
+    <g transform="translate(160 555) rotate(-8)"><rect width="156" height="65" rx="12"/><path d="M12 16h14m10 0h14m10 0h14m10 0h14m10 0h14m10 0h12M16 30h14m10 0h14m10 0h14m10 0h14m10 0h14M20 44h14m10 0h14m10 0h14m10 0h14m-52 11h45" stroke-linecap="round"/></g>
+    <g transform="translate(810 630) rotate(8)"><rect width="48" height="48" rx="12"/><text x="24" y="32" text-anchor="middle" stroke="none" fill="#496398" font-family="monospace" font-size="25">z</text></g>
+    <g transform="translate(400 330) rotate(7)"><text stroke="none" fill="#496398" font-family="monospace" font-size="34">{ }</text></g>
+    <path d="M490 85v26m-13-13h26M660 550v24m-12-12h24M68 375l8 8-8 8m35-16-8 8 8 8" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="530" y="700" stroke="none" fill="#496398" font-family="monospace" font-size="29">@</text>
+    <circle cx="990" cy="690" r="4"/><circle cx="335" cy="150" r="3"/>
+    <g transform="translate(580 235) rotate(-9)"><rect width="44" height="44" rx="10"/><text x="22" y="29" text-anchor="middle" stroke="none" fill="#496398" font-family="monospace" font-size="22">m</text></g>
+    <g transform="translate(740 420) rotate(8)"><rect width="122" height="52" rx="10"/><path d="M12 14h10m9 0h10m9 0h10m9 0h10m9 0h10M17 26h10m9 0h10m9 0h10m9 0h10m9 0h10M34 39h54" stroke-linecap="round"/></g>
+    <text x="160" y="275" stroke="none" fill="#496398" font-family="monospace" font-size="28">#</text>
+    <text x="360" y="685" stroke="none" fill="#496398" font-family="monospace" font-size="26">*</text>
+  </g>
+</svg>

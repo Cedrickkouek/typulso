@@ -87,7 +87,9 @@ export function validateSettings(
   const durationSeconds =
     values.durationSeconds === null ? null : integer(values.durationSeconds, "La durée", 15, 600);
   const targetWpm =
-    values.targetWpm === null ? null : integer(values.targetWpm, "L'objectif MPM", 10, 250);
+    values.targetWpm === null
+      ? null
+      : integer(values.targetWpm, "L'objectif MPM (mots par minute)", 10, 250);
   if (!Array.isArray(values.targets) || values.targets.length > 3)
     invalid("Les cibles sont invalides.");
   const targets = Array.from(

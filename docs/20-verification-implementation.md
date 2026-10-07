@@ -356,3 +356,30 @@ L’explication du clavier est maintenant affichée en permanence sous les touch
 Les six statistiques utilisent une grille centrée (six colonnes à 1536 px, trois à 1200 px, deux à 390 px), avec icônes et accents de la palette existante. Le tableau regroupe mode et langue sous le nom de course et met en valeur vitesse, précision et rang. Les données et liens restent ceux du profil.
 
 Vérification visuelle des composants réels via une route temporaire anonyme, avec des données explicitement fictives ; route supprimée après inspection. Aucun accès à un profil authentifié. À 390 px, aucun débordement de la page : le tableau défile dans son conteneur. Cartes lisibles en thème sombre. Capture de démonstration : `assets/app-v01/profil-resultats.png`.
+
+
+### Motifs du fond général — 6 octobre 2026
+
+Le fond de page affiche une texture SVG répétée et discrète de touches, lettres, petits claviers et symboles. Deux variantes adaptent le contraste aux thèmes clair et sombre. Les surfaces opaques des composants masquent naturellement les motifs ; aucune superposition interactive ni animation supplémentaire. Motifs masqués à l’impression. Rendu inspecté sur l’accueil en clair/sombre à 1280 px ; à 390 px, texture réduite et aucun débordement horizontal (largeur de page : 390 px).
+
+
+### Frappe immédiate — 6 octobre 2026
+
+Le composant partagé `TypingZone` place le focus dans la zone de frappe quand elle devient utilisable, au montage ou après une suspension. Aucun recentrage à chaque lettre : quitter volontairement le champ reste possible. Le champ désactivé ou terminé ne reçoit pas le focus. Le texte d’attente invite maintenant à commencer à écrire. Vérification navigateur sur l’entraînement solo : après le bouton de départ, `document.activeElement.id` vaut `typing-input` ; une pression de B sur l’élément déjà focalisé ajoute B sans clic dans le champ. Cette modification est partagée avec la course ; le départ multijoueur n’a pas été exécuté pendant cette vérification.
+
+
+### Reprise de frappe hors du champ — 6 octobre 2026
+
+En complément du focus au départ, une lettre ou Retour arrière pressé depuis une zone non interactive reprend le focus et applique la première opération au moteur partagé, sans la perdre. Les raccourcis avec modificateur, la composition IME, les champs, boutons, liens et fenêtres ouvertes conservent leurs événements. Le listener est supprimé quand la frappe est désactivée/terminée ou au démontage. Test navigateur réel en solo : clic sur le titre (focus BODY), pression B → champ focalisé et valeur B ; second clic sur le titre puis o → valeur Bo. Tab quitte bien la zone vers un lien. Le scénario multijoueur n’a pas été exécuté pour cette vérification.
+
+
+### Saisie intégrée au texte — 6 octobre 2026
+
+Le rectangle de saisie et son icône ont été retirés de `TypingZone`. La textarea native reste accessible, visuellement masquée, pour conserver événements de saisie, accents/composition et validation. La frappe se reflète uniquement dans les lettres du texte ; cliquer/toucher le texte redonne le focus au champ natif. L’instruction change de couleur au focus clavier. Test solo navigateur : aucun `.typing-field`, champ natif de largeur 1 px, B puis o après un clic hors de la zone donnent Bo et deux lettres correctes dans le texte. Clic sur le texte → focus `typing-input`. À 390 px, aucun débordement horizontal. Le clavier virtuel d’un appareil mobile physique n’a pas été testé.
+
+
+### Pistes animées — 6 octobre 2026
+
+Chaque jauge de course est accompagnée d’une touche souriante sur roues, colorée comme l’avatar. Sa position et la longueur du rail citron utilisent la progression réelle (bornée entre 0 et 100), avec transition de 350 ms. Le rebond ne s’active que pendant une course pour un joueur actif connecté et s’arrête quand il termine ; les préférences de mouvement réduit et effets désactivés retirent transitions et rebond. Le drapeau marque l’arrivée. Aucun changement au calcul des scores ou aux permissions.
+
+Vérification des vrais composants via un aperçu temporaire explicitement fictif, retiré après inspection : positions 0/25/70/100 %, avatar à 100 % contenu dans la piste, animation arrêtée au terme ; rendus sombre à 1280 px et clair à 390 px, aucun débordement horizontal. Aucune course multijoueur réelle lancée pour cette inspection.

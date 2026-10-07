@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useId, useState } from "react";
-import { ArrowRight, ChartNoAxesCombined, Trophy } from "lucide-react";
+import { ArrowRight, ChartNoAxesCombined, Gauge, Target, Trophy, Undo2, X } from "lucide-react";
 import {
   heatLevel,
   keyboardHeatmap,
@@ -259,22 +259,37 @@ export function ResultsPanel({
               </span>
             </div>
             <dl className="results-refresh-metrics">
-              <div>
-                <dt>{t("Mots par minute", "Words per minute")}</dt>
-                <dd>{Math.round(personal.wpm)}</dd>
-              </div>
-              <div>
-                <dt>{t("Précision", "Accuracy")}</dt>
-                <dd>{Math.round(personal.accuracy)} %</dd>
-              </div>
-              <div>
-                <dt>{t("Erreurs", "Errors")}</dt>
-                <dd>{personal.errors}</dd>
-              </div>
-              <div>
-                <dt>{t("Corrections", "Corrections")}</dt>
-                <dd>{personal.corrections}</dd>
-              </div>
+              {[
+                {
+                  label: t("Mots par minute", "Words per minute"),
+                  value: Math.round(personal.wpm),
+                  icon: Gauge,
+                  tone: "sky",
+                },
+                {
+                  label: t("Précision", "Accuracy"),
+                  value: `${Math.round(personal.accuracy)} %`,
+                  icon: Target,
+                  tone: "lime",
+                },
+                { label: t("Erreurs", "Errors"), value: personal.errors, icon: X, tone: "coral" },
+                {
+                  label: t("Corrections", "Corrections"),
+                  value: personal.corrections,
+                  icon: Undo2,
+                  tone: "lavender",
+                },
+              ].map(({ label, value, icon: Icon, tone }) => (
+                <div className="box metric-box profile-stat-card" key={label} data-tone={tone}>
+                  <dt>{label}</dt>
+                  <dd>
+                    <span className="profile-stat-icon" aria-hidden="true">
+                      <Icon size={23} strokeWidth={2} />
+                    </span>
+                    <span>{value}</span>
+                  </dd>
+                </div>
+              ))}
             </dl>
             <p className="results-refresh-note">{comparisonNote}</p>
           </section>
@@ -310,7 +325,8 @@ export function ResultsPanel({
                   <Avatar name={result.username} index={Math.max(0, result.rank - 1)} />
                   <strong className="results-refresh-podium-name">{result.username}</strong>
                   <p className="results-refresh-podium-measures">
-                    {Math.round(result.wpm)} {t("MPM", "WPM")} · {Math.round(result.accuracy)} %
+                    {Math.round(result.wpm)} {t("MPM (mots par minute)", "WPM (words per minute)")}{" "}
+                    · {Math.round(result.accuracy)} %
                   </p>
                   <div className="results-refresh-podium-step">
                     <span className="results-refresh-place-label">{t("Rang", "Rank")}</span>
@@ -335,7 +351,7 @@ export function ResultsPanel({
                 <tr>
                   <th scope="col">{t("Rang", "Rank")}</th>
                   <th scope="col">{t("Pseudo", "Nickname")}</th>
-                  <th scope="col">{t("MPM", "WPM")}</th>
+                  <th scope="col">{t("MPM (mots par minute)", "WPM (words per minute)")}</th>
                   <th scope="col">{t("Précision", "Accuracy")}</th>
                   <th scope="col">{t("Erreurs", "Errors")}</th>
                   {arcade && <th scope="col">Score</th>}

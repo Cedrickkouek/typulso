@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { Keyboard } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { createTypingEngine, graphemes, type TypingState } from "@/lib/client/typing-engine";
 import { playFeedback } from "@/lib/client/preferences";
-import type { InputOperation } from "@/types/game";
+import type { InputOperation, PlayerSnapshot } from "@/types/game";
 import { useTranslation } from "./providers";
+import { TypingPassage } from "./typing-passage";
 
 export function TypingZone({
   text,
+  players,
+  selfId,
   blocking,
   disabled = false,
   startTime,
@@ -19,6 +21,8 @@ export function TypingZone({
   onMetrics,
 }: {
   text: string;
+  players?: PlayerSnapshot[];
+  selfId?: string;
   blocking: boolean;
   disabled?: boolean;
   startTime?: number;
@@ -40,14 +44,11 @@ export function TypingZone({
   const [feedback, setFeedback] = useState("");
   const [composition, setComposition] = useState<string | null>(null);
   const input = useRef<HTMLTextAreaElement>(null);
+  const canType = !disabled && !metrics.finished;
+  useEffect(() => {
+    if (canType) input.current?.focus({ preventScroll: true });
+  }, [canType]);
   const sample = useMemo(() => graphemes(text), [text]);
-  const typed = graphemes(metrics.value);
-  const words = useMemo(() => {
-    let index = 0;
-    return (text.match(/\S+\s*|\s+/g) || []).map((word) =>
-      graphemes(word).map((char) => ({ char, index: index++ })),
-    );
-  }, [text]);
   useEffect(() => {
     const timer = setInterval(() => engine.tick(Date.now()), 250);
     return () => clearInterval(timer);
@@ -65,24 +66,64 @@ export function TypingZone({
   useEffect(() => {
     onMetrics?.(metrics);
   }, [metrics, onMetrics]);
-  function update(value: string) {
-    const operations = engine.update(value, Date.now());
-    if (operations.length) {
-      onOperations?.(operations, engine.getSnapshot().revision);
-      if (operations.some((operation) => operation.kind === "insert")) playFeedback(sounds);
-    }
-    if (
-      blocking &&
-      graphemes(engine.getSnapshot().value).some((char, index) => char !== sample[index])
-    )
-      setFeedback(
-        t(
-          "Corrige la touche soulignée avant de poursuivre.",
-          "Correct the underlined key before continuing.",
-        ),
+  const update = useCallback(
+    (value: string) => {
+      const operations = engine.update(value, Date.now());
+      if (operations.length) {
+        onOperations?.(operations, engine.getSnapshot().revision);
+        if (operations.some((operation) => operation.kind === "insert")) playFeedback(sounds);
+      }
+      if (
+        blocking &&
+        graphemes(engine.getSnapshot().value).some((char, index) => char !== sample[index])
+      )
+        setFeedback(
+          t(
+            "Corrige la touche soulignée avant de poursuivre.",
+            "Correct the underlined key before continuing.",
+          ),
+        );
+      else setFeedback("");
+    },
+    [blocking, engine, onOperations, sample, sounds, t],
+  );
+  useEffect(() => {
+    if (!canType) return;
+    function resumeTyping(event: KeyboardEvent) {
+      const field = input.current;
+      if (
+        !field ||
+        document.activeElement === field ||
+        event.defaultPrevented ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.altKey ||
+        event.isComposing ||
+        (event.key.length !== 1 && event.key !== "Backspace")
+      )
+        return;
+      const target = event.target instanceof Element ? event.target : null;
+      // Leave controls, dialogs and IME input in charge of their own keyboard events.
+      if (
+        target?.closest(
+          'input, textarea, select, button, a, [contenteditable=""], [contenteditable="true"], [role="textbox"], [role="combobox"], [role="listbox"], [role="menu"], [role="slider"], [role="dialog"], dialog',
+        ) ||
+        document.querySelector(
+          'dialog[open], [role="dialog"][aria-modal="true"], [popover]:popover-open',
+        )
+      )
+        return;
+      event.preventDefault();
+      field.focus({ preventScroll: true });
+      const current = engine.getSnapshot().value;
+      field.setSelectionRange(current.length, current.length);
+      update(
+        event.key === "Backspace" ? graphemes(current).slice(0, -1).join("") : current + event.key,
       );
-    else setFeedback("");
-  }
+    }
+    document.addEventListener("keydown", resumeTyping);
+    return () => document.removeEventListener("keydown", resumeTyping);
+  }, [canType, engine, update]);
   function paste(event: React.ClipboardEvent) {
     event.preventDefault();
     setFeedback(
@@ -91,70 +132,65 @@ export function TypingZone({
   }
   return (
     <div className="race">
-      <div className="typing-text" aria-hidden="true">
-        {words.map((word, wordIndex) => (
-          <span className="typing-word" key={wordIndex}>
-            {word.map(({ char, index }) => (
-              <span
-                key={index}
-                className={`${index < typed.length ? (typed[index] === char ? "correct" : "error") : ""} ${index === typed.length ? "cursor" : ""} ${typed.length >= sample.length && index === sample.length - 1 ? "end-cursor" : ""}`}
-              >
-                {char}
-              </span>
-            ))}
-          </span>
-        ))}
-      </div>
+      <TypingPassage
+        text={text}
+        value={metrics.value}
+        players={players}
+        selfId={selfId}
+        onPointerDown={(event) => {
+          if (canType) {
+            event.preventDefault();
+            input.current?.focus({ preventScroll: true });
+          }
+        }}
+      />
       <label className="visually-hidden" htmlFor="typing-input">
         {t("Recopie le texte de l’exercice", "Type the exercise text")}
       </label>
-      <div className="typing-field">
-        <textarea
-          ref={input}
-          id="typing-input"
-          className="typing-input"
-          value={composition ?? metrics.value}
-          disabled={disabled || metrics.finished}
-          onChange={(event) => {
-            if (composition !== null) setComposition(event.target.value);
-            else update(event.target.value);
-          }}
-          onCompositionStart={(event) => setComposition(event.currentTarget.value)}
-          onCompositionEnd={(event) => {
-            setComposition(null);
-            update(event.currentTarget.value);
-          }}
-          onPaste={paste}
-          onDrop={(event) => event.preventDefault()}
-          onKeyDown={(event) => {
-            if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "v") {
-              event.preventDefault();
-              setFeedback(
-                t(
-                  "Le collage est désactivé pendant l’exercice.",
-                  "Paste is disabled during the exercise.",
-                ),
-              );
-            }
-          }}
-          placeholder={
-            disabled
-              ? t("La saisie est suspendue", "Typing is paused")
-              : t("Clique ici, puis trouve ton rythme…", "Click here, then find your rhythm…")
+      <textarea
+        ref={input}
+        id="typing-input"
+        className="visually-hidden typing-capture"
+        value={composition ?? metrics.value}
+        disabled={!canType}
+        onChange={(event) => {
+          if (composition !== null) setComposition(event.target.value);
+          else update(event.target.value);
+        }}
+        onCompositionStart={(event) => setComposition(event.currentTarget.value)}
+        onCompositionEnd={(event) => {
+          setComposition(null);
+          update(event.currentTarget.value);
+        }}
+        onPaste={paste}
+        onDrop={(event) => event.preventDefault()}
+        onKeyDown={(event) => {
+          if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "v") {
+            event.preventDefault();
+            setFeedback(
+              t(
+                "Le collage est désactivé pendant l’exercice.",
+                "Paste is disabled during the exercise.",
+              ),
+            );
           }
-          aria-describedby="typing-help typing-feedback"
-          spellCheck={false}
-          autoCorrect="off"
-          autoCapitalize="off"
-          autoComplete="off"
-        />
-        <Keyboard className="icon" size={18} />
-      </div>
+        }}
+        placeholder={
+          disabled
+            ? t("La saisie est suspendue", "Typing is paused")
+            : t("Commence à écrire, trouve ton rythme…", "Start typing, find your rhythm…")
+        }
+        aria-describedby="typing-help typing-feedback"
+        spellCheck={false}
+        autoCorrect="off"
+        autoCapitalize="off"
+        autoComplete="off"
+      />
       <p className="small typing-instruction" id="typing-help">
         {t("Texte à recopier :", "Text to type:")} <span className="visually-hidden">{text}</span>
         {t(
-          "Le texte reste stable. Les erreurs sont soulignées.",
-          "The text stays stable. Mistakes are underlined.",
+          "Écris directement pour continuer. Le texte reste stable et les erreurs sont soulignées.",
+          "Type directly to continue. The text stays stable and mistakes are underlined.",
         )}
       </p>
       <p className="small" id="typing-feedback" role="status" aria-live="polite">
