@@ -74,6 +74,75 @@ Ce chemin suit l'[image PostgreSQL officielle](https://hub.docker.com/_/postgres
 
 **Le conteneur n'a pas été exécuté pendant la vérification locale si Docker Desktop n'est pas démarré.** Le rapport de vérification indique précisément ce qui a été testé.
 
+## Déployer sur Railway
+
+Préparation du 7 octobre 2026 : deux images Docker et les migrations sont prévues pour Railway. Aucun service Railway ni abonnement n'a été créé par cette préparation. La publication et la recette sur les URLs réelles restent à réaliser.
+
+Vérification locale du 7 octobre : `bun run check` réussi (formatage, lint, types, 69 tests unitaires, builds web et realtime). Les deux images ont été construites puis démarrées avec Node.js 24 et un PostgreSQL 18 temporaire isolé. Migration initiale appliquée et rejouée sans changement, deux healthchecks avec base disponible, accueil HTTP 200 et inscription HTTP 201 avec Argon2 natif. La commande par défaut de l'image web est bien `node server.js`. Les conteneurs et le réseau de cet essai ont été supprimés; la base locale existante n'a pas été utilisée. Les tests d'intégration multijoueurs n'ont pas été relancés pour cette préparation de livraison.
+
+### 1. Créer les trois services
+
+Dans un projet Railway, ajouter **Postgres**, puis deux services du même dépôt GitHub : **web** et **realtime**. Garder la racine du dépôt `/` pour les deux. Choisir la même région pour les trois services, proche du public attendu.
+
+Créer les deux services applicatifs sans lancer immédiatement leurs déploiements, ou désactiver temporairement les déploiements automatiques, afin de renseigner les URLs et les variables avant le premier build web. Les fichiers locaux `.env.local` et `.env.test` ne doivent pas être envoyés.
+
+| Réglage | web | realtime |
+|---|---|---|
+| `RAILWAY_DOCKERFILE_PATH` dans Variables | `Dockerfile` | `Dockerfile.realtime` |
+| Commande de démarrage | Laisser vide : image `node server.js` | Laisser vide : image `node dist/realtime.mjs` |
+| Commande Pre-deploy | Aucune | `node dist/migrate.mjs` |
+| Délai Pre-deploy | — | 300 secondes |
+| Port public cible | 3000 | 3001 |
+| Healthcheck | `/api/health` | `/health` |
+| Nombre d'instances | 1 au départ | **1 uniquement** |
+| Serverless / mise en sommeil | Désactivé au départ | **Désactivé** |
+
+Le Dockerfile principal termine par l'image du site : Railway peut l'utiliser sans sélectionner de cible spéciale. La cible `migrator` reste utilisable par Compose. L'image realtime contient le script de migration compilé pour Node.js et les fichiers SQL; elle n'a pas besoin de Bun au démarrage.
+
+### 2. Générer les URLs et renseigner les variables
+
+Dans Settings → Networking, générer une URL publique pour chacun des deux services, avec les ports cibles indiqués ci-dessus. Noter les deux origines HTTPS, **sans slash final**. Si Railway ne permet de générer l'URL qu'après une première tentative de déploiement, obtenir les URLs puis corriger les variables et reconstruire le web avant d'utiliser le site.
+
+Les valeurs entre chevrons ci-dessous sont des exemples à remplacer. La référence `Postgres` doit correspondre au nom exact du service de base de données.
+
+**Variables du web :**
+
+```text
+RAILWAY_DOCKERFILE_PATH=Dockerfile
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+APP_URL=https://<domaine-web>
+NEXT_PUBLIC_REALTIME_URL=https://<domaine-realtime>
+PORT=3000
+HOSTNAME=0.0.0.0
+```
+
+**Variables du realtime :**
+
+```text
+RAILWAY_DOCKERFILE_PATH=Dockerfile.realtime
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+APP_URL=https://<domaine-web>
+REALTIME_PORT=3001
+PORT=3001
+```
+
+Utiliser la connexion privée PostgreSQL du projet; ne pas reprendre la connexion `127.0.0.1` de développement. Garder `NEXT_PUBLIC_REALTIME_URL` publique : le navigateur des joueurs doit pouvoir l'atteindre. Cette valeur est intégrée au build web; après une modification, reconstruire l'image web, un simple redémarrage ne suffit pas.
+
+Les identifiants OAuth sont facultatifs. Garder `TRUST_PROXY` désactivé tant que le traitement des en-têtes d'adresse par le proxy n'a pas été vérifié.
+
+### 3. Déployer et vérifier
+
+1. Attendre que Postgres soit disponible et vérifier son volume persistant. Activer les sauvegardes selon l'offre choisie.
+2. Déployer **realtime en premier**. Sa commande Pre-deploy applique les migrations avant son démarrage; si elle échoue, résoudre l'erreur avant de continuer. Ne pas exécuter les migrations pendant le build, qui n'a pas accès au réseau privé.
+3. Déployer **web** avec les deux URLs HTTPS définitives.
+4. Ouvrir `https://<domaine-web>/api/health` et `https://<domaine-realtime>/health` : chacun doit répondre avec `ok: true` et `database: true`.
+5. Créer un compte sur le site publié, rejoindre une salle depuis un second navigateur et terminer une course. Vérifier le classement, la reconnexion et la présence du résultat dans le profil.
+6. Configurer une alerte de budget et vérifier une restauration de sauvegarde avant d'ouvrir largement le jeu.
+
+Les prochains déploiements realtime se font hors course active : un redémarrage interrompt les courses en cours. Garder une seule instance, sans activer de mise à l'échelle automatique. La capacité à 30 joueurs reste à mesurer sur l'hébergement choisi.
+
+Sources Railway vérifiées le 7 octobre 2026 : [Dockerfiles et variables de build](https://docs.railway.com/builds/dockerfiles), [variables et références entre services](https://docs.railway.com/variables), [commande Pre-deploy](https://docs.railway.com/deployments/pre-deploy-command), [réseau privé](https://docs.railway.com/networking/private-networking/how-it-works), [domaines](https://docs.railway.com/networking/domains/working-with-domains), [base de données et responsabilités](https://docs.railway.com/databases).
+
 ## Topologie de première production
 
 Déployer une application Next.js, **une seule instance** du service Socket.IO et un PostgreSQL durable. Les services utilisent la même base et la même origine `APP_URL`. Les certificats et le proxy de l'hébergeur fournissent HTTPS et WSS. Le navigateur ouvre Socket.IO vers `NEXT_PUBLIC_REALTIME_URL`; cette origine n'autorise pas d'autres sites à commander la salle.
