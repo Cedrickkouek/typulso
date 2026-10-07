@@ -449,3 +449,16 @@ Carte partagée catalogue/historique : champs compacts, libellés à icônes, ac
 À 1 878 px, centres mesurés de la carte et du groupe de filtres identiques : 939 px. Rendu clair à 1 280 px, sombre à 900 px et 390 px ; document mobile de 390 px. Bouton langue mobile mesuré à 44 px : icône et libellé contenus, marge de 4 px en haut et 5 px sous FR/EN. Changement FR/EN et clair/sombre fonctionnel ; préférences et viewport initiaux restaurés, onglet fermé. Aucun changement de comportement de filtrage. Contrôles complets applicatifs exécutés après les corrections CSS.
 
 [Aperçu du centrage](assets/app-v01/filtres-centres.png) · [Bouton langue sur mobile](assets/app-v01/langue-mobile.png)
+
+
+### Présentation du terrain de jeu dans le salon · 7 octobre 2026
+
+Le panneau latéral conserve l’aperçu violet, avec une typographie de lecture et des touches décoratives. Les quatre réglages réels de la salle (durée, mode, adversaires automatisés et accès) sont présentés dans une grille de cartes à icônes. Les rôles hôte et spectateur sont expliqués en deux lignes. Les traductions français/anglais, les valeurs serveur et le texte caché avant le départ sont conservés. Aucun changement des règles de course ou des permissions.
+
+Recette locale sur une vraie salle de fixture avec hôte et session invitée : anglais sombre puis français clair à 1 280 px, largeur document 1 280 px ; breakpoint 900 px et français sombre à 390 px, largeur document égale au viewport. Les accents gardent un texte encre et les cartes restent lisibles sur mobile. La légère rotation des touches reste contenue dans l’aperçu. Préférences et viewport rétablis, salle et onglet de recette fermés. L’accès au lien de production demande une identité ; cette recette n’atteste pas encore du déploiement Railway.
+
+Contrôles complets : `bun run check` réussi, formatage, lint, TypeScript, **69 tests unitaires réussis**, compilations Next.js et temps réel. Les onze tests dépendant de la base sont ignorés dans cette passe ; aucune donnée ou permission modifiée ne nécessite une nouvelle passe réseau.
+
+![Aperçu du salon, français clair](assets/app-v01/salon-terrain-de-jeu.png)
+
+[Aperçu mobile sombre](assets/app-v01/salon-terrain-mobile.png)

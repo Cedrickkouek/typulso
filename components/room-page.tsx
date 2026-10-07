@@ -15,6 +15,7 @@ import { TypingZone } from "./typing-zone";
 import { TypingPassage } from "./typing-passage";
 import { ResultsPanel } from "./results";
 import { RoomConfiguration } from "./room-configuration";
+import { LobbyOverview } from "./lobby-overview";
 import { ArcadeControls, RaceDashboard, RaceTracks } from "./race-interface";
 
 function useClock() {
@@ -449,58 +450,14 @@ export function RoomPage({ id }: { id: string }) {
               </div>
             </section>
             <aside className="lobby-aside">
-              <div className="exercise-preview">
-                <p className="eyebrow">{t("Le terrain de jeu", "The playing field")}</p>
-                <h3>
-                  {room.settings.contentMode === "custom"
-                    ? t("Ton texte personnalisé", "Your custom text")
-                    : room.settings.contentMode === "words"
-                      ? t("Une piste de mots", "A track of words")
-                      : t("Un texte à parcourir", "A text to race through")}
-                </h3>
-                <p>
-                  {t(
-                    "Le texte commun est dévoilé au départ.",
-                    "The shared text is revealed at the start.",
-                  )}
-                </p>
-              </div>
-              <dl className="settings-list mt-5">
-                <div>
-                  <dt>{t("Durée maximale", "Time limit")}</dt>
-                  <dd>
-                    {room.settings.durationSeconds
-                      ? timeLabel(room.settings.durationSeconds)
-                      : t("Fin du texte", "Text completion")}
-                  </dd>
-                </div>
-                <div>
-                  <dt>{t("Mode", "Mode")}</dt>
-                  <dd>
-                    {room.settings.gameMode === "arcade" ? "Arcade" : t("Classique", "Classic")}
-                  </dd>
-                </div>
-                <div>
-                  <dt>{t("Adversaires automatisés", "Automated opponents")}</dt>
-                  <dd>{room.settings.botCount}</dd>
-                </div>
-                <div>
-                  <dt>{t("Accès", "Access")}</dt>
-                  <dd>
-                    {room.settings.visibility === "private"
-                      ? t("Privé", "Private")
-                      : room.settings.visibility === "code"
-                        ? t("Code", "Code")
-                        : t("Public", "Public")}
-                  </dd>
-                </div>
-              </dl>
-              <p className="small mt-5">
-                {t(
-                  "L’hôte donne le départ. Les spectateurs observent sans champ de frappe.",
-                  "The host starts the race. Spectators watch without a typing field.",
-                )}
-              </p>
+              <LobbyOverview
+                settings={room.settings}
+                durationLabel={
+                  room.settings.durationSeconds
+                    ? timeLabel(room.settings.durationSeconds)
+                    : t("Fin du texte", "Text completion")
+                }
+              />
             </aside>
           </div>
         </div>
