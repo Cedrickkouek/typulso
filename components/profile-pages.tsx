@@ -1,6 +1,6 @@
 "use client";
 
-import { Select } from "./select";
+import { RaceFilters } from "./race-filters";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,17 +20,7 @@ import type { ProfileData, StoredResult, RoomSnapshot } from "@/types/game";
 import { api, useApi } from "@/lib/client/api";
 import { disconnectRealtime } from "@/lib/client/realtime";
 import { useSession, useTranslation } from "./providers";
-import {
-  AuthGate,
-  Avatar,
-  Empty,
-  ErrorNotice,
-  Field,
-  Heading,
-  Loading,
-  Metric,
-  Notice,
-} from "./ui";
+import { AuthGate, Avatar, Empty, ErrorNotice, Heading, Loading, Metric, Notice } from "./ui";
 import { Heatmap, ResultsPanel } from "./results";
 
 export function ProfilePage({ history = false }: { history?: boolean }) {
@@ -144,26 +134,13 @@ export function ProfilePage({ history = false }: { history?: boolean }) {
       </nav>
       {!history && <ProfileMetrics stats={data.stats} />}
       {history && (
-        <div className="filter-bar">
-          <Field id="history-mode" label={t("Mode", "Mode")}>
-            <Select id="history-mode" value={mode} onValueChange={(value) => setMode(value)}>
-              <option value="all">{t("Tous", "All")}</option>
-              <option value="classic">{t("Classique", "Classic")}</option>
-              <option value="arcade">Arcade</option>
-            </Select>
-          </Field>
-          <Field id="history-language" label={t("Langue du texte", "Text language")}>
-            <Select
-              id="history-language"
-              value={language}
-              onValueChange={(value) => setLanguage(value)}
-            >
-              <option value="all">{t("Toutes", "All")}</option>
-              <option value="fr">{t("Français", "French")}</option>
-              <option value="en">{t("Anglais", "English")}</option>
-            </Select>
-          </Field>
-        </div>
+        <RaceFilters
+          id="history-filter"
+          language={language}
+          mode={mode}
+          onLanguage={setLanguage}
+          onMode={setMode}
+        />
       )}
       {results.length === 0 ? (
         <Empty

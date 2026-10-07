@@ -63,6 +63,8 @@ Les [pistes de recherche](21-recherche-footer-et-jeu.md) sont intégrées avec l
 
 La [recette locale](20-verification-implementation.md) distingue les vérifications visuelles, les tests PostgreSQL/Socket.IO et les vérifications de production encore à réaliser.
 
+La page de salle redirige vers Jouer (`/`) lorsque le serveur confirme une fermeture/interruption ou refuse l’accès avec `room_closed`. La navigation remplace l’entrée de salle dans l’historique et annule les lots de saisie en attente. La [recette locale](20-verification-implementation.md) couvre la fermeture en direct, l’ancien lien et le retour navigateur.
+
 ## Modèle réellement persisté
 
 ```mermaid
@@ -129,7 +131,7 @@ Un retour après déconnexion récupère l'état courant; la frappe classée ne 
 | Invitation privée | Lien individuel à usage unique, durée de 24 heures, route `/invitation/[token]`. |
 | Capacité | Limite serveur de 30 membres; la capacité sous charge doit être mesurée avant de l'affirmer. |
 | Reconnexion | Grâce de 60 secondes; reprise par instantané. |
-| Mode arcade | Capacités boost/bouclier, avantage de rattrapage; métriques éducatives conservées. Équilibrage à tester avec le public. |
+| Mode arcade | Pulsation/bouclier/virgule piégée, un choix de rattrapage; métriques éducatives conservées. Équilibrage à tester avec le public. |
 | Authentification externe | Routes GitHub/Discord présentes, activation dépendant de vraies applications OAuth et secrets serveur. |
 | Exécution | Bun pour installation, développement et tests; Node.js 24 pour les deux services de production. |
 
@@ -141,7 +143,7 @@ Les versions ont été vérifiées dans le registre npm, puis verrouillées. Les
 - Précision : tentatives correctes divisées par toutes les tentatives; une correction conserve l'erreur déjà commise.
 - Score classique : vitesse × précision², avec précision exprimée entre 0 et 1. Les comparaisons utilisent les valeurs complètes avant arrondi d'affichage.
 - Progression : caractères tapés en mode libre; préfixe correct en mode bloquant. Une lettre erronée visible n'avance pas la piste bloquante.
-- Arcade : 100 d'énergie et au moins cinq points de retard, un usage par course. Boost et bouclier ne changent pas la vitesse/précision brute; avantage de score cumulé plafonné à six points.
+- Arcade : 100 d'énergie et au moins cinq points de retard, un usage par course. Pulsation et bouclier ne changent pas la vitesse/précision brute; avantage plafonné à six points. Les pièges retirent au maximum quatre points, sans score négatif.
 
 Ces choix sont des décisions d'implémentation, pas une validation d'équilibrage avec les adolescents.
 
@@ -177,3 +179,24 @@ Les menus déroulants natifs des champs partagent un chevron adapté au thème, 
 ### Listes d’options personnalisées
 
 Le composant `Select` partagé remplace désormais les sélecteurs natifs dans les pages de l’application. La liste utilise la couche supérieure du navigateur (Popover API), un fond adapté au thème, des options d’au moins 44 px, une coche et un accent pour la valeur choisie. Le bouton conserve son label, un chevron espacé et les attributs combobox/listbox. Flèches, Début/Fin, Entrée/Espace, Tab, Échap et recherche par caractères sont pris en charge. La liste se place au-dessus si l’espace manque en dessous; un clic extérieur la ferme. Les règles de données et leurs validations restent inchangées. Cette implémentation remplace le comportement natif décrit dans la note précédente.
+
+
+## Sensations de course intégrées · 7 octobre
+
+Le module pur `lib/domain/arcade.ts` applique les trois capacités côté serveur. Une virgule vise le concurrent actif connecté le plus proche devant soi ; `raceId` et `targetId` sont revalidés dans la transaction. Une cible devenue protégée refuse la commande sans consommation ni nouvelle cible. Le serveur expose uniquement état du piège, protection, séries et événements confirmés ; valeur de saisie et heatmap adverse restent privées.
+
+La virgule avertit pendant 1,2 s puis pénalise les nouvelles erreurs pendant 3 s : un point arcade par erreur, deux par attaque, quatre par manche. Un bouclier actif à l’impact absorbe le piège et expire. Fin de cible, départ ou déconnexion annulent les charges futures ; dix secondes d’immunité suivent la résolution. Les cinq premières/dernières secondes et une cible à 95 % sont protégées. Les résultats conservent les mesures brutes et détaillent bonus/pénalité.
+
+Un `AudioContext` partagé synthétise douze motifs, avec volume et options frappe/événements indépendantes, désactivées par défaut. Limites : douze clics par seconde, deux erreurs par seconde, dépassement confirmé 500 ms et espacé de 4 s, huit voix. Muter arrête les notes programmées ; un onglet masqué suspend l’audio. Les snapshots de reprise servent de référence silencieuse et les événements sont dédupliqués. Les préférences proposent douze aperçus explicites.
+
+Le panneau de course montre rival proche et écart de progression réel, série et protection ; les pistes gardent leurs touches sur roues. Les capacités se présentent en trois cartes, empilées sur mobile, avec explications lisibles même indisponibles. Les annonces ordinaires de duel n’alimentent pas la région live, afin d’éviter la lecture continue d’un écart changeant.
+
+Les records utilisent une empreinte `rulesKey` persistée dans le JSON du résultat : mode, langue, correction, corpus, longueur, durée, texte personnalisé et contraintes. Comparaison de vitesse brute avec au moins vingt tentatives, première référence lorsqu’aucun historique admissible n’existe. Les anciens résultats sans empreinte restent visibles, mais ne fondent pas de record. Aucun changement de schéma PostgreSQL n’est nécessaire. La meilleure série compte de nouvelles positions correctes ; effacer/retaper ne multiplie pas les récompenses.
+
+
+## Filtres du catalogue et de l’historique · 7 octobre
+
+Le composant `RaceFilters` regroupe langue et mode dans une carte avec signature citron, libellés à icônes décoratives et sélecteurs de largeur maîtrisée. Les actions du catalogue restent à droite ; « Tout afficher » réinitialise les deux filtres uniquement lorsqu’un choix est actif. Sous 1 100 px, la signature prend sa propre ligne ; sous 600 px, les sélecteurs s’empilent. La sélection personnalisée existante, les règles de filtrage et les accès restent identiques.
+
+
+Sur grand écran, les filtres occupent désormais la colonne centrale d’une grille à colonnes latérales égales ; le titre reste à gauche et les actions à droite. Le bouton de langue de l’en-tête utilise deux lignes de 16 px, espacées de 2 px, et un padding de 4 px ; FR/EN reste contenu dans la cible tactile de 44 px (52 px sur bureau).

@@ -101,7 +101,7 @@
 }
 .race-arcade {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   gap: 24px;
   align-items: center;
   padding: 24px clamp(20px, 3vw, 48px);
@@ -558,4 +558,172 @@
 .peer-player-progress {
   color: var(--muted);
   white-space: nowrap;
+}
+
+/* Confirmed race moments and the three tactical choices share the existing palette. */
+.race-moment {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  margin: 0 0 1.5rem;
+  flex-wrap: wrap;
+}
+.race-moment-icon,
+.race-power-icon {
+  display: grid;
+  place-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  flex: none;
+  border-radius: 0.85rem;
+  background: var(--accent);
+  color: var(--on-color);
+}
+.race-moment-copy {
+  flex: 1;
+  min-width: 12rem;
+}
+.race-moment-copy strong {
+  font-size: 1.12rem;
+}
+.race-moment-copy p {
+  font-size: 0.9rem;
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  max-width: 65ch;
+}
+.race-moment[data-trap] .race-moment-icon {
+  background: var(--coral);
+}
+.race-moment-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.race-moment-tags span,
+.race-achievements span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 0.4rem 0.65rem;
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+.race-power-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.race-power {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 0.6rem;
+  padding: 1rem;
+  white-space: normal;
+  min-width: 0;
+}
+.race-power small {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: inherit;
+  line-height: 1.5;
+}
+.race-arcade .race-power:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}
+.race-arcade .race-power:disabled .race-power-icon {
+  opacity: 0.65;
+}
+.race-power[data-tone="sky"] .race-power-icon {
+  background: var(--sky);
+}
+.race-power[data-tone="coral"] .race-power-icon {
+  background: var(--coral);
+}
+.key-racer[data-shield] .key-racer-body {
+  filter: drop-shadow(0 0 3px var(--sky));
+}
+.key-racer[data-trap]::after {
+  content: ",";
+  position: absolute;
+  top: -0.8rem;
+  right: -0.2rem;
+  background: var(--coral);
+  color: var(--on-color);
+  border-radius: 50%;
+  width: 1.3rem;
+  height: 1.3rem;
+  text-align: center;
+  font-weight: 800;
+}
+.race-achievements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1rem 0 1.5rem;
+}
+.race-score-explanation {
+  margin: 1rem 0 1.5rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+.race-sound-settings {
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+}
+.race-sound-previews {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.race-sound-previews button {
+  font-size: 0.85rem;
+  white-space: normal;
+  padding: 0.65rem;
+  text-align: left;
+}
+.race-volume {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.race-volume input {
+  width: 100%;
+  accent-color: var(--accent);
+}
+@media (max-width: 700px) {
+  .race-power-grid {
+    grid-template-columns: 1fr;
+  }
+  .race-power {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+  .race-power-icon {
+    grid-row: 1/3;
+  }
+  .race-sound-previews {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .race-moment {
+    padding: 1rem;
+  }
+  .race-moment-copy {
+    min-width: 0;
+    flex-basis: calc(100% - 4rem);
+  }
+  .race-moment-tags {
+    width: 100%;
+  }
 }

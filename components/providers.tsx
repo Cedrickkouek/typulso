@@ -1,5 +1,6 @@
 "use client";
 
+import { configureRaceAudio, installRaceAudio } from "@/lib/client/race-audio";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import type { SessionUser } from "@/types/game";
 import { api } from "@/lib/client/api";
@@ -40,6 +41,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
       });
     return () => controller.abort();
   }, []);
+  useEffect(() => installRaceAudio(), []);
+  useEffect(() => {
+    configureRaceAudio({
+      typing: preferences.sounds,
+      events: preferences.raceSounds,
+      volume: preferences.soundVolume,
+    });
+  }, [preferences.sounds, preferences.raceSounds, preferences.soundVolume]);
   useEffect(() => {
     document.documentElement.dataset.theme = preferences.theme;
     document.documentElement.lang = preferences.locale;

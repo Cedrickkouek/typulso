@@ -3817,9 +3817,14 @@ fieldset {
   border-radius: 12px;
   background: var(--surface);
 }
-.header-tools .locale-button {
+.header-tools .icon-button.locale-button {
+  grid-template-rows: 16px 16px;
+  align-content: center;
+  gap: 2px;
+  padding: 4px;
   font-size: var(--text-label);
   font-weight: 700;
+  line-height: 16px;
 }
 .notice p {
   margin: 0;
@@ -4987,4 +4992,102 @@ body {
 }
 .race:has(.typing-capture:focus-visible) .typing-instruction {
   color: var(--blue);
+}
+
+/* Shared course and history filters. */
+.race-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 520px) minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  padding: 24px;
+  margin: 24px 0 32px;
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  box-shadow: var(--shadow-panel);
+}
+.race-filters-intro {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.race-filters-symbol {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--accent);
+  color: var(--on-color);
+}
+.race-filters-intro h2 {
+  font-size: 20px;
+  margin: 0;
+}
+.race-filters-intro p {
+  color: var(--muted);
+  font-size: var(--text-label);
+  margin: 4px 0 0;
+}
+.race-filters-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-column: 2;
+  width: 100%;
+  gap: 16px;
+  min-width: 0;
+}
+.race-filters .field {
+  margin: 0;
+}
+.race-filters .field label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.race-filters .field label svg {
+  color: var(--blue);
+}
+.race-filters-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.race-filters-actions button {
+  white-space: nowrap;
+}
+@media (max-width: 1100px) {
+  .race-filters {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .race-filters-intro {
+    flex-basis: 100%;
+  }
+  .race-filters-fields {
+    flex: 1 1 400px;
+    width: auto;
+  }
+}
+@media (max-width: 600px) {
+  .race-filters {
+    padding: 20px;
+    gap: 20px;
+  }
+  .race-filters-fields {
+    grid-template-columns: 1fr;
+    flex-basis: 100%;
+    gap: 16px;
+  }
+  .race-filters-actions {
+    width: 100%;
+  }
+  .race-filters-actions button {
+    flex: 1 1 auto;
+  }
 }

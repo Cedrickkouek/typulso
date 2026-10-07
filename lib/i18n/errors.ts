@@ -35,6 +35,10 @@ const messages: Record<string, [string, string]> = {
     "Cette salle est introuvable ou n’est plus accessible.",
     "This room could not be found or is no longer accessible.",
   ],
+  trap_unavailable: [
+    "Le rival est protégé ou trop proche du départ ou de l’arrivée.",
+    "The rival is protected or too close to the start or finish.",
+  ],
   room_closed: [
     "Cette salle est fermée. Retrouve une autre course.",
     "This room is closed. Find another race.",

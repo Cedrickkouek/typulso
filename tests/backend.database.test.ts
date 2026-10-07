@@ -175,8 +175,15 @@ describe.skipIf(process.env.INTEGRATION_TEST !== "1")("PostgreSQL backend invari
       "UPDATE rooms SET state=jsonb_set(state,'{players,0,disconnectedAt}',to_jsonb($2::bigint)) WHERE id=$1",
       [roomId, Date.now() - 60001],
     );
-    await tickRooms();
-    const transferred = await roomForMember(roomId, peer.actorId);
+    // Another local worker can hold this room while tickRooms skips locked rows.
+    // Observe the eventual transfer instead of assuming this tick acquired the lock.
+    const transferDeadline = Date.now() + 2000;
+    let transferred = await roomForMember(roomId, peer.actorId);
+    while (transferred?.hostId !== peer.actorId && Date.now() < transferDeadline) {
+      await tickRooms();
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      transferred = await roomForMember(roomId, peer.actorId);
+    }
     expect(transferred?.hostId).toBe(peer.actorId);
     const closed = await runCommand(peer, {
       commandId: randomUUID(),
@@ -185,6 +192,105 @@ describe.skipIf(process.env.INTEGRATION_TEST !== "1")("PostgreSQL backend invari
       payload: {},
     });
     expect(closed.ok).toBe(true);
+  });
+  test("late input finalizes at the deadline and resynchronizes two participants without adding characters", async () => {
+    const owner = await register(
+      { username: `Deadline_${randomUUID().slice(0, 8)}`, password: "secure-test-password" },
+      randomUUID(),
+    );
+    const visitor = await guest({ username: `Late_${randomUUID().slice(0, 8)}` }, randomUUID());
+    const host = (await sessionForToken(owner.token))!;
+    const peer = (await sessionForToken(visitor.token))!;
+    const created = await runCommand(host, {
+      commandId: randomUUID(),
+      kind: "create",
+      payload: { ...defaultSettings, visibility: "code", durationSeconds: 15, botCount: 0 },
+    });
+    if (!created.ok) throw Error(created.error);
+    const roomId = created.data.room.id;
+    const joined = await runCommand(peer, {
+      commandId: randomUUID(),
+      kind: "join",
+      payload: { code: created.data.room.code },
+    });
+    expect(joined.ok).toBe(true);
+    expect(
+      (
+        await runCommand(host, {
+          commandId: randomUUID(),
+          kind: "ready",
+          roomId,
+          payload: { ready: true },
+        })
+      ).ok,
+    ).toBe(true);
+    expect(
+      (
+        await runCommand(peer, {
+          commandId: randomUUID(),
+          kind: "ready",
+          roomId,
+          payload: { ready: true },
+        })
+      ).ok,
+    ).toBe(true);
+    const started = await runCommand(host, {
+      commandId: randomUUID(),
+      kind: "start",
+      roomId,
+      payload: {},
+    });
+    if (!started.ok) throw Error(started.error);
+    // Advance only this test-owned room; the command promotes countdown to racing.
+    // Do not invoke tickRooms: reproduce the input that arrives before the next tick.
+    const fixture = (await roomForMember(roomId, host.actorId))!;
+    const endsAt = Date.now() - 20;
+    fixture.race!.startsAt = endsAt - 15000;
+    fixture.race!.endsAt = endsAt;
+    await getPool().query("UPDATE rooms SET state=$2::jsonb WHERE id=$1", [
+      roomId,
+      JSON.stringify(fixture),
+    ]);
+    const late = {
+      commandId: randomUUID(),
+      kind: "input",
+      roomId,
+      payload: {
+        raceId: fixture.race!.id,
+        sequence: 1,
+        operations: [{ kind: "insert", text: "a" }],
+      },
+    };
+    const result = await runCommand(host, late);
+    if (!result.ok) throw Error(result.error);
+    expect(result.data.room.phase).toBe("results");
+    expect(result.data.room.self?.value).toBe("");
+    expect(result.data.room.self?.sequence).toBe(0);
+    expect(result.data.room.results).toHaveLength(2);
+    expect(result.data.room.results.every((r) => r.durationMs === 15000 && r.correct === 0)).toBe(
+      true,
+    );
+    expect(await runCommand(host, late)).toEqual(result);
+    const peerLate = await runCommand(peer, { ...late, commandId: randomUUID() });
+    if (!peerLate.ok) throw Error(peerLate.error);
+    expect(peerLate.data.room.phase).toBe("results");
+    expect(peerLate.data.room.self?.value).toBe("");
+    expect(peerLate.data.room.results).toEqual(result.data.room.results);
+    const stored = await getPool().query(
+      "SELECT count(*)::int AS count FROM results WHERE race_id=$1",
+      [fixture.race!.id],
+    );
+    expect(stored.rows[0].count).toBe(2);
+    expect(
+      await runCommand(peer, {
+        ...late,
+        commandId: randomUUID(),
+        payload: { ...late.payload, raceId: randomUUID() },
+      }),
+    ).toEqual({ ok: false, error: "invalid_phase" });
+    expect(
+      (await runCommand(host, { commandId: randomUUID(), kind: "close", roomId, payload: {} })).ok,
+    ).toBe(true);
   });
   test("concurrent admission consumes an invitation exactly once", async () => {
     const owner = await register(

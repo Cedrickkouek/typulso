@@ -215,6 +215,44 @@ suite("PostgreSQL + HTTP + Socket.IO avec sessions indépendantes", () => {
     } while (room.phase !== "results" && Date.now() < deadline);
     expect(room.phase).toBe("results");
     expect(room.results).toHaveLength(2);
+    const finalResults = room.results;
+    // Both independently authenticated sockets can deliver their final batch late.
+    const hostLate = success(
+      await command(
+        host,
+        "input",
+        {
+          raceId,
+          sequence: 2,
+          operations: [{ kind: "insert", text: "a" }],
+        },
+        room.id,
+      ),
+    );
+    const guestLate = success(
+      await command(
+        guest,
+        "input",
+        {
+          raceId,
+          sequence: 2,
+          operations: [{ kind: "insert", text: "b" }],
+        },
+        room.id,
+      ),
+    );
+    expect(hostLate.phase).toBe("results");
+    expect(guestLate.phase).toBe("results");
+    expect(hostLate.self?.value).toBe(typed.self?.value);
+    expect(guestLate.self?.value).toBe(guestTyped.self?.value);
+    expect(hostLate.results).toEqual(finalResults);
+    // Heatmaps are private to each recipient; compare the shared race measurements.
+    expect(guestLate.results.map((result) => ({ ...result, heatmap: [] }))).toEqual(
+      finalResults.map((result) => ({ ...result, heatmap: [] })),
+    );
+    expect(guestLate.results.find((result) => result.playerId === host.user.id)?.heatmap).toEqual(
+      [],
+    );
     const profileResponse = await request("/api/profile", undefined, host.cookie);
     expect(profileResponse.ok).toBe(true);
     const profile = (await profileResponse.json()) as {
@@ -231,6 +269,110 @@ suite("PostgreSQL + HTTP + Socket.IO avec sessions indépendantes", () => {
     expect(room.hostId).toBe(guest.user.id);
     success(await command(guest, "close", {}, room.id));
   }, 30000);
+
+  test("arcade partagé : cible explicite, piège idempotent, contre et record comparable", async () => {
+    const text = "a ".repeat(100).trim();
+    const arena = success(
+      await command(host, "create", {
+        ...settings,
+        name: "Arcade vérifiée",
+        gameMode: "arcade",
+        errorMode: "free",
+        customText: text,
+        length: 100,
+        durationSeconds: 30,
+      }),
+    );
+    const id = arena.id;
+    success(await command(guest, "join", { code: arena.code }));
+    success(await command(other, "join", { code: arena.code, role: "spectator" }));
+    success(await command(host, "role", { memberId: other.user.id, role: "participant" }, id));
+    for (const who of [host, guest, other])
+      success(await command(who, "ready", { ready: true }, id));
+    let round = success(await command(host, "start", {}, id));
+    const raceId = round.race!.id;
+    await delay(Math.max(0, round.race!.startsAt + 5100 - Date.now()));
+    const sequences = new Map<string, number>();
+    async function type(who: Actor, start: number, end: number, currentRace: string) {
+      for (let index = start; index < end; index += 8) {
+        const seq = (sequences.get(who.user.id) ?? 0) + 1;
+        sequences.set(who.user.id, seq);
+        round = success(
+          await command(
+            who,
+            "input",
+            {
+              raceId: currentRace,
+              sequence: seq,
+              operations: [...text.slice(index, Math.min(index + 8, end))].map((text) => ({
+                kind: "insert",
+                text,
+              })),
+            },
+            id,
+          ),
+        );
+      }
+    }
+    await type(host, 0, 50, raceId);
+    await type(guest, 0, 80, raceId);
+    await type(other, 0, 120, raceId);
+    expect(
+      await command(
+        host,
+        "ability",
+        { raceId: crypto.randomUUID(), ability: "trap", targetId: guest.user.id },
+        id,
+      ),
+    ).toEqual({ ok: false, error: "invalid_phase" });
+    expect(
+      await command(host, "ability", { raceId, ability: "trap", targetId: other.user.id }, id),
+    ).toEqual({ ok: false, error: "trap_unavailable" });
+    const attack: RoomCommand = {
+      commandId: crypto.randomUUID(),
+      kind: "ability",
+      roomId: id,
+      payload: { raceId, ability: "trap", targetId: guest.user.id },
+    };
+    const accepted = await send(host, attack);
+    const replay = await send(host, attack);
+    expect(replay).toEqual(accepted);
+    const victim = success(await command(guest, "sync", {}, id));
+    expect(victim.players.find((p) => p.id === guest.user.id)?.trap?.sourceId).toBe(host.user.id);
+    expect(victim.events?.filter((e) => e.kind === "trap")).toHaveLength(1);
+    success(await command(guest, "ability", { raceId, ability: "shield" }, id));
+    await delay(1400);
+    const countered = success(await command(guest, "sync", {}, id));
+    const shield = countered.players.find((p) => p.id === guest.user.id)!;
+    expect(shield.trap).toBeNull();
+    expect(shield.shieldRemaining).toBe(0);
+    expect(shield.trapPenalty).toBe(0);
+    expect(countered.events?.filter((e) => e.kind === "trap-blocked")).toHaveLength(1);
+    expect((await command(host, "ability", { raceId, ability: "boost" }, id)).ok).toBe(false);
+    expect(countered.players[0]).not.toHaveProperty("value");
+    await type(host, 50, text.length, raceId);
+    await type(guest, 80, text.length, raceId);
+    await type(other, 120, text.length, raceId);
+    expect(round.phase).toBe("results");
+    expect(
+      round.results.every(
+        (r) => r.firstReference && !r.personalBest && r.bestStreak === text.length,
+      ),
+    ).toBe(true);
+    success(await command(host, "rematch", {}, id));
+    for (const who of [host, guest, other])
+      success(await command(who, "ready", { ready: true }, id));
+    round = success(await command(host, "start", {}, id));
+    const nextRace = round.race!.id;
+    await delay(Math.max(0, round.race!.startsAt - Date.now()) + 100);
+    sequences.clear();
+    for (const who of [host, guest, other]) await type(who, 0, text.length, nextRace);
+    expect(round.phase).toBe("results");
+    expect(round.results.every((r) => r.personalBest && !r.firstReference)).toBe(true);
+    expect(round.events).toEqual([]);
+    expect(round.results.every((r) => r.arcade?.penalty === 0)).toBe(true);
+    success(await command(host, "close", {}, id));
+  });
 
   test("invitation individuelle à usage unique et déconnexion révocable", async () => {
     const privateRoom = success(

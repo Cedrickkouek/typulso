@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { createTypingEngine, graphemes, type TypingState } from "@/lib/client/typing-engine";
-import { playFeedback } from "@/lib/client/preferences";
+import { playRaceSound } from "@/lib/client/race-audio";
 import type { InputOperation, PlayerSnapshot } from "@/types/game";
 import { useTranslation } from "./providers";
 import { TypingPassage } from "./typing-passage";
@@ -68,10 +68,12 @@ export function TypingZone({
   }, [metrics, onMetrics]);
   const update = useCallback(
     (value: string) => {
+      const before = engine.getSnapshot();
       const operations = engine.update(value, Date.now());
       if (operations.length) {
         onOperations?.(operations, engine.getSnapshot().revision);
-        if (operations.some((operation) => operation.kind === "insert")) playFeedback(sounds);
+        if (sounds && operations.some((operation) => operation.kind === "insert"))
+          void playRaceSound(engine.getSnapshot().errors > before.errors ? "error" : "key");
       }
       if (
         blocking &&

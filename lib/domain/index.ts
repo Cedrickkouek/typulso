@@ -23,3 +23,11 @@ export {
 export type { Ability, DomainPlayer } from "./engine";
 export { makeBotTick, nextBotOperations } from "./bots";
 export type { BotPlan } from "./bots";
+
+export {
+  applyArcadeAbility,
+  settleArcade,
+  nearestTrapRival,
+  trapAvailable,
+  arcadePolicy,
+} from "./arcade";

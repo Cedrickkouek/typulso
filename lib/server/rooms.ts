@@ -2,7 +2,9 @@ import { randomBytes, randomUUID } from "node:crypto";
 import type { PoolClient } from "pg";
 import { getPool, transaction } from "../../db";
 import {
-  applyAbility,
+  applyArcadeAbility,
+  settleArcade,
+  nearestTrapRival,
   applyInput,
   defaultSettings,
   generateText,
@@ -13,10 +15,13 @@ import {
   racePolicy,
   rankPlayers,
   updateMetrics,
+  validateInputOperations,
   validateSettings,
   type DomainPlayer,
 } from "../domain";
 import type {
+  Ability,
+  ArcadeEvent,
   CommandResponse,
   PlayerSnapshot,
   ProfileData,
@@ -95,6 +100,13 @@ export function publicRoom(room: InternalRoom, actorId?: string, now = Date.now(
       finished: p.finished,
       energy: p.energy,
       abilityUsed: p.abilityUsed,
+      shieldUntil: p.shieldUntil ?? null,
+      shieldRemaining: p.shieldRemaining ?? 0,
+      trap: p.trap ?? null,
+      trapImmuneUntil: p.trapImmuneUntil ?? 0,
+      trapPenalty: p.trapPenalty ?? 0,
+      streak: p.streak ?? 0,
+      bestStreak: p.bestStreak ?? 0,
       status: p.status,
     }));
   const self = room.players.find((p) => p.id === actorId);
@@ -109,8 +121,20 @@ export function publicRoom(room: InternalRoom, actorId?: string, now = Date.now(
     race: room.race,
     results: room.results.map((r) => ({ ...r, heatmap: r.playerId === actorId ? r.heatmap : [] })),
     serverTime: now,
+    events: room.events ?? [],
     ...(self ? { self: { value: self.value, sequence: self.sequence } } : {}),
   };
+}
+function addArcadeEvents(room: InternalRoom, events: Array<Omit<ArcadeEvent, "id">>) {
+  room.events = [
+    ...(room.events ?? []),
+    ...events.map((event) => ({ ...event, id: randomUUID() })),
+  ].slice(-90);
+}
+function settleRoomArcade(room: InternalRoom, now: number) {
+  const result = settleArcade(room.players, now);
+  room.players = result.players;
+  addArcadeEvents(room, result.events);
 }
 function ensureHost(room: InternalRoom, actorId: string) {
   if (room.hostId !== actorId) throw new ServiceError("host_required", 403);
@@ -320,6 +344,8 @@ function close(room: InternalRoom, interrupted = false) {
 }
 async function finish(db: PoolClient, room: InternalRoom, now: number): Promise<void> {
   if (!room.race || room.phase !== "racing") return;
+  // Final metrics use the race deadline, never the delayed delivery/tick time.
+  now = Math.min(now, room.race.endsAt ?? now);
   room.players = room.players.map((p) =>
     updateMetrics(p, room.race!.text, room.race!.startsAt, now, room.settings.errorMode),
   );
@@ -329,6 +355,33 @@ async function finish(db: PoolClient, room: InternalRoom, now: number): Promise<
     now,
     room.settings.gameMode,
   );
+  const rulesKey = digest(
+    JSON.stringify({
+      language: room.settings.language,
+      mode: room.settings.gameMode,
+      error: room.settings.errorMode,
+      content: room.settings.contentMode,
+      length: room.settings.length,
+      duration: room.settings.durationSeconds,
+      custom: room.settings.customText,
+      targets: room.settings.targets,
+      excluded: room.settings.excludedCharacters,
+      topic: room.settings.topic,
+    }),
+  );
+  const previous = await db.query(
+    "SELECT actor_id,max((data->>'wpm')::float8) AS best FROM results WHERE actor_id=ANY($1::uuid[]) AND data->>'rulesKey'=$2 AND (data->>'attempts')::int>=20 GROUP BY actor_id",
+    [room.results.map((r) => r.playerId), rulesKey],
+  );
+  const bests = new Map(previous.rows.map((row) => [row.actor_id, Number(row.best)]));
+  room.results = room.results.map((result) => ({
+    ...result,
+    personalBest:
+      (result.attempts ?? 0) >= 20 &&
+      bests.has(result.playerId) &&
+      result.wpm > (bests.get(result.playerId) ?? Infinity),
+    firstReference: (result.attempts ?? 0) >= 20 && !bests.has(result.playerId),
+  }));
   room.phase = "results";
   await db.query("UPDATE races SET phase='results',finished_at=$2 WHERE id=$1", [
     room.race.id,
@@ -338,6 +391,7 @@ async function finish(db: PoolClient, room: InternalRoom, now: number): Promise<
     const id = randomUUID();
     const stored: StoredResult = {
       ...result,
+      rulesKey,
       id,
       roomId: room.id,
       roomName: room.settings.name,
@@ -370,6 +424,7 @@ async function start(db: PoolClient, room: InternalRoom, now: number) {
   };
   room.phase = "countdown";
   room.results = [];
+  room.events = [];
   room.players = room.players.map((p) => ({
     ...initializePlayer(p.id, p.username, p.kind, p.role, now),
     joinedAt: p.joinedAt,
@@ -524,7 +579,7 @@ export async function runCommand(session: AuthSession, input: unknown): Promise<
             await db.query("UPDATE races SET phase='racing' WHERE id=$1", [room.race.id]);
           }
           if (
-            room.phase !== "racing" ||
+            (room.phase !== "racing" && room.phase !== "results") ||
             !room.race ||
             payload.raceId !== room.race.id ||
             !Number.isSafeInteger(payload.sequence) ||
@@ -533,7 +588,15 @@ export async function runCommand(session: AuthSession, input: unknown): Promise<
             throw new ServiceError("invalid_phase", 409);
           const sequence = payload.sequence as number;
           if (sequence > player.sequence + 1) throw new ServiceError("stale_sequence", 409);
-          if (sequence === player.sequence + 1)
+          const timeExpired = room.race.endsAt !== null && now >= room.race.endsAt;
+          if (room.phase === "results" || timeExpired) {
+            // A last batch can arrive after the tick. Acknowledge the final state,
+            // without accepting late characters or creating duplicate results.
+            if (!player.raceParticipant) throw new ServiceError("cannot_type", 409);
+            validateInputOperations(payload.operations);
+            await finish(db, room, now);
+          } else if (sequence === player.sequence + 1) {
+            settleRoomArcade(room, now);
             room.players = room.players.map((p) =>
               p.id === player.id
                 ? {
@@ -549,6 +612,7 @@ export async function runCommand(session: AuthSession, input: unknown): Promise<
                   }
                 : p,
             );
+          }
           if (
             raceIsComplete(
               room.players.filter((p) => p.raceParticipant),
@@ -559,21 +623,27 @@ export async function runCommand(session: AuthSession, input: unknown): Promise<
           )
             await finish(db, room, now);
         } else if (command.kind === "ability") {
-          if (room.phase !== "racing") throw new ServiceError("invalid_phase", 409);
-          room.players = room.players.map((p) =>
-            p.id === player.id
-              ? {
-                  ...p,
-                  ...applyAbility(
-                    p,
-                    payload.ability as "boost" | "shield",
-                    room.players,
-                    room.settings.gameMode,
-                    now,
-                  ),
-                }
-              : p,
+          if (room.phase !== "racing" || !room.race || payload.raceId !== room.race.id)
+            throw new ServiceError("invalid_phase", 409);
+          settleRoomArcade(room, now);
+          if (
+            payload.ability === "trap" &&
+            (typeof payload.targetId !== "string" ||
+              !uuid.test(payload.targetId) ||
+              nearestTrapRival(room.players, player.id)?.id !== payload.targetId)
+          )
+            throw new ServiceError("trap_unavailable", 409);
+          const applied = applyArcadeAbility(
+            room.players,
+            player.id,
+            payload.ability as Ability,
+            room.settings,
+            room.race,
+            now,
           );
+          room.players = applied.players;
+          addArcadeEvents(room, applied.events);
+          settleRoomArcade(room, now);
         } else if (command.kind === "invite") {
           ensureHost(room, session.actorId);
           if (room.settings.visibility !== "private")
@@ -629,6 +699,7 @@ export async function runCommand(session: AuthSession, input: unknown): Promise<
           room.phase = "lobby";
           room.race = null;
           room.results = [];
+          room.events = [];
           room.players = activePlayers(room).map((p) => ({
             ...initializePlayer(p.id, p.username, p.kind, p.role, now),
             joinedAt: p.joinedAt,
@@ -789,6 +860,7 @@ export async function tickRooms(): Promise<InternalRoom[]> {
         dirty = true;
       }
       if (room.phase === "racing" && room.race) {
+        settleRoomArcade(room, now);
         room.players = room.players.map((p) => {
           let next: RoomPlayer = {
             ...p,

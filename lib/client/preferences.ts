@@ -9,6 +9,8 @@ export interface Preferences {
   reducedMotion: boolean;
   sounds: boolean;
   effects: boolean;
+  raceSounds: boolean;
+  soundVolume: number;
 }
 const initial: Preferences = {
   locale: "fr",
@@ -16,6 +18,8 @@ const initial: Preferences = {
   reducedMotion: false,
   sounds: false,
   effects: true,
+  raceSounds: false,
+  soundVolume: 35,
 };
 const key = "typulso.preferences.v1";
 let current = initial;
@@ -33,6 +37,10 @@ function getSnapshot() {
           reducedMotion: stored.reducedMotion === true,
           sounds: stored.sounds === true,
           effects: stored.effects !== false,
+          raceSounds: stored.raceSounds === true,
+          soundVolume: Number.isFinite(stored.soundVolume)
+            ? Math.max(0, Math.min(100, stored.soundVolume))
+            : 35,
         };
     } catch {
       /* Preferences are optional when storage is unavailable. */
@@ -67,21 +75,4 @@ export function updatePreferences(value: Partial<Preferences>) {
 }
 export function usePreferences() {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-}
-
-export function playFeedback(enabled: boolean) {
-  if (!enabled || typeof window === "undefined") return;
-  const context = new AudioContext();
-  const oscillator = context.createOscillator();
-  const gain = context.createGain();
-  oscillator.frequency.value = 520;
-  gain.gain.value = 0.035;
-  oscillator.connect(gain);
-  gain.connect(context.destination);
-  oscillator.start();
-  gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.09);
-  oscillator.stop(context.currentTime + 0.1);
-  oscillator.onended = () => {
-    void context.close();
-  };
 }

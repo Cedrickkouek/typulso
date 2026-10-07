@@ -2,7 +2,8 @@
 
 import type { ReactNode } from "react";
 import { Bot, Check, Flag, Shield, Timer, WifiOff, Zap } from "lucide-react";
-import type { PlayerSnapshot, RoomSnapshot } from "@/types/game";
+import { nearestTrapRival, trapAvailable } from "@/lib/domain/arcade";
+import type { Ability, PlayerSnapshot, RaceSnapshot, RoomSnapshot } from "@/types/game";
 import { useTranslation } from "./providers";
 import { Avatar, Metric } from "./ui";
 
@@ -57,13 +58,17 @@ export function ArcadeControls({
   players,
   connected,
   busy,
+  race,
+  now,
   onAbility,
 }: {
   self: PlayerSnapshot | undefined;
   players: PlayerSnapshot[];
   connected: boolean;
   busy: boolean;
-  onAbility: (ability: "boost" | "shield") => void;
+  race: RaceSnapshot;
+  now: number;
+  onAbility: (ability: Ability, targetId?: string) => void;
 }) {
   const { t } = useTranslation();
   const energy = Math.round(self?.energy || 0);
@@ -83,6 +88,8 @@ export function ArcadeControls({
     !self.abilityUsed &&
     self.energy >= 100 &&
     deficit >= 5;
+  const target = self ? nearestTrapRival(players, self.id) : undefined;
+  const canTrap = canUse && trapAvailable(target, race, now);
   const explanation = unavailable
     ? t(
         "La capacité reste réservée aux participants en course.",
@@ -107,7 +114,10 @@ export function ArcadeControls({
               )
             : busy
               ? t("Un instant, ton action est en cours.", "One moment, your action is in progress.")
-              : t("À toi de choisir : accélération ou bouclier.", "Your choice: boost or shield.");
+              : t(
+                  "À toi de choisir : pulsation, bouclier ou virgule piégée.",
+                  "Your choice: pulse, shield or comma trap.",
+                );
   return (
     <section className="race-arcade" aria-label={t("Capacité arcade", "Arcade ability")}>
       <div className="race-arcade-energy">
@@ -133,25 +143,65 @@ export function ArcadeControls({
         </p>
       </div>
       <div className="race-arcade-choices">
-        <div className="actions">
-          <button
-            className="subtle"
-            disabled={!canUse}
-            aria-describedby="arcade-availability"
-            onClick={() => onAbility("boost")}
-          >
-            <Zap size={17} />
-            {t("Accélération", "Boost")}
-          </button>
-          <button
-            className="subtle"
-            disabled={!canUse}
-            aria-describedby="arcade-availability"
-            onClick={() => onAbility("shield")}
-          >
-            <Shield size={17} />
-            {t("Bouclier", "Shield")}
-          </button>
+        <div className="race-power-grid">
+          {[
+            {
+              ability: "boost" as const,
+              Icon: Zap,
+              name: t("Pulsation", "Pulse"),
+              note: t(
+                "Un bonus au score arcade, sans sauter de lettres.",
+                "An arcade score bonus, without skipping letters.",
+              ),
+              tone: "lime",
+              enabled: canUse,
+            },
+            {
+              ability: "shield" as const,
+              Icon: Shield,
+              name: t("Bouclier", "Shield"),
+              note: t(
+                "Trois erreurs protégées sur 8 s, ou un piège absorbé.",
+                "Three protected mistakes over 8 s, or one absorbed trap.",
+              ),
+              tone: "sky",
+              enabled: canUse,
+            },
+            {
+              ability: "trap" as const,
+              Icon: Zap,
+              name: t("Virgule piégée", "Comma trap"),
+              note: canTrap
+                ? `${t("Cible :", "Target:")} ${target!.username} · ${t("3 s, jusqu’à −2 au score.", "3 s, up to −2 score.")}`
+                : t(
+                    "Rival actif devant toi, hors immunité et loin de l’arrivée. Pas dans les 5 premières/dernières secondes.",
+                    "An active rival ahead, without immunity and away from the finish. Not in the first/last 5 seconds.",
+                  ),
+              tone: "coral",
+              enabled: canTrap,
+            },
+          ].map(({ ability, Icon, name, note, tone, enabled }) => (
+            <button
+              className="race-power subtle"
+              key={ability}
+              data-tone={tone}
+              disabled={!enabled}
+              aria-describedby="arcade-availability"
+              onClick={() => onAbility(ability, ability === "trap" ? target?.id : undefined)}
+            >
+              <span className="race-power-icon">
+                {ability === "trap" ? (
+                  <span aria-hidden="true" style={{ fontSize: 28, lineHeight: 1 }}>
+                    ,
+                  </span>
+                ) : (
+                  <Icon size={22} />
+                )}
+              </span>
+              <strong>{name}</strong>
+              <small>{note}</small>
+            </button>
+          ))}
         </div>
         <p>
           {t(
@@ -257,6 +307,12 @@ export function RaceTracks({ room, selfId }: { room: RoomSnapshot; selfId: strin
                   className="key-racer"
                   data-moving={moving || undefined}
                   data-finished={player.finished || undefined}
+                  data-shield={
+                    ((player.shieldRemaining ?? 0) > 0 &&
+                      room.serverTime < (player.shieldUntil ?? 0)) ||
+                    undefined
+                  }
+                  data-trap={(!!player.trap && room.serverTime < player.trap.endsAt) || undefined}
                   style={{ left: `calc(${progress}% - ${progress * 0.48}px)`, color: racerColor }}
                   aria-hidden="true"
                 >

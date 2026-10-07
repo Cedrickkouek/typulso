@@ -2,7 +2,16 @@
 
 import Link from "next/link";
 import { useId, useState } from "react";
-import { ArrowRight, ChartNoAxesCombined, Gauge, Target, Trophy, Undo2, X } from "lucide-react";
+import {
+  Check,
+  ArrowRight,
+  ChartNoAxesCombined,
+  Gauge,
+  Target,
+  Trophy,
+  Undo2,
+  X,
+} from "lucide-react";
 import {
   heatLevel,
   keyboardHeatmap,
@@ -258,6 +267,42 @@ export function ResultsPanel({
                 {t("Rang", "Rank")} {personal.rank}
               </span>
             </div>
+            <div className="race-achievements">
+              {(personal.attempts ?? 0) >= 20 && personal.accuracy >= 98 && (
+                <span>
+                  <Target size={17} />
+                  {t("Précision remarquable", "Outstanding accuracy")}
+                </span>
+              )}
+              {(personal.bestStreak ?? 0) >= 10 && (
+                <span>
+                  <Check size={17} />
+                  {t("Meilleure série :", "Best streak:")} {personal.bestStreak}
+                </span>
+              )}
+              {personal.personalBest && (
+                <span>
+                  <Trophy size={17} />
+                  {t("Nouveau record personnel", "New personal best")}
+                </span>
+              )}
+              {personal.firstReference && (
+                <span>
+                  {t("Première référence de ces règles", "First benchmark for these rules")}
+                </span>
+              )}
+            </div>
+            {arcade && personal.arcade && (
+              <p className="race-score-explanation">
+                {t("Score arcade :", "Arcade score:")} {personal.score.toFixed(1)} ·{" "}
+                {t("Bonus :", "Bonus:")} +{personal.arcade.bonus.toFixed(1)} ·{" "}
+                {t("Pièges :", "Traps:")} −{personal.arcade.penalty}.{" "}
+                {t(
+                  "Vitesse et précision gardent leurs valeurs réelles.",
+                  "Speed and accuracy retain their actual values.",
+                )}
+              </p>
+            )}
             <dl className="results-refresh-metrics">
               {[
                 {

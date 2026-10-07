@@ -1,6 +1,7 @@
 "use client";
 
 import { Select } from "./select";
+import { RaceFilters } from "./race-filters";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -62,25 +63,13 @@ export function CoursesPage() {
           </Link>
         }
       />
-      <div className="filter-bar">
-        <Field id="language-filter" label={t("Langue du texte", "Text language")}>
-          <Select
-            id="language-filter"
-            value={language}
-            onValueChange={(value) => setLanguage(value)}
-          >
-            <option value="all">{t("Toutes", "All")}</option>
-            <option value="fr">{t("Français", "French")}</option>
-            <option value="en">{t("Anglais", "English")}</option>
-          </Select>
-        </Field>
-        <Field id="mode-filter" label={t("Mode", "Mode")}>
-          <Select id="mode-filter" value={mode} onValueChange={(value) => setMode(value)}>
-            <option value="all">{t("Tous", "All")}</option>
-            <option value="classic">{t("Classique", "Classic")}</option>
-            <option value="arcade">Arcade</option>
-          </Select>
-        </Field>
+      <RaceFilters
+        id="courses-filter"
+        language={language}
+        mode={mode}
+        onLanguage={setLanguage}
+        onMode={setMode}
+      >
         <button className="subtle" onClick={() => void join()} disabled={busy}>
           <Shuffle size={17} />
           {t("Course rapide", "Quick race")}
@@ -88,7 +77,7 @@ export function CoursesPage() {
         <button className="ghost" onClick={listing.retry}>
           {t("Actualiser", "Refresh")}
         </button>
-      </div>
+      </RaceFilters>
       {error && <ErrorNotice message={error} />}{" "}
       {listing.loading ? (
         <Loading />
@@ -399,8 +388,8 @@ export function CreatePage() {
             {settings.gameMode === "arcade" && (
               <Notice>
                 {t(
-                  "Deux capacités : accélération et bouclier. L’énergie et les effets sont calculés par le serveur.",
-                  "Two abilities: boost and shield. Energy and effects are calculated by the server.",
+                  "Trois choix, un usage : pulsation, bouclier ou virgule piégée. L’énergie et les effets sont calculés par le serveur.",
+                  "Three choices, one use: pulse, shield or comma trap. Energy and effects are calculated by the server.",
                 )}
               </Notice>
             )}

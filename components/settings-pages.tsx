@@ -1,5 +1,6 @@
 "use client";
 
+import { RaceSounds } from "./race-sounds";
 import { Select } from "./select";
 
 import Link from "next/link";
@@ -65,8 +66,8 @@ export function PreferencesPage() {
               key: "sounds" as const,
               title: t("Son de frappe discret", "Quiet typing sounds"),
               note: t(
-                "Un petit retour sonore à chaque frappe, désactivé par défaut.",
-                "A small sound on each keystroke, off by default.",
+                "Touche correcte et erreur douce, désactivés par défaut.",
+                "Correct keys and soft errors, off by default.",
               ),
             },
           ].map((item) => (
@@ -82,6 +83,7 @@ export function PreferencesPage() {
               />
             </label>
           ))}
+          <RaceSounds />
           <p className="small mt-5" role="status">
             {t(
               "Tes préférences sont enregistrées sur cet appareil.",

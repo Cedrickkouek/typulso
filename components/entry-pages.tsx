@@ -140,8 +140,8 @@ export function HomePage() {
             icon: <Zap />,
             title: t("Classique ou arcade", "Classic or arcade"),
             copy: t(
-              "Concentre-toi sur ta frappe ou ajoute deux capacités pour pimenter la course.",
-              "Focus on your typing or add two abilities to spice up your race.",
+              "Concentre-toi sur ta frappe ou choisis une capacité pour pimenter la course.",
+              "Focus on your typing or choose an ability to spice up your race.",
             ),
             color: "var(--accent)",
           },

@@ -18,6 +18,8 @@ La **v0.5** conserve cette base artistique et complète les pages à partir du [
 
 **Recherche du 4 octobre :** le [dossier footer et jeu](21-recherche-footer-et-jeu.md) rassemble 54 références exploitables parmi 79 candidats, dont 8 revues à l’écran. Il propose une évolution du footer et de la hiérarchie du jeu en conservant la palette actuelle. Le [registre](recherche/footer-jeu-2026-10-04.md) distingue texte, rendu et interaction ; cette collecte ne modifie pas le code applicatif. Les revisites ne sont pas ajoutées au total historique.
 
+**Recherche du 6 octobre :** le [dossier sensations et compétition](22-sensations-et-competition.md) étudie sept expériences et propose une évolution classique/arcade liée au cahier. Le [laboratoire interactif](preview/arcade-lab.html) illustre six moments et douze sons originaux avec des données fictives. **Intégration du 7 octobre :** douze sons optionnels, duels, séries, records comparables et trois capacités sont branchés aux vraies parties. La musique, les mini-séries, fantômes et cosmétiques restent proposés. Le [registre ciblé](recherche/sensations-jeu-2026-10-06.md) distingue les observations de nos interprétations.
+
 ## Lire le dossier
 
 | Document | Question traitée |
@@ -44,6 +46,7 @@ La **v0.5** conserve cette base artistique et complète les pages à partir du [
 | [19 · Déploiement](19-deploiement.md) | Comment installer les services et préparer lundi ? |
 | [20 · Vérification applicative](20-verification-implementation.md) | Qu'a-t-on vérifié avec la vraie application et PostgreSQL ? |
 | [21 · Recherche footer et jeu](21-recherche-footer-et-jeu.md) | Quelles références et propositions peuvent enrichir le footer et la course ? |
+| [22 · Sensations et compétition](22-sensations-et-competition.md) | Quels sons, duels et choix tactiques sont intégrés en classique et arcade ? |
 | [ADR 0002 · Structure App Router](adr/0002-structure-app-router.md) | Pourquoi la structure du cours remplace-t-elle le monorepo envisagé ? |
 
 ## Voir la proposition

@@ -23,6 +23,20 @@ export interface RoomSettings {
   targetWpm: number | null;
 }
 export type RoomPhase = "lobby" | "countdown" | "racing" | "results" | "closed" | "interrupted";
+export type Ability = "boost" | "shield" | "trap";
+export interface TrapEffect {
+  sourceId: string;
+  warningEndsAt: number;
+  endsAt: number;
+  charged: number;
+}
+export interface ArcadeEvent {
+  id: string;
+  kind: Ability | "trap-blocked";
+  actorId: string;
+  targetId?: string;
+  at: number;
+}
 export interface PlayerSnapshot {
   id: string;
   username: string;
@@ -40,6 +54,13 @@ export interface PlayerSnapshot {
   finished: boolean;
   energy: number;
   abilityUsed: boolean;
+  shieldUntil?: number | null;
+  shieldRemaining?: number;
+  trap?: TrapEffect | null;
+  trapImmuneUntil?: number;
+  trapPenalty?: number;
+  streak?: number;
+  bestStreak?: number;
   status: "active" | "finished" | "left" | "disconnected";
 }
 export interface KeyMetric {
@@ -61,6 +82,11 @@ export interface ResultSnapshot {
   progress: number;
   score: number;
   heatmap: KeyMetric[];
+  attempts?: number;
+  bestStreak?: number;
+  arcade?: { bonus: number; penalty: number };
+  personalBest?: boolean;
+  firstReference?: boolean;
 }
 export interface RaceSnapshot {
   id: string;
@@ -79,6 +105,7 @@ export interface RoomSnapshot {
   race: RaceSnapshot | null;
   results: ResultSnapshot[];
   serverTime: number;
+  events?: ArcadeEvent[];
   self?: { value: string; sequence: number };
 }
 export interface RoomSummary {
@@ -123,6 +150,7 @@ export interface StoredResult extends ResultSnapshot {
   createdAt: string;
   language: Locale;
   gameMode: "classic" | "arcade";
+  rulesKey?: string;
 }
 export interface ProfileData {
   user: SessionUser;

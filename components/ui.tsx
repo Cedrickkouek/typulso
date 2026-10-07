@@ -96,7 +96,7 @@ export function Field({
   children,
 }: {
   id: string;
-  label: string;
+  label: React.ReactNode;
   note?: string;
   children: React.ReactNode;
 }) {

@@ -390,3 +390,62 @@ Vérification des vrais composants via un aperçu temporaire explicitement ficti
 Le passage partagé affiche les initiales colorées des autres participants à leur position de progression publique, avec légende nom/pourcentage. Les participants partis sont exclus ; les joueurs hors ligne gardent leur dernière position confirmée et sont indiqués hors ligne. Les repères à la même position sont regroupés (deux initiales puis nombre supplémentaire). Le texte observé après sa propre arrivée et la vue spectateur utilisent le même composant. Aucune saisie privée supplémentaire ne traverse le serveur : positions calculées à partir du snapshot déjà public. La projection tient compte des points de code normalisés du serveur et des graphèmes de l’affichage.
 
 Tests : recul après suppression, bornes, texte vide, accents combinés et emoji composé. Aperçu temporaire fictif des vrais composants retiré après inspection : repère Lina à 50 % (index 57), puis 10 % (index 11) ; repère de fin à 100 %. Rendus sombre bureau et clair mobile à 390 px sans débordement horizontal. Le scénario réseau entre deux sessions réelles n’a pas été exécuté pendant cette vérification.
+
+
+### Fin de course et recherche de sensations — 7 octobre 2026
+
+Une dernière commande de saisie pouvait parvenir après l’échéance et recevoir `time_expired`, alors que le tick normal prépare déjà les résultats. Le client conservait ce refus en rouge avec Réessayer. Le serveur acquitte maintenant les lots valides du même participant et de la même course avec l’état final, sans ajouter de caractères après l’échéance. La finalisation borne son horloge à la limite de la course et reste idempotente. Les gardes de membre, course et séquence restent appliquées.
+
+Le navigateur suspend la saisie et vide les lots non envoyés à l’échéance estimée depuis le dernier snapshot serveur. Il présente brièvement « Course terminée · Le classement arrive… », puis les résultats reçus. Les erreurs de saisie ne restent pas affichées dans la phase résultats ; une vraie erreur pendant la course conserve son traitement.
+
+Vérification PostgreSQL et HTTP/Socket.IO avec deux sessions indépendantes : **8 tests réussis, 0 échec, 82 assertions**. La course chronométrée réelle vérifie les lots tardifs après résultats, la conservation des valeurs et mesures, la confidentialité des heatmaps et la persistance. Le test direct avance uniquement la course de sa propre fixture pour vérifier le lot reçu après l’échéance avant le tick, sa répétition, les deux participants, les deux résultats uniques et le rejet d’un autre identifiant de course. Aucun compte utilisateur existant ni mot de passe enregistré n’a été utilisé.
+
+Lors de la première passe, la base de test configurée sur 55432 était indisponible ; la vérification a utilisé explicitement la base locale active sur 5432. Les attentes ont été corrigées pour tenir compte des heatmaps privées par destinataire et du tick local concurrent, qui peut ignorer une ligne verrouillée. Les fixtures de fin de course rejoignent bien leur salle par code.
+
+Contrôles applicatifs : `bun run check` réussi (formatage, lint, TypeScript, **60 tests unitaires réussis**, compilation Next et serveur temps réel). Les tests d’intégration ignorés par la passe unitaire sont vérifiés dans la passe dédiée : huit tests réussis. Le lint final est sans avertissement.
+
+Le [dossier de sensations](22-sensations-et-competition.md), son registre et le laboratoire autonome sont enregistrés séparément. Vérification du laboratoire : aperçu sonore « Bouclier » sans erreur navigateur ; passage Classique masquant les capacités et désactivant le piège ; anglais clair à 390 px, document de 390 px ; français sombre à 1280 px, document de 1280 px ; animations réduites effectivement désactivées. L’écoute humaine, une session navigateur authentifiée complète et les nouvelles règles multijoueurs ne sont pas validées par cet aperçu.
+
+![Laboratoire de sensations — données et règles proposées](assets/app-v01/atelier-sensations.png)
+
+
+### Sortie automatique d’une salle fermée — 7 octobre 2026
+
+La page de salle retourne automatiquement à **Jouer (`/`)** dès qu’elle reçoit une phase `closed` ou `interrupted`, ou un refus `room_closed` pendant l’admission, la synchronisation ou la saisie. Un chargement traduit remplace l’écran terminal pendant la navigation ; aucune tentative de rejoindre de nouveau une salle déjà reconnue fermée. Les lots en attente sont annulés. `router.replace` remplace l’entrée obsolète dans l’historique. Les autres erreurs gardent leur traitement habituel.
+
+Recette navigateur avec un hôte de fixture et une nouvelle session invitée, sans compte utilisateur existant : salle publique rejointe, fermeture envoyée par la connexion Socket.IO de l’hôte → URL `/` avec contenu Jouer et zéro bouton Réessayer. Accès direct à l’ancien lien dans un nouveau document → `/`. Retour du navigateur → `/`, zéro bouton Réessayer. Capture en français clair à 1280 px. Session invitée déconnectée, langue/thème initiaux et viewport rétablis, onglet de recette fermé. Le cas d’interruption en cours de frappe n’a pas été rejoué dans cette recette.
+
+`bun run check` réussit : formatage, lint sans avertissement, TypeScript, 60 tests unitaires, build Next et build temps réel. Aucun changement de contrat ou de règle serveur.
+
+![Retour à Jouer après fermeture — session invitée de vérification](assets/app-v01/salle-fermee-redirection.png)
+
+
+### Intégration des sensations classique/arcade · 7 octobre 2026
+
+La proposition est maintenant reliée aux données de partie : douze motifs sonores optionnels, rival proche, séries, énergie prête, sprint, trois capacités, piège contrable et reconnaissances réellement calculées. Les résultats différencient première référence et meilleur admissible avec règles comparables ; aucun résultat historique n’est requalifié artificiellement.
+
+**Contrôles :** `bun run check` réussi, formatage, lint sans avertissement, TypeScript, **69 tests unitaires réussis, 0 échec, 1 116 assertions**, compilations web et temps réel. Les onze entrées ignorées de cette passe appartiennent aux suites de base/session, exécutées séparément. La passe dédiée PostgreSQL + HTTP + Socket.IO réussit : **9 tests, 0 échec, 99 assertions** sur la base locale active à 5432. Les neuf tests de domaine supplémentaires couvrent ciblage sans réattribution, coût/usage unique, garde classique/départ/arrivée, plafonds, correction/expiration, bouclier/immunité, déconnexion, cumul et séries non cultivables par réécriture.
+
+Le scénario réseau arcade utilise trois sessions indépendantes. Il gagne l’énergie avec de vraies opérations de frappe, vérifie refus de cible/course obsolètes, rejeu sans double effet, avertissement partagé, absorption au bon moment, confidentialité et refus d’une seconde capacité. Deux manches de mêmes règles vérifient première référence puis record réel, remise à zéro des effets et événements.
+
+**Recette navigateur réelle :** salle de fixture publique à texte personnalisé, hôte, bot et nouvelle session invitée. Départ commun, saisie native sans rectangle, énergie gagnée jusqu’à 100, choix de virgule accepté, énergie consommée et trois boutons devenus indisponibles. Rival et séries suivent le serveur ; lettres privées des autres toujours absentes. Versions FR/EN, bureau clair/sombre, mobile sombre à 390 px (document mesuré à 390 px). Cartes empilées et explications lisibles ; layout bureau corrigé après découverte d’une ancienne colonne automatique trop étroite. Fermeture de la salle → Jouer, sans Réessayer.
+
+Dans les préférences, douze aperçus présents ; aperçu Bouclier confirmé par l’état de lecture, aucune erreur/alerte navigateur ; activation des sons et volume clavier de 35 à 36 puis retour à 35 vérifiés. Sons désactivés, anglais/sombre et viewport initiaux restaurés, invité déconnecté et onglet temporaire fermé. L’écoute humaine et l’équilibrage entre joueurs ne sont pas vérifiés par cette recette. La musique et les mini-séries restent proposées.
+
+![Course arcade réelle — session invitée de vérification](assets/app-v01/arcade-partie-reelle.png)
+
+[Aperçu mobile](assets/app-v01/arcade-mobile.png) · [Réglages sonores](assets/app-v01/arcade-sons.png)
+
+
+### Présentation des filtres · 7 octobre
+
+Carte partagée catalogue/historique : champs compacts, libellés à icônes, actions regroupées et réinitialisation conditionnelle. Recette anonyme du vrai catalogue : anglais sombre puis français clair à 1 280 px ; sélection Français, sélection Classique par flèches/Entrée, réinitialisation des deux valeurs. À 900 px puis 390 px, largeur document égale au viewport ; présentation sombre mobile empilée. L’historique authentifié n’est pas rejoué dans cette recette. Aucun résultat fictif ajouté. Langue/thème initiaux et viewport restaurés, onglet temporaire fermé. `bun run check` réussi : formatage, lint sans avertissement, TypeScript, 69 tests unitaires et deux compilations. Aucun changement de données ou permissions ne requiert de passe réseau supplémentaire.
+
+![Carte des filtres du catalogue](assets/app-v01/filtres-courses.png)
+
+
+### Centrage des sélecteurs et bouton de langue mobile
+
+À 1 878 px, centres mesurés de la carte et du groupe de filtres identiques : 939 px. Rendu clair à 1 280 px, sombre à 900 px et 390 px ; document mobile de 390 px. Bouton langue mobile mesuré à 44 px : icône et libellé contenus, marge de 4 px en haut et 5 px sous FR/EN. Changement FR/EN et clair/sombre fonctionnel ; préférences et viewport initiaux restaurés, onglet fermé. Aucun changement de comportement de filtrage. Contrôles complets applicatifs exécutés après les corrections CSS.
+
+[Aperçu du centrage](assets/app-v01/filtres-centres.png) · [Bouton langue sur mobile](assets/app-v01/langue-mobile.png)

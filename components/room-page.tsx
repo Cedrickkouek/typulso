@@ -1,5 +1,6 @@
 "use client";
 
+import { RaceExperience } from "./race-experience";
 import { Select } from "./select";
 
 import Link from "next/link";
@@ -62,9 +63,26 @@ export function RoomPage({ id }: { id: string }) {
   const [inputFailure, setInputFailure] = useState<{ raceId: string; message: string } | null>(
     null,
   );
-  const inputError = inputFailure?.raceId === room?.race?.id ? inputFailure?.message : null;
+  const inputError =
+    room?.phase === "racing" && inputFailure && inputFailure.raceId === room.race?.id
+      ? inputFailure.message
+      : null;
+  const roomUnavailable =
+    room?.phase === "closed" ||
+    room?.phase === "interrupted" ||
+    error === "room_closed" ||
+    inputError === "room_closed";
   useEffect(() => {
-    if (!user || joinedRef.current === `${id}:${user.id}`) return;
+    if (!roomUnavailable) return;
+    queue.current = [];
+    inputGeneration.current++;
+    if (flushTimer.current) clearTimeout(flushTimer.current);
+    flushTimer.current = null;
+    // Replace the obsolete room so Back cannot reopen its error screen.
+    router.replace("/");
+  }, [roomUnavailable, router]);
+  useEffect(() => {
+    if (!user || roomUnavailable || joinedRef.current === `${id}:${user.id}`) return;
     joinedRef.current = `${id}:${user.id}`;
     command("join", { roomId: id, ...(query.get("watch") === "1" ? { role: "spectator" } : {}) })
       .then((response) => {
@@ -75,7 +93,7 @@ export function RoomPage({ id }: { id: string }) {
         setError(error.message);
         joinedRef.current = "";
       });
-  }, [id, user, query]);
+  }, [id, user, query, roomUnavailable]);
   useEffect(
     () => () => {
       if (flushTimer.current) clearTimeout(flushTimer.current);
@@ -90,6 +108,18 @@ export function RoomPage({ id }: { id: string }) {
       currentRoom(id)?.race?.id !== room.race.id
     )
       return;
+    const latestRoom = currentRoom(id);
+    const estimatedNow =
+      (latestRoom?.serverTime ?? room.serverTime) +
+      Math.max(0, Date.now() - (realtime.receivedAt[id] || Date.now()));
+    if (
+      latestRoom?.phase !== "racing" ||
+      (room.race.endsAt !== null && estimatedNow >= room.race.endsAt)
+    ) {
+      queue.current = [];
+      setPendingInput(false);
+      return;
+    }
     inflight.current = true;
     const raceId = room.race.id;
     const generation = inputGeneration.current;
@@ -118,7 +148,8 @@ export function RoomPage({ id }: { id: string }) {
     } catch (error) {
       if (isCurrentInput()) {
         queue.current = [];
-        setInputFailure({ raceId, message: (error as Error).message });
+        if (currentRoom(id)?.phase === "racing")
+          setInputFailure({ raceId, message: (error as Error).message });
       }
     } finally {
       if (isCurrentInput()) {
@@ -204,6 +235,8 @@ export function RoomPage({ id }: { id: string }) {
     }
   }
   if (loading) return <Loading />;
+  if (roomUnavailable)
+    return <Loading label={t("Retour à la page de jeu…", "Returning to the play page…")} />;
   if (sessionError) return <ErrorNotice message={sessionError} />;
   if (!user) return <AuthGate destination={`/salles/${id}`} />;
   if (!room)
@@ -274,6 +307,14 @@ export function RoomPage({ id }: { id: string }) {
             {t("Se reconnecter", "Reconnect")}
           </button>
         </Notice>
+      )}
+      {room.race && (
+        <RaceExperience
+          room={room}
+          selfId={user.id}
+          now={serverNow}
+          connected={realtime.connected}
+        />
       )}
       {room.phase === "lobby" ? (
         <div className="panel room-panel">
@@ -505,7 +546,7 @@ export function RoomPage({ id }: { id: string }) {
                 selfId={user.id}
                 blocking={room.settings.errorMode === "blocking"}
                 startTime={room.race.startsAt}
-                disabled={!realtime.connected || restoringInput || !!inputError}
+                disabled={!realtime.connected || restoringInput || !!inputError || remaining === 0}
                 authoritativeValue={!pendingInput ? room.self?.value : undefined}
                 authoritativeSequence={!pendingInput ? room.self?.sequence : undefined}
                 authoritativeRevision={
@@ -532,13 +573,27 @@ export function RoomPage({ id }: { id: string }) {
                 <TypingPassage text={room.race.text} players={room.players} selfId={user.id} />
               </div>
             )}
-            {room.settings.gameMode === "arcade" && participant && (
+            {remaining === 0 && (
+              <Notice>
+                <strong>{t("Course terminée", "Race finished")}</strong>
+                <p>{t("Le classement arrive…", "The standings are on their way…")}</p>
+              </Notice>
+            )}
+            {room.settings.gameMode === "arcade" && participant && remaining !== 0 && (
               <ArcadeControls
                 self={self}
                 players={room.players}
                 connected={realtime.connected}
                 busy={busy}
-                onAbility={(ability) => void act("ability", { ability })}
+                race={room.race}
+                now={serverNow}
+                onAbility={(ability, targetId) =>
+                  void act("ability", {
+                    ability,
+                    raceId: room.race!.id,
+                    ...(targetId ? { targetId } : {}),
+                  })
+                }
               />
             )}
             <RaceTracks room={room} selfId={user.id} />

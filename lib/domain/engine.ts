@@ -23,6 +23,11 @@ export interface DomainPlayer extends PlayerSnapshot {
   shieldUntil: number | null;
   shieldRemaining: number;
   protectedErrors: number;
+  trap: import("../../types/game").TrapEffect | null;
+  trapImmuneUntil: number;
+  trapPenalty: number;
+  streak: number;
+  bestStreak: number;
   botNextAt: number;
   botRandomState: number;
 }
@@ -49,7 +54,11 @@ function validClock(now: number): void {
 }
 
 function copy(player: DomainPlayer): DomainPlayer {
-  return { ...player, heatmap: player.heatmap.map((entry) => ({ ...entry })) };
+  return {
+    ...player,
+    trap: player.trap ? { ...player.trap } : null,
+    heatmap: player.heatmap.map((entry) => ({ ...entry })),
+  };
 }
 
 export function initializePlayer(
@@ -91,6 +100,11 @@ export function initializePlayer(
     shieldUntil: null,
     shieldRemaining: 0,
     protectedErrors: 0,
+    trap: null,
+    trapImmuneUntil: 0,
+    trapPenalty: 0,
+    streak: 0,
+    bestStreak: 0,
     botNextAt: now,
     botRandomState: hash(id),
   };
@@ -241,6 +255,22 @@ export function applyInput(
       if (isCorrect && index >= result.energyHighWater) {
         result.energy = Math.min(100, result.energy + 2);
         result.energyHighWater = index + 1;
+        result.streak = (result.streak ?? 0) + 1;
+        result.bestStreak = Math.max(result.bestStreak ?? 0, result.streak);
+      }
+      if (!isCorrect) {
+        result.streak = 0;
+        if (
+          settings.gameMode === "arcade" &&
+          result.trap &&
+          now >= result.trap.warningEndsAt &&
+          now < result.trap.endsAt &&
+          result.trap.charged < 2 &&
+          (result.trapPenalty ?? 0) < 4
+        ) {
+          result.trap.charged++;
+          result.trapPenalty = (result.trapPenalty ?? 0) + 1;
+        }
       }
       if (
         !isCorrect &&
@@ -270,7 +300,7 @@ export function score(
   player: Pick<
     DomainPlayer,
     "wpm" | "accuracy" | "attempts" | "errors" | "protectedErrors" | "arcadeBonus"
-  >,
+  > & { trapPenalty?: number },
   mode: RoomSettings["gameMode"] = "classic",
 ): number {
   const accuracy = Math.max(0, Math.min(1, player.accuracy / 100));
@@ -283,7 +313,12 @@ export function score(
       )
     : 1;
   const shieldAdvantage = Math.max(0, player.wpm * effectiveAccuracy ** 2 - base);
-  return base + Math.min(6, Math.max(0, player.arcadeBonus) + shieldAdvantage);
+  return Math.max(
+    0,
+    base +
+      Math.min(6, Math.max(0, player.arcadeBonus) + shieldAdvantage) -
+      Math.min(4, Math.max(0, player.trapPenalty ?? 0)),
+  );
 }
 
 /** At least a five-percentage-point deficit; one use, earned energy, no raw metric changes. */
@@ -362,6 +397,16 @@ export function resultForPlayer(
     progress: player.progress,
     durationMs: Math.max(0, (player.finishedAt ?? effective.stoppedAt ?? now) - startsAt),
     score: score(effective, mode),
+    attempts: player.attempts,
+    bestStreak: player.bestStreak ?? 0,
+    ...(mode === "arcade"
+      ? {
+          arcade: {
+            bonus: score({ ...effective, trapPenalty: 0 }, mode) - score(effective, "classic"),
+            penalty: Math.min(4, player.trapPenalty ?? 0),
+          },
+        }
+      : {}),
     heatmap: player.heatmap
       .map((entry) => ({ ...entry }))
       .sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0)),
