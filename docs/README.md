@@ -1,79 +1,39 @@
-# Un clavier. Toute une arène.
+# Typulso — présentation de mon projet
 
-[← Dossier du projet](../README.md)
+> **Projet individuel · Web V · état du 7 octobre 2026.**
 
-> **Dossier du projet · Web V · actualisé le 7 octobre 2026**\
-> Courses de frappe collectives pour les 12–17 ans · Application livrée : **Typulso**
+Je développe **Typulso**, une application de courses de frappe destinée principalement aux 12–17 ans. Mon objectif est de rendre la pratique du clavier amusante et compétitive, tout en montrant les progrès réels en vitesse et en précision.
 
-[Site en production](https://typulso-production.up.railway.app/) · [GitHub](https://github.com/Cedrickkouek/typulso) · [CI réussie](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231) · [Preuves du checkpoint 1](08-plan-checkpoint.md)
+[Application en production](https://typulso-production.up.railway.app/) · [Dépôt GitHub](https://github.com/Cedrickkouek/typulso) · [CI vérifiée](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231)
 
-![Direction artistique](assets/moodboard.png)
+## Ce que propose l’application
 
-Ce dossier accompagne l’application **React dans Next.js, TypeScript, Tailwind CSS et PostgreSQL**, hébergée sur Railway. Les documents sont en Markdown compatible GitHub; les diagrammes utilisent Mermaid et les visuels sont locaux. Le dépôt GitHub est privé : les liens demandent une autorisation de lecture.
+- Connexion par compte local et entrée comme invité; les routes GitHub/Discord sont présentes mais leurs vrais retours restent à vérifier.
+- Création de salles par un compte, admission par code ou invitation, présence et réglages partagés en temps réel.
+- Texte commun, départ serveur, progression et classement; classique pour les mesures de frappe, arcade avec Pulsation, Bouclier et Virgule piégée.
+- Entraînement, résultats réels, historique, statistiques et clavier d’erreurs AZERTY/QWERTY avec filtres.
+- Interface FR/EN, thèmes clair/sombre, sons optionnels, volume et réduction de mouvement.
 
-**Lecture de l’état actuel :** les documents [02](02-matrice-exigences.md), [05](05-architecture.md), [06](06-modele-donnees.md), [07](07-machines-etats.md), [ADR 0001](adr/0001-temps-reel.md), [08](08-plan-checkpoint.md), [18](18-implementation.md), [19](19-deploiement.md) et la synthèse du [rapport 20](20-verification-implementation.md) décrivent le code et les preuves connus au 7 octobre, avec le commit applicatif vérifié **4d23075**. La [direction artistique](03-direction-artistique.md) distingue les retours humains, les propositions assistées et les contributions originales encore à documenter.
+## Mes choix de conception
 
-**Lecture historique :** le cahier conserve ses exigences sources. Les explorations et maquettes du 1er au 6 octobre, ainsi que les anciennes recettes datées, montrent le chemin de conception. Leurs mentions « proposé », « futur » ou « non publié » décrivent leur date de rédaction. Les maquettes utilisent des données fictives; leurs résultats ne prouvent pas le fonctionnement de l’application ni sa production.
+J’ai demandé une identité colorée, vibrante et ludique, des motifs de clavier sur le fond, des pistes animées et une saisie directement dans le texte. J’ai aussi orienté les itérations par mes retours sur la lisibilité, les espaces, les menus et les statistiques.
 
-La deuxième recherche ajoute **51 nouvelles références** aux 51 sites initiaux : **102 sites distincts cumulés dans les lots A–F**, hors Kahoot, Wooclap et Monkeytype. La v0.4 conserve la personnalité et la palette de la v0.3, puis précise boutons, invitations, statuts, zone de frappe, pistes et résultats. Les [contrats des futurs composants](14-composants-interface.md) distinguent cette spécification de l’aperçu HTML local.
+Le nom utilisé est **Typulso**. L’identité visuelle associe clavier, pulsation et touches en mouvement. La palette actuelle utilise citron `#D7FF3F`, rose `#FF8FCE`, lavande `#BBA3FF`, bleu ciel `#82B4FF` et corail `#FF9478`, avec un texte encre sur les surfaces colorées. Space Grotesk sert à l’interface et IBM Plex Mono à la frappe.
 
-La **v0.5** conserve cette base artistique et complète les pages à partir du [PDF fourni le 2 octobre](../sources/cahier-des-charges-2026-10-02.pdf). Le [plan détaillé](15-plan-des-pages.md) relie les 49 exigences produit aux parcours; le [design des pages](16-design-pages-et-etats.md) précise leurs contenus et comportements.
+![Moodboard du projet](assets/moodboard.png)
 
-**Recherche du 4 octobre :** le [dossier footer et jeu](21-recherche-footer-et-jeu.md) rassemble 54 références exploitables parmi 79 candidats, dont 8 revues à l’écran. Il propose une évolution du footer et de la hiérarchie du jeu en conservant la palette actuelle. Le [registre](recherche/footer-jeu-2026-10-04.md) distingue texte, rendu et interaction ; cette collecte ne modifie pas le code applicatif. Les revisites ne sont pas ajoutées au total historique.
+J’ai utilisé l’assistance de l’IA pour les recherches, les propositions de noms et de symboles, le moodboard, le code et les vérifications. Je distingue cette aide de mes décisions personnelles. Aucun croquis manuel original n’est déclaré réalisé sans pièce correspondante.
 
-**Recherche du 6 octobre :** le [dossier sensations et compétition](22-sensations-et-competition.md) étudie sept expériences et propose une évolution classique/arcade liée au cahier. Le [laboratoire interactif](preview/arcade-lab.html) illustre six moments et douze sons originaux avec des données fictives. **Intégration du 7 octobre :** douze sons optionnels, duels, séries, records comparables et trois capacités sont branchés aux vraies parties. La musique, les mini-séries, fantômes et cosmétiques restent proposés. Le [registre ciblé](recherche/sensations-jeu-2026-10-06.md) distingue les observations de nos interprétations.
+## Architecture et état vérifié
 
-## Lire le dossier
+L’application utilise React 19.3.0 dans Next.js 16.3.8, TypeScript 6.0.2, Tailwind CSS 4.3.3, Bun 1.4.1 et PostgreSQL 18. La production utilise deux processus Node.js : le site Next.js et le service Socket.IO, qui partagent la même base. Le navigateur ne décide ni des permissions ni du score final.
 
-| Document | Question traitée |
-|---|---|
-| [01 · Cahier des charges](01-cahier-des-charges.md) | Quel produit devons-nous livrer ? |
-| [02 · Matrice des exigences](02-matrice-exigences.md) | Comment relier chaque exigence à une preuve ? |
-| [03 · Direction artistique](03-direction-artistique.md) | Quel nom, quel logo et quelle personnalité ? |
-| [04 · Expérience utilisateur](04-experience-utilisateur.md) | Comment rejoindre, attendre, taper et progresser ? |
-| [05 · Architecture](05-architecture.md) | Où vivent les responsabilités techniques ? |
-| [06 · Modèle de données](06-modele-donnees.md) | Quelles entités, relations et contraintes ? |
-| [07 · Machines à états](07-machines-etats.md) | Comment évoluent salle, course et membres ? |
-| [ADR 0001 · Temps réel](adr/0001-temps-reel.md) | Pourquoi cette solution de synchronisation ? |
-| [08 · Dossier du checkpoint](08-plan-checkpoint.md) | Quelles preuves vérifiées correspondent aux six critères ? |
-| [09 · Sources et décisions](09-sources-et-decisions.md) | Qu'est-ce qui est confirmé, proposé ou ouvert ? |
-| [10 · Développement et déploiement](10-developpement-et-deploiement.md) | Comment préparer l'installation, la CI et la production ? |
-| [11 · Vérification du dossier](11-verification.md) | Qu'a-t-on réellement contrôlé à ce stade ? |
-| [12 · Recherche d'inspiration](12-recherche-inspiration.md) | Quelles pistes apportent les 51 sites initiaux des lots A–C ? |
-| [13 · Recherche de composants](13-recherche-composants.md) | Que retenir des 51 nouvelles références des lots D–F pour la v0.4 ? |
-| [14 · Composants d’interface](14-composants-interface.md) | Quelle était la spécification initiale des composants ? |
-| [15 · Plan complet des pages](15-plan-des-pages.md) | Quels parcours, droits et variantes relient les 20 écrans au cahier ? |
-| [16 · Design de chaque page](16-design-pages-et-etats.md) | Quelle hiérarchie, quels contenus et quels états réaliser ? |
-| [17 · Vérification des pages v0.5](17-verification-pages.md) | Quels parcours, dimensions et contrastes avons-nous réellement vérifiés ? |
-| [18 · Implémentation](18-implementation.md) | Comment le code est-il réellement organisé ? |
-| [19 · Déploiement](19-deploiement.md) | Comment installer, déployer et exploiter les services ? |
-| [20 · Vérification applicative](20-verification-implementation.md) | Qu'a-t-on vérifié avec la vraie application et PostgreSQL ? |
-| [21 · Recherche footer et jeu](21-recherche-footer-et-jeu.md) | Quelles références et propositions peuvent enrichir le footer et la course ? |
-| [22 · Sensations et compétition](22-sensations-et-competition.md) | Quels sons, duels et choix tactiques sont intégrés en classique et arcade ? |
-| [ADR 0002 · Structure App Router](adr/0002-structure-app-router.md) | Pourquoi la structure du cours remplace-t-elle le monorepo envisagé ? |
+Le commit applicatif vérifié est `4d23075557799c02acbb8253bd830409f8ebe446`. Les contrôles locaux comprennent 69 tests unitaires réussis, 1 116 assertions et les compilations web/realtime; la passe dédiée d’intégration comprend 9 tests et 99 assertions. La CI distante a exécuté les migrations, le format, le lint, les types, les tests, les compilations, l’intégration et trois scénarios navigateur avec succès.
 
-## Voir la proposition
+Sur Railway, 14 vérifications HTTP/Socket.IO ont confirmé HTTPS, PostgreSQL disponible, inscription puis reconnexion au même compte, profil relu, invité indépendant, création/admission par code, arrivée partagée, modification de durée partagée, refus du non-hôte et état prêt partagé. Cet essai utilise les vrais services; il ne représente pas une recette visuelle exhaustive ni toutes les courses arcade en production.
 
-Le [site de conception v0.5](preview/index.html) propose **20 écrans et 74 combinaisons de pages et d’états**. Le bouton **Toutes les pages** ouvre un catalogue; les menus bleus **Page / État** comparent les variantes. On peut suivre les parcours avec les liens et boutons : invité par code, compte d’exemple, création privée, salon, course et résultats. Préférences rassemble langue, thème, mouvement réduit, noms de travail et mode gris.
+Le dépôt reste privé : mon évaluateur doit disposer de l’accès nécessaire. Les tests de charge à 30 personnes, la latence mesurée, les vraies connexions OAuth, la restauration des sauvegardes et les essais avec les 12–17 ans restent à vérifier.
 
-Les accès, invitations, bots et résultats restent des exemples locaux. La saisie mesure uniquement la progression et la précision de l’exercice local; la minuterie est figée. Les permissions sont représentées pour discuter l’interface, sans constituer une sécurité serveur.
+## Présentation des pièces de remise
 
-L’[atelier de marque v0.4](preview/atelier.html) reste disponible pour comparer les logos et la palette.
-
-Pour la consulter depuis le **dossier du projet** avec Python installé :
-
-```bash
-python3 -m http.server 4173 --bind 127.0.0.1 --directory docs
-```
-
-Ouvrir ensuite `http://127.0.0.1:4173/preview/`. L'HTML peut aussi s'ouvrir directement. GitHub affiche le Markdown et les images; il ne transforme pas cet HTML en application. Le serveur ci-dessus sert seulement le dossier local de conception, pas l’application de production.
-
-## Méthode réutilisable
-
-Le [skill site-design-spec révisé](../skills/site-design-spec/SKILL.md) intègre les slides : choisir une personnalité liée au public, structurer une fonctionnalité centrale en monochrome, puis limiter et réutiliser les choix de style. Il impose aussi une recherche de **50–100 sites supplémentaires**, puis une revue visuelle ciblée et un registre distinguant texte, rendu et mouvement réellement observé. La [référence des slides](../skills/site-design-spec/references/sources-slides.md) garde leur correspondance avec les images 6–17.
-
-## Dépôt et remise
-
-Le [dépôt actuel](https://github.com/Cedrickkouek/typulso) contient l’application, `docs/`, ses actifs et les sources du cahier. Le [dossier CP1](08-plan-checkpoint.md) rassemble les liens réels du site, du dépôt, du commit applicatif vérifié et de la CI. Il ne déclare ni note obtenue ni remise scolaire effectuée.
-
-Le dépôt reste privé. Vérifier que l’évaluateur dispose de l’accès nécessaire avant la remise; cette actualisation ne modifie pas sa visibilité. Les pièces historiques contiennent des informations de provenance et ne doivent pas être présentées comme des créations originales de l’équipe sans attribution.
+Je rédige chaque document pour qu’il puisse être lu séparément : contexte, décisions, état réel et limites sont expliqués directement dans la pièce concernée. Je conserve les recherches et observations anciennes avec leur date. Les maquettes fictives, les contrôles locaux, la CI et les preuves de production sont distingués.

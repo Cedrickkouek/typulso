@@ -1,6 +1,6 @@
 # Recherche d'inspiration — premier corpus de 51 sites
 
-> **Lecture actuelle · 7 octobre 2026 :** ce document conserve la conception ou les observations à leur date. L’état du code et des choix implémentés figure dans [18](18-implementation.md); les procédures utilisables dans [19](19-deploiement.md); les preuves locales, CI et Railway dans [CP1](08-plan-checkpoint.md) et la synthèse de [20](20-verification-implementation.md). Une maquette ou un test prévu ne constitue pas une preuve de production.
+> **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
 > **Direction demandée : colorée, vibrante, amusante et ludique**  
 > Recherche du **1er octobre 2026 · America/Toronto**  
@@ -8,11 +8,10 @@
 > Complément v0.4 : **51 nouvelles références D–F**, soit **102 sites distincts cumulés**  
 > Statut : exploration documentée; aucun nom, logo ou langage visuel définitif validé
 
-[← Documentation](README.md) · [Direction artistique](03-direction-artistique.md) · [Sources et décisions](09-sources-et-decisions.md) · [Deuxième exploration](13-recherche-composants.md) · [Composants](14-composants-interface.md)
 
 La recherche élargit les trois références de départ — Kahoot, Wooclap et Monkeytype — à des univers de jeux, d'apprentissage, de création et de marques expressives. Le but est d'explorer plusieurs façons de porter une personnalité ludique, puis de les adapter au besoin précis : **rejoindre une course de frappe, jouer ensemble et voir ses progrès**.
 
-Ce document conserve le premier corpus et sa provenance, qui ont nourri la proposition v0.3. La [deuxième exploration](13-recherche-composants.md) ajoute 51 nouvelles références de jeux, applications et systèmes de composants. La v0.4 en retient des contrôles cohérents, une invitation plus claire, des états de joueurs explicites, une frappe stable et des résultats hiérarchisés, tout en gardant la personnalité et la palette établies. Les contrats à réaliser sont détaillés dans les [composants d’interface](14-composants-interface.md).
+Ce document conserve le premier corpus et sa provenance, qui ont nourri la proposition v0.3. La deuxième exploration ajoute 51 nouvelles références de jeux, applications et systèmes de composants. La v0.4 en retient des contrôles cohérents, une invitation plus claire, des états de joueurs explicites, une frappe stable et des résultats hiérarchisés, tout en gardant la personnalité et la palette établies. Les contrats à réaliser sont détaillés dans les composants d’interface.
 
 Le corpus ne démontre pas que les 51 pages possèdent toutes une palette vibrante ou une animation particulière. Certaines servent de référence pour la voix rédactionnelle, les personnages, la structure des choix, la progression ou les règles de jeu. Les qualités visuelles exactes demandent une observation de page rendue.
 
@@ -21,7 +20,7 @@ Le corpus ne démontre pas que les 51 pages possèdent toutes une palette vibran
 1. Ouvrir les pages publiques officielles jusqu'à une destination exploitable. Une page trouvée dans un résultat de recherche seul n'entre pas dans le registre.
 2. Corriger les domaines anciens ou inaccessibles; remplacer les pages bloquées et les coques JavaScript sans contenu suffisant. Les lots détaillés gardent ces exclusions.
 3. Lire titres, sections, catégories, libellés, texte et descriptions alternatives d'images. La personnalité du tableau est une **interprétation du contenu**, sauf lorsqu'une marque décrit explicitement son intention.
-4. Proposer une transposition vers notre jeu et en noter les limites. Les mécanismes d'un autre produit ne deviennent pas automatiquement des exigences supplémentaires.
+4. Proposer une transposition vers mon jeu et en noter les limites. Les mécanismes d'un autre produit ne deviennent pas automatiquement des exigences supplémentaires.
 5. Vérifier visuellement une sélection dans un navigateur rendu; conserver la distinction entre cette preuve et le contenu extrait.
 
 | Niveau | Ce qu'il autorise à décrire | Ce qu'il ne démontre pas |
@@ -41,7 +40,7 @@ Toutes les entrées ont été consultées le **1er octobre 2026**. Les liens don
 
 ### Lot A — marques alimentaires et voix expressives
 
-[Lire les observations, limites et remplacements du lot A](recherche/lot-a.md).
+Lire les observations, limites et remplacements du lot A.
 
 | ID | Site et page finale | Personnalité perçue — inférence | Apport potentiel au jeu | Niveau |
 |---|---|---|---|---|
@@ -67,7 +66,7 @@ Les noms et voix de ces marques offrent des pistes; leur vocabulaire adulte, agr
 
 ### Lot B — apprentissage, communauté et outils créatifs
 
-[Lire les observations, limites et remplacements du lot B](recherche/lot-b.md).
+Lire les observations, limites et remplacements du lot B.
 
 | ID | Site et page finale | Personnalité perçue — inférence | Apport potentiel au jeu | Niveau |
 |---|---|---|---|---|
@@ -93,7 +92,7 @@ Les sites pour jeunes enfants servent à étudier les personnages et l'entrée e
 
 ### Lot C — jeux, personnages et expérimentation
 
-[Lire les observations, limites et remplacements du lot C](recherche/lot-c.md).
+Lire les observations, limites et remplacements du lot C.
 
 | ID | Site et page finale | Personnalité perçue — inférence | Apport potentiel au jeu | Niveau |
 |---|---|---|---|---|
@@ -126,13 +125,13 @@ Les studios annonçant motion, 3D ou interactivité servent de pistes à prototy
 | C | 17 | 17 | 0 |
 | **Premier corpus A–C** | **51** | **51** | **0** |
 
-Le [corpus complémentaire D–F](13-recherche-composants.md) apporte **51 nouvelles références distinctes**, vérifiées contre ce registre, soit **102 sites cumulés**. Les trois références de départ et les pages techniques auxiliaires restent hors de ce décompte. Les tableaux A–C ci-dessus restent inchangés afin de conserver les observations initiales et leurs niveaux de preuve.
+Le corpus complémentaire D–F apporte **51 nouvelles références distinctes**, vérifiées contre ce registre, soit **102 sites cumulés**. Les trois références de départ et les pages techniques auxiliaires restent hors de ce décompte. Les tableaux A–C ci-dessus restent inchangés afin de conserver les observations initiales et leurs niveaux de preuve.
 
 Le contrôle compare les domaines finaux en supprimant le préfixe `www` et en ramenant les articles/sous-domaines au site concerné. Duolingo et son blog comptent une fois; Oatly et son lookbook comptent une fois; Catppuccin et sa palette comptent une fois; Koto et son étude de cas comptent une fois. Les pages Discord et Rive supplémentaires dans les lots ne créent pas de nouvelles entrées. La page officielle finale de Scratch se trouve sur Scratch Foundation.
 
 Panic et Playdate appartiennent à la même société mais ont des domaines et expériences autonomes : présentation d'éditeur/apps, puis produit console. Ils comptent comme deux sites, sans être présentés comme deux entreprises distinctes. Les trois références de départ sont **hors de ce total de 51**. Les pages écartées, bloquées ou seulement constituées d'une coque sont conservées dans les lots comme essais, sans gonfler le total.
 
-## 4. Six décisions possibles pour notre direction artistique
+## 4. Six décisions possibles pour ma direction artistique
 
 Ces décisions constituent des **propositions adaptées au cahier**. Elles traduisent la personnalité demandée et le contenu étudié; elles ne prétendent pas reproduire une palette ou un mouvement observé ailleurs.
 
@@ -156,12 +155,12 @@ Pour départager les pistes, produire d'abord une structure de salon/course/rés
 | [Monkeytype](https://monkeytype.com/) | Fond sombre, jaune de repère, monospace, exercice central, petits contrôles regroupés; texte flouté avant le focus | Zone de lecture stable et métriques périphériques; accents fonctionnels | Accueil après rejet des cookies facultatifs; pas de compte ni de résultat réel testé |
 | [Playdate](https://play.date/) · C02 | Console jaune très présente sur fond gris; lettrage blanc ample; bulle de parole et petit sticker incliné; action violette | Touches illustrées citron, sticker de départ et formes accueillantes | État de l’accueil; le mouvement n’a pas été vérifié |
 | [Poppi](https://www.drinkpoppi.com/) · A02 | En-tête magenta et bandeau citron; après défilement, cartes à aplats violet, magenta/orange et cercle citron | Couleur sur les moments collectifs et cartes expressives | Accueil puis une zone de cartes après défilement; aucun autoplay affirmé |
-| [Graza](https://www.graza.co/) · A04 | Grande photo de fond, titre crème ample, mot-symbole expressif, grande action jaune/citron en capsule | Une action dominante et un titre fort; nos illustrations de touches remplacent les photos culinaires | Accueil chargé; navigation d’achat non utilisée |
+| [Graza](https://www.graza.co/) · A04 | Grande photo de fond, titre crème ample, mot-symbole expressif, grande action jaune/citron en capsule | Une action dominante et un titre fort; mes illustrations de touches remplacent les photos culinaires | Accueil chargé; navigation d’achat non utilisée |
 | [Blooket](https://www.blooket.com/) · B02 | Espace blanc généreux, gros titre arrondi, boutons turquoise, illustration de jeu avec petits personnages; rejoindre distinct des actions de compte | Entrée dans une salle lisible et personnages secondaires | Accueil public seulement; aucune partie testée |
 | [Toca Boca](https://www.tocaboca.com/) · B07 | Très grand lettrage noir dense sur blanc; petit cœur arc-en-ciel et signes dessinés au sein du titre; logo expressif | Titres audacieux et motifs de touches originaux; ponctuation graphique hors de l’exercice | Accueil après rejet des cookies facultatifs; aucune licence de réutilisation de personnages supposée |
 | [Magic Spoon](https://magicspoon.com/) · A08 | Fond passant du bleu/violet au rose; grande hiérarchie blanche; objets et boîtes illustrées disposés autour du contenu | Accent bleu dans le studio, rose/lavande dans le salon et objets autour du titre | État du hero avec bannière cookies; page chargée après délai; pas d’animation confirmée |
 | [ToyFight](https://toyfight.co/) · C06 | Fond crème; titre en caractères de style pixel; mots posés sur capsules lavande/rose et rectangles neutres; petits contrôles sobres | Motifs de clavier et une grammaire de formes limitée; polices de frappe conservées lisibles | Accueil après chargement; expérimentation typographique observée, comportement dynamique non testé |
 
-**Choix retenus dans la proposition v0.3 :** citron pour agir, rose pour rassembler, lavande pour les moments de jeu, bleu pour les repères; touches vectorielles originales; titres amples; code dominant; mouvement léger hors course. Le texte, les pseudonymes, rangs et pourcentages donnent une information explicite. Ces choix sont notre synthèse, pas une reproduction d’une marque.
+**Choix retenus dans la proposition v0.3 :** citron pour agir, rose pour rassembler, lavande pour les moments de jeu, bleu pour les repères; touches vectorielles originales; titres amples; code dominant; mouvement léger hors course. Le texte, les pseudonymes, rangs et pourcentages donnent une information explicite. Ces choix sont ma synthèse, pas une reproduction d’une marque.
 
-La [planche interactive actuelle v0.4](preview/index.html) prolonge cette synthèse. Elle conserve citron, rose, lavande et bleu, puis affine les composants à partir du [deuxième corpus](13-recherche-composants.md). Ses animations sont écrites et contrôlées localement : elles ne sont pas présentées comme des effets copiés ou mesurés sur les sites externes. Le [rapport de vérification](11-verification.md) distingue les contrôles réalisés et ceux qui restent à faire ; la [spécification](14-composants-interface.md) décrit les comportements futurs à implémenter.
+La planche interactive actuelle v0.4 prolonge cette synthèse. Elle conserve citron, rose, lavande et bleu, puis affine les composants à partir du deuxième corpus. Ses animations sont écrites et contrôlées localement : elles ne sont pas présentées comme des effets copiés ou mesurés sur les sites externes. Le rapport de vérification distingue les contrôles réalisés et ceux qui restent à faire ; la spécification décrit les comportements futurs à implémenter.

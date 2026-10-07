@@ -4,9 +4,8 @@
 > Échéance annoncée dans la source : lundi 5 octobre 2026, avant 23 h 55.\
 > Cette actualisation ne prouve pas une remise effectuée à cette échéance.
 
-[← Documentation](README.md) · [Exigences](02-matrice-exigences.md) · [Rapport détaillé](20-verification-implementation.md)
 
-## Liens de remise
+## Identification et accès
 
 | Pièce | Lien réel / état |
 |---|---|
@@ -14,9 +13,9 @@
 | Dépôt GitHub | [Cedrickkouek/typulso](https://github.com/Cedrickkouek/typulso) — privé, accès de lecture nécessaire |
 | Version applicative vérifiée | [4d23075557799c02acbb8253bd830409f8ebe446](https://github.com/Cedrickkouek/typulso/commit/4d23075557799c02acbb8253bd830409f8ebe446) |
 | CI de cette version | [Vérifications Typulso · exécution 37648917231](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231) — réussie le 7 octobre |
-| Installation | [README](../README.md) et [guide des services](19-deploiement.md) |
-| Documentation | [Index](README.md), [cahier](01-cahier-des-charges.md), [matrice](02-matrice-exigences.md) |
-| Attribution créative | [Registre de direction artistique](03-direction-artistique.md) |
+| Installation | Bun 1.4.1, Node.js 24, PostgreSQL 18; installer les dépendances, renseigner les variables, appliquer les migrations puis lancer web et realtime. |
+| Périmètre | Courses de frappe, comptes/invités, salles, règles communes, classique/arcade, statistiques, FR/EN et thèmes. |
+| Attribution créative | Mes choix et critiques sont personnels; recherches, propositions graphiques et code ont bénéficié de l’assistance de l’IA. |
 
 Le commit ci-dessus fixe la version applicative des preuves. La consolidation documentaire du 7 octobre peut avoir un commit ultérieur; elle ne change pas rétroactivement la version testée. Les statuts GitHub du commit applicatif indiquent un déploiement Railway réussi pour les services web et temps réel. La vérification fonctionnelle en ligne est consignée ci-dessous.
 
@@ -24,19 +23,19 @@ Le commit ci-dessus fixe la version applicative des preuves. La consolidation do
 
 | Critère | Points | Pièces et preuve obtenue | Limite à connaître |
 |---|---:|---|---|
-| Cahier des charges | 20 | [01](01-cahier-des-charges.md) reprend les exigences sources et leurs priorités; [02](02-matrice-exigences.md) relie réalisation et preuve. | Une documentation complète n’est pas une validation de toutes les exigences finales. |
-| Démarche créative et direction artistique : nom, logo, moodboard, palette, typographies | 20 | [03](03-direction-artistique.md) contient ces éléments, l’identité intégrée, les décisions et retours humains identifiables. Logo et favicon utilisés dans l’application. | **Attribution partielle :** les esquisses assistées ne prouvent pas une création originale humaine. Idées/croquis de l’équipe et auteurs restent à fournir s’ils existent. |
-| Architecture : modèle de données, machine à états, ADR temps réel | 20 | [05](05-architecture.md), [06](06-modele-donnees.md), [07](07-machines-etats.md) et [ADR 0001](adr/0001-temps-reel.md) concordent avec les répertoires, migrations et contrat présents. | Charge à 30 personnes et reprise d’une course après panne non validées; l’implémentation interrompt la course après redémarrage. |
+| Cahier des charges | 20 | Je cadre une application de courses de frappe pour les 12–17 ans : comptes et invités, admission par code, règles communes, temps réel, statistiques et accessibilité. Le référentiel compte 49 exigences produit, 10 hypothèses et 8 précisions client. | Une documentation complète n’est pas une validation de toutes les exigences finales. |
+| Démarche créative et direction artistique : nom, logo, moodboard, palette, typographies | 20 | J’utilise Typulso et un signe clavier/pulsation. Mon moodboard associe touches et mouvement; ma palette utilise citron, rose, lavande, bleu ciel et corail. Space Grotesk sert à l’interface, IBM Plex Mono à la frappe. Mes choix et l’aide de l’IA sont distingués. | **Attribution partielle :** les esquisses assistées ne prouvent pas une création originale humaine. Mes éventuels croquis originaux restent à joindre; les esquisses assistées sont attribuées. |
+| Architecture : modèle de données, machine à états, ADR temps réel | 20 | J’utilise deux processus Node.js, Next.js et Socket.IO, et une base PostgreSQL commune. Les entités principales sont comptes, acteurs, sessions, salles, membres, courses et résultats. Les phases sont salon, compte à rebours, course, résultats, fermeture et interruption; le serveur arbitre les transitions. | Charge à 30 personnes et reprise d’une course après panne non validées; l’implémentation interrompt la course après redémarrage. |
 | Déploiement fonctionnel : HTTPS, authentification, base de données | 20 | HTTPS et healthcheck avec PostgreSQL disponible; inscription, déconnexion, reconnexion et relecture du profil réussies sur Railway. | Authentification locale vérifiée; vrais retours GitHub/Discord et restauration de sauvegarde non contrôlés. |
 | Salle créée et rejointe par code, mise à jour en temps réel | 10 | Deux sessions indépendantes HTTP/Socket.IO sur Railway : création, code, admission invitée, arrivée propagée, modification de durée propagée, refus du non-hôte, état prêt propagé. | Cette recette utilise le protocole réel; elle ne constitue pas une recette visuelle de deux navigateurs en production. |
-| CI, langue et thème, qualité initiale du code, matrice | 10 | CI distante réussie : format, lint, types, unités, builds, intégration et navigateur. Les trois scénarios Playwright couvrent FR/EN, thème, responsive, salon à deux contextes et pratique. [02](02-matrice-exigences.md) actualisée. | Tests navigateur exécutés dans l’environnement isolé de CI, pas sur Railway. Accès GitHub nécessaire pour consulter la preuve. |
+| CI, langue et thème, qualité initiale du code, matrice | 10 | CI distante réussie : format, lint, types, unités, builds, intégration et navigateur. Les trois scénarios Playwright couvrent FR/EN, thème, responsive, salon à deux contextes et pratique. Je distingue exigences réalisées, preuves obtenues et validations encore ouvertes. | Tests navigateur exécutés dans l’environnement isolé de CI, pas sur Railway. Accès GitHub nécessaire pour consulter la preuve. |
 | **Total de la grille** | **100** | Les pièces correspondent aux six critères. | **Aucune note ni conformité totale n’est revendiquée.** |
 
 ## Environnements et portée des preuves
 
 | Environnement | Ce qui a été contrôlé | Ce que cela ne prouve pas |
 |---|---|---|
-| Local · 7 octobre | 69 tests unitaires, 1 116 assertions, aucun échec; passe dédiée PostgreSQL/HTTP/Socket.IO : 9 tests, 99 assertions; builds web et temps réel. Recettes UI datées dans le rapport 20. | Une publication ou un fonctionnement sur l’hébergement. Les 11 entrées ignorées dans la passe unitaire appartiennent aux suites exécutées séparément. |
+| Local · 7 octobre | 69 tests unitaires, 1 116 assertions, aucun échec; passe dédiée PostgreSQL/HTTP/Socket.IO : 9 tests, 99 assertions; builds web et temps réel. Recettes UI locales datées, distinctes des contrôles en ligne. | Une publication ou un fonctionnement sur l’hébergement. Les 11 entrées ignorées dans la passe unitaire appartiennent aux suites exécutées séparément. |
 | GitHub Actions · commit 4d23075 | Exécution réussie, du 7 octobre 16:02:42 à 16:05:38 UTC, sur PostgreSQL isolé et services locaux à la CI. Toutes les étapes du workflow ont réussi, y compris intégration et trois scénarios navigateur. | Une utilisation de la base ou des URLs Railway. |
 | Railway · 7 octobre | 14 vérifications HTTP/Socket.IO concluantes sur le site public; deux identités indépendantes, compte et invité. | Toutes les parties arcade, tous les parcours UI, la charge, la restauration ou les tests auprès de jeunes. |
 
@@ -59,7 +58,7 @@ Le commit ci-dessus fixe la version applicative des preuves. La consolidation do
 
 La salle a été fermée, les connexions arrêtées et les sessions déconnectées après la recette. Un compte de vérification sans course reste dans la base; aucun score n’a été produit par cet essai. Aucun identifiant de session, mot de passe, jeton ou donnée nominative de la recette n’est publié ici.
 
-## Démonstration à présenter
+## Démonstration que je peux présenter
 
 Ce parcours est un guide de démonstration, distinct des preuves déjà exécutées.
 
@@ -71,8 +70,8 @@ Ce parcours est un guide de démonstration, distinct des preuves déjà exécut�
 
 ## Points encore ouverts pour le dossier
 
-- Compléter la contribution originale de l’équipe au nom/logo avec les auteurs, idées, croquis ou modifications réellement réalisés. Les choix de direction et critiques identifiables sont déjà documentés.
+- Joindre mes éventuels croquis ou transformations originales du nom/logo, avec leur date. Je distingue déjà mes choix personnels de l’assistance de l’IA.
 - Vérifier l’accès de l’évaluateur au dépôt privé et à ses exécutions CI. La visibilité du dépôt n’a pas été modifiée.
 - Ne pas confondre les exigences finales encore à valider (charge, OAuth réel, sauvegarde, équilibre arcade, essais utilisateurs) avec les preuves obtenues pour ce checkpoint.
 
-Le dossier prépare la remise; il n’envoie aucun message à l’enseignant et ne dépose aucun fichier sur la plateforme scolaire.
+Je prépare ce dossier pour ma remise; il ne constitue pas une preuve de dépôt sur la plateforme scolaire.

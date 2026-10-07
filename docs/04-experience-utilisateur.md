@@ -1,6 +1,6 @@
 # Expérience utilisateur
 
-> **Lecture actuelle · 7 octobre 2026 :** ce document conserve la conception ou les observations à leur date. L’état du code et des choix implémentés figure dans [18](18-implementation.md); les procédures utilisables dans [19](19-deploiement.md); les preuves locales, CI et Railway dans [CP1](08-plan-checkpoint.md) et la synthèse de [20](20-verification-implementation.md). Une maquette ou un test prévu ne constitue pas une preuve de production.
+> **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
 > **Structure proposée · v0.5 · 2 octobre 2026**  
 > Fonctionnalités centrales d'abord : entrer dans une salle, comprendre le départ, taper et lire son progrès.
@@ -17,9 +17,9 @@ flowchart LR
     F --> C
 ```
 
-Un compte est nécessaire pour créer une salle. L'invité peut rejoindre. Si le client souhaite permettre le transfert de l'hôte à un invité déjà présent, ce droit temporaire ne devient pas une permission de créer d'autres salles. Voir [les machines à états](07-machines-etats.md).
+Un compte est nécessaire pour créer une salle. L'invité peut rejoindre. Si le client souhaite permettre le transfert de l'hôte à un invité déjà présent, ce droit temporaire ne devient pas une permission de créer d'autres salles. Voir les machines à états.
 
-Le [plan complet des pages](15-plan-des-pages.md) et le [design de chaque page](16-design-pages-et-etats.md) prolongent ce parcours en 17 familles et 20 écrans de maquette, avec leurs permissions, états et contenus. L’[aperçu v0.5](preview/index.html) les rend navigables; le [rapport de vérification](17-verification-pages.md) distingue les interactions locales des comportements futurs du serveur.
+Le plan complet des pages et le design de chaque page prolongent ce parcours en 17 familles et 20 écrans de maquette, avec leurs permissions, états et contenus. L’aperçu v0.5 les rend navigables; le rapport de vérification distingue les interactions locales des comportements futurs du serveur.
 
 ## 1. Structure monochrome de la course
 
@@ -122,6 +122,6 @@ Ces routes Next.js sont un plan; elles ne sont pas encore implémentées. Les ch
 - Tester les deux langues, les deux thèmes, le zoom 200 %, le clavier, le focus et le mouvement réduit.
 - Vérifier les messages d'erreur et la reconnexion avec deux navigateurs distincts.
 - Vérifier la course avec 30 entrées simulées puis une séance humaine; séparer capacité technique et lisibilité réelle.
-- Confirmer le nom et la création du logo avec l'équipe avant l'usage définitif.
+- Justifier mon choix du nom et la provenance du logo avant de présenter une création originale personnelle.
 
-L'[aperçu](preview/index.html) sert à discuter cette structure; les interactions y sont locales et les personnes affichées fictives.
+L'aperçu sert à discuter cette structure; les interactions y sont locales et les personnes affichées fictives.

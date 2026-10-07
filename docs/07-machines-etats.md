@@ -2,7 +2,6 @@
 
 > **Implémentation actuelle · 7 octobre 2026 · version applicative vérifiée 4d23075.**
 
-[← Architecture](05-architecture.md) · [Modèle](06-modele-donnees.md) · [Contrat](../types/game.ts) · [Commandes serveur](../lib/server/rooms.ts) · [Moteur](../lib/domain/engine.ts)
 
 ## Dimensions réellement utilisées
 
@@ -55,14 +54,14 @@ Les codes ont une durée de salle de **24 heures** dans l’implémentation; l�
 
 ## Succession de l’hôte
 
-Le [sélecteur serveur](../lib/server/rooms.ts) considère les humains connectés encore admissibles; les bots sont exclus. Pour un départ volontaire, un `successorId` explicitement demandé est retenu s’il est admissible. Sinon l’ordre est : **participants avant spectateurs, admission la plus ancienne, identifiant stable pour départager**. Un spectateur humain connecté peut donc succéder si aucun participant ne convient; l’ancienne proposition de fermeture systématique dans ce cas n’est pas la règle implémentée. Un invité peut devenir hôte de la salle existante, sans obtenir le droit de créer une autre salle.
+Le sélecteur serveur (`lib/server/rooms.ts`) considère les humains connectés encore admissibles; les bots sont exclus. Pour un départ volontaire, un `successorId` explicitement demandé est retenu s’il est admissible. Sinon l’ordre est : **participants avant spectateurs, admission la plus ancienne, identifiant stable pour départager**. Un spectateur humain connecté peut donc succéder si aucun participant ne convient; l’ancienne proposition de fermeture systématique dans ce cas n’est pas la règle implémentée. Un invité peut devenir hôte de la salle existante, sans obtenir le droit de créer une autre salle.
 
 Une déconnexion involontaire garde la place pendant **60 secondes**. Au-delà, le membre est marqué parti; si c’est l’hôte, la succession s’applique. Sans successeur connecté admissible, la salle est fermée ou interrompue selon sa phase. Une commande `sync` ou une admission reconnue pendant la grâce restaure la connexion et la progression acquittée.
 
 ## Inactivité et fin
 
-La politique du [moteur](../lib/domain/engine.ts) prévoit une indication d’inactivité après **45 secondes** et un abandon après **60 secondes**. Le ticker serveur, exécuté toutes les **250 ms**, applique ces règles et la deadline. Les résultats sont calculés avec l’heure de fin de course, même si un tick ou une commande arrive plus tard. L’unicité `(race_id, actor_id)` protège l’enregistrement contre une insertion répétée.
+La politique du moteur (`lib/domain/engine.ts`) prévoit une indication d’inactivité après **45 secondes** et un abandon après **60 secondes**. Le ticker serveur, exécuté toutes les **250 ms**, applique ces règles et la deadline. Les résultats sont calculés avec l’heure de fin de course, même si un tick ou une commande arrive plus tard. L’unicité `(race_id, actor_id)` protège l’enregistrement contre une insertion répétée.
 
 ## Couverture réelle
 
-Les tests du domaine, les tests PostgreSQL et HTTP/Socket.IO et les parcours CI vérifient transitions, permissions, départ, séquence, résultat et succession. La [recette Railway](08-plan-checkpoint.md) vérifie le salon à deux sessions jusqu’à l’état prêt; elle ne vérifie pas toutes les phases de course, la coupure réseau ou le transfert d’hôte en production. Le test de charge et les essais de redémarrage en exploitation restent à mener.
+Les tests du domaine, les tests PostgreSQL et HTTP/Socket.IO et les parcours CI vérifient transitions, permissions, départ, séquence, résultat et succession. La recette Railway du 7 octobre a vérifié la création/admission par code, l’arrivée, le changement de durée, les permissions et l’état prêt entre deux sessions; elle ne vérifie pas toutes les phases de course, la coupure réseau ou le transfert d’hôte en production. Le test de charge et les essais de redémarrage en exploitation restent à mener.

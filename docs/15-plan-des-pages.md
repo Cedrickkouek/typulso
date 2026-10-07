@@ -1,20 +1,19 @@
 # Plan complet des pages et des états
 
-> **Lecture actuelle · 7 octobre 2026 :** ce document conserve la conception ou les observations à leur date. L’état du code et des choix implémentés figure dans [18](18-implementation.md); les procédures utilisables dans [19](19-deploiement.md); les preuves locales, CI et Railway dans [CP1](08-plan-checkpoint.md) et la synthèse de [20](20-verification-implementation.md). Une maquette ou un test prévu ne constitue pas une preuve de production.
+> **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
 > **2 octobre 2026 · Direction artistique v0.4 conservée**  
 > Périmètre : conception de tous les parcours du produit, avec français/anglais et clair/sombre  
 > Statut : plan de design; les données de maquette sont fictives, les garanties serveur restent à réaliser
 
-[← Documentation](README.md) · [Cahier consolidé](01-cahier-des-charges.md) · [Parcours](04-experience-utilisateur.md) · [Composants](14-composants-interface.md) · [Matrice](02-matrice-exigences.md)
 
-La demande actuelle complète les pages en conservant la direction choisie. Elle n'ouvre pas une nouvelle recherche de style. Toutes les vues réutilisent la [DA v0.4](03-direction-artistique.md) : action citron, accents rose/lavande/bleu, surfaces calmes, formes de touches originales, contrôles de 44 px et rayons de référence 12/24/16 px. La zone de frappe demeure stable; les effets sont secondaires, désactivables et interrompus en mode concentration ou mouvement réduit.
+La demande actuelle complète les pages en conservant la direction choisie. Elle n'ouvre pas une nouvelle recherche de style. Toutes les vues réutilisent la DA v0.4 : action citron, accents rose/lavande/bleu, surfaces calmes, formes de touches originales, contrôles de 44 px et rayons de référence 12/24/16 px. La zone de frappe demeure stable; les effets sont secondaires, désactivables et interrompus en mode concentration ou mouvement réduit.
 
 **Le nom Typulso et les symboles restent des propositions de travail.** Conserver cette DA pour concevoir les pages ne prouve ni le choix définitif du nom, ni une création humaine du logo. UX-03 demande une démarche humaine documentée; les contributions assistées doivent garder leur attribution réelle.
 
 ## 1. Sources et priorités
 
-Le [PDF fourni le 2 octobre](../sources/cahier-des-charges-2026-10-02.pdf), **`cahier-des-charges.pdf`**, comporte cinq pages. Ce plan utilise la lecture intégrale de son extraction textuelle locale, comparée aux documents 01, 02, 04 et au [registre des réponses client](09-sources-et-decisions.md). Cette lecture vérifie le contenu textuel; elle ne constitue pas une inspection de la mise en page du PDF. L'extraction est un fichier de travail, pas une preuve d'application fonctionnelle.
+Le PDF fourni le 2 octobre, **`cahier-des-charges.pdf`**, comporte cinq pages. Ce plan utilise la lecture intégrale de son extraction textuelle locale, comparée aux documents 01, 02, 04 et au registre des réponses client. Cette lecture vérifie le contenu textuel; elle ne constitue pas une inspection de la mise en page du PDF. L'extraction est un fichier de travail, pas une preuve d'application fonctionnelle.
 
 | Repère | Contenu source |
 |---|---|
@@ -111,7 +110,7 @@ La navigation n'offre pas librement « Salon / Course / Résultats » comme des 
 
 **Entrée :** action de l'accueil ou code déjà transmis. **Actions :** saisir le code, corriger, soumettre; conserver le code au travers de PG-04/05 sans afficher d'information privée. **Sortie :** admission confirmée → PG-08; nouvel arrivant après départ → PG-09 spectateur; annuler → PG-01.
 
-**États :** champ vide, format invalide, soumission, code inconnu/expiré, salle complète/fermée, exclusion, admission réussie, réseau indisponible. Le format exact reste une proposition de l'équipe : ne pas coder visuellement une longueur comme exigence du client. Le formulaire ne permet pas l'accès privé. Le QR facultatif représente le même accès semi-public. Sources : ROOM-01/05, CLIENT-03/04, CP1-06.
+**États :** champ vide, format invalide, soumission, code inconnu/expiré, salle complète/fermée, exclusion, admission réussie, réseau indisponible. Le format exact reste mon choix de conception : ne pas coder visuellement une longueur comme exigence du client. Le formulaire ne permet pas l'accès privé. Le QR facultatif représente le même accès semi-public. Sources : ROOM-01/05, CLIENT-03/04, CP1-06.
 
 ### PG-04 — Choisir son accès / connexion
 
@@ -129,7 +128,7 @@ La navigation n'offre pas librement « Salon / Course / Résultats » comme des 
 
 **Entrée :** lien individuel. **Actions :** comprendre la destination autorisée, choisir son identité si nécessaire, accepter l'invitation; revenir ou demander un nouveau lien à l'hôte. **Sortie :** PG-08 ou PG-09 spectateur selon état; lien inutilisable → PG-17 contextuel. Conserver l'intention pendant la connexion sans exposer le token dans une vue de profil ou des journaux.
 
-**États :** vérification, valide, admission en cours, expirée, consommée par un autre entrant, révoquée, invalide, salle fermée/complète, membre déjà admis qui revient. Ne pas consommer le jeton au simple affichage ou avant l'identité/admission confirmée. L'usage unique et l'expiration sont indépendants. Une reconnexion reconnue rejoint sa place existante; un lien copié ne donne pas une deuxième admission. La durée est décidée par l'équipe, aucune valeur n'est confirmée par CLIENT-08.
+**États :** vérification, valide, admission en cours, expirée, consommée par un autre entrant, révoquée, invalide, salle fermée/complète, membre déjà admis qui revient. Ne pas consommer le jeton au simple affichage ou avant l'identité/admission confirmée. L'usage unique et l'expiration sont indépendants. Une reconnexion reconnue rejoint sa place existante; un lien copié ne donne pas une deuxième admission. La durée est que je définis, aucune valeur n'est confirmée par CLIENT-08.
 
 ### PG-07 — Créer et configurer
 
@@ -331,7 +330,7 @@ Pour la revue, chaque vue PG-01 à PG-17 doit posséder un scénario principal e
 
 ## 9. Concordance avec l'aperçu v0.5
 
-L'[aperçu de toutes les pages](preview/index.html) étend les parcours en conservant la DA v0.4. L'[atelier de marque](preview/atelier.html) reste accessible séparément pour discuter l'identité, la palette et les composants. Cette concordance repose sur une **lecture du catalogue et des fonctions de conception de [pages.js](preview/pages.js), le 2 octobre 2026**. Elle ne certifie pas le rendu de chaque combinaison, les permissions d'un serveur ou le déploiement.
+L'aperçu de toutes les pages étend les parcours en conservant la DA v0.4. L'atelier de marque reste accessible séparément pour discuter l'identité, la palette et les composants. Cette concordance repose sur une **lecture du catalogue et des fonctions de conception de pages.js (`preview/pages.js`), le 2 octobre 2026**. Elle ne certifie pas le rendu de chaque combinaison, les permissions d'un serveur ou le déploiement.
 
 Les **17 PG sont des familles de parcours**, tandis que le catalogue v0.5 complété comporte **20 écrans de prototype**. PG-05 est séparée en deux écrans, inscription et invité; PG-09 en trois écrans, départ, course et spectateur. PG-14 possède maintenant son écran « Mes touches / Heatmap globale », en plus de la progression résumée dans le profil PG-12. Cette organisation donne **17 + 1 + 2 = 20** sans créer ni supprimer un ID PG ou ET. Le catalogue antérieur de 19 écrans regroupait encore PG-12 et PG-14 dans le profil; ce regroupement ne décrit plus toute la version actuelle.
 
@@ -339,26 +338,26 @@ Les **17 PG sont des familles de parcours**, tandis que le catalogue v0.5 compl�
 
 | Écran de l'aperçu | Famille(s) de ce plan | États proposés par le sélecteur | Nombre |
 |---|---|---|---:|
-| [Accueil](preview/index.html#accueil) · `home` | PG-01 | `normal`, `empty` | 2 |
-| [Courses publiques](preview/index.html#courses) · `rooms` | PG-02 | `normal`, `empty`, `loading`, `error` | 4 |
-| [Rejoindre par code](preview/index.html#rejoindre) · `join` | PG-03 | `normal`, `error` | 2 |
-| [Connexion](preview/index.html#connexion) · `auth` | PG-04 | `normal`, `error`, `oauth-wait`, `oauth-error`, `session-expired` | 5 |
-| [Compte local](preview/index.html#inscription) · `register` | PG-05 | `normal`, `error` | 2 |
-| [Mode invité](preview/index.html#invite) · `guest` | PG-05 | `normal`, `error` | 2 |
-| [Créer une salle](preview/index.html#creation) · `create` | PG-07 | `normal`, `private`, `arcade`, `error` | 4 |
-| [Salon](preview/index.html#salon) · `lobby` | PG-08 | `normal`, `host`, `private`, `empty`, `crowd`, `reconnect`, `transfer` | 7 |
-| [Invitation privée](preview/index.html#invitation) · `invitation` | PG-06 | `normal`, `expired`, `used`, `invalid` | 4 |
-| [Départ commun](preview/index.html#depart) · `countdown` | PG-09 · début de course | `normal`, `reconnect` | 2 |
-| [Course](preview/index.html#course) · `race` | PG-09 · participant | `normal`, `blocking`, `arcade`, `reconnect`, `interrupted`, `finished`, `timeout`, `afk`, `energy-empty`, `energy-ready`, `energy-active`, `energy-ended` | 12 |
-| [Spectateur](preview/index.html#spectateur) · `spectator` | PG-09 · observation | `normal`, `crowd`, `reconnect` | 3 |
-| [Résultats](preview/index.html#resultats) · `results` | PG-10; détail de PG-13 réutilisé | `normal`, `host`, `arcade`, `empty`, `few`, `history` | 6 |
-| [Entraînement](preview/index.html#entrainement) · `practice` | PG-11 | `normal`, `error` | 2 |
-| [Profil et progression](preview/index.html#profil) · `profile` | PG-12; progression résumée de PG-14 | `normal`, `empty`, `guest` | 3 |
-| [Historique](preview/index.html#historique) · `history` | PG-13 | `normal`, `empty`, `guest` | 3 |
-| [Préférences](preview/index.html#preferences) · `preferences` | PG-15 | `normal` | 1 |
-| [Comment jouer](preview/index.html#aide) · `help` | PG-16 | `normal` | 1 |
-| [Accès indisponible](preview/index.html#indisponible) · `unavailable` | PG-17 | `normal`, `closed`, `excluded`, `interrupted`, `full`, `admission` | 6 |
-| [Heatmap globale](preview/index.html#touches) · `global-map` | PG-14 · enrichissement P2 | `normal`, `empty`, `guest` | 3 |
+| Accueil · `home` | PG-01 | `normal`, `empty` | 2 |
+| Courses publiques · `rooms` | PG-02 | `normal`, `empty`, `loading`, `error` | 4 |
+| Rejoindre par code · `join` | PG-03 | `normal`, `error` | 2 |
+| Connexion · `auth` | PG-04 | `normal`, `error`, `oauth-wait`, `oauth-error`, `session-expired` | 5 |
+| Compte local · `register` | PG-05 | `normal`, `error` | 2 |
+| Mode invité · `guest` | PG-05 | `normal`, `error` | 2 |
+| Créer une salle · `create` | PG-07 | `normal`, `private`, `arcade`, `error` | 4 |
+| Salon · `lobby` | PG-08 | `normal`, `host`, `private`, `empty`, `crowd`, `reconnect`, `transfer` | 7 |
+| Invitation privée · `invitation` | PG-06 | `normal`, `expired`, `used`, `invalid` | 4 |
+| Départ commun · `countdown` | PG-09 · début de course | `normal`, `reconnect` | 2 |
+| Course · `race` | PG-09 · participant | `normal`, `blocking`, `arcade`, `reconnect`, `interrupted`, `finished`, `timeout`, `afk`, `energy-empty`, `energy-ready`, `energy-active`, `energy-ended` | 12 |
+| Spectateur · `spectator` | PG-09 · observation | `normal`, `crowd`, `reconnect` | 3 |
+| Résultats · `results` | PG-10; détail de PG-13 réutilisé | `normal`, `host`, `arcade`, `empty`, `few`, `history` | 6 |
+| Entraînement · `practice` | PG-11 | `normal`, `error` | 2 |
+| Profil et progression · `profile` | PG-12; progression résumée de PG-14 | `normal`, `empty`, `guest` | 3 |
+| Historique · `history` | PG-13 | `normal`, `empty`, `guest` | 3 |
+| Préférences · `preferences` | PG-15 | `normal` | 1 |
+| Comment jouer · `help` | PG-16 | `normal` | 1 |
+| Accès indisponible · `unavailable` | PG-17 | `normal`, `closed`, `excluded`, `interrupted`, `full`, `admission` | 6 |
+| Heatmap globale · `global-map` | PG-14 · enrichissement P2 | `normal`, `empty`, `guest` | 3 |
 | **Total du catalogue v0.5 complété** | **20 écrans rattachés aux 17 familles** | **74 combinaisons écran/état déclarées** | **74** |
 
 Le total comprend **20 états `normal` et 54 variantes supplémentaires**, répartis entre **32 libellés d'état distincts**. Il ne signifie pas 74 mises en page entièrement différentes : `home/empty`, par exemple, modifie le repli de l'action « Course rapide »; `results/empty` signifie absence de comparaison, pas absence de tous les résultats. Les variantes dépendent aussi de l'identité locale et des choix de salle. Les langues FR/EN, les thèmes clair/sombre et les dialogues ne sont pas ajoutés à ce décompte; leur présence dans le code ne vaut pas vérification de toutes leurs combinaisons.

@@ -1,12 +1,12 @@
 # Design des pages et des états
 
-> **Lecture actuelle · 7 octobre 2026 :** ce document conserve la conception ou les observations à leur date. L’état du code et des choix implémentés figure dans [18](18-implementation.md); les procédures utilisables dans [19](19-deploiement.md); les preuves locales, CI et Railway dans [CP1](08-plan-checkpoint.md) et la synthèse de [20](20-verification-implementation.md). Une maquette ou un test prévu ne constitue pas une preuve de production.
+> **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
 > **Spécification de conception · 2 octobre 2026 · v0.5 proposée**  
 > Direction artistique de référence : **v0.4**, colorée, vibrante, amusante et ludique.  
 > Public : 12–17 ans · Interface : français / anglais · Thèmes : clair / sombre.
 
-**Objectif : permettre de rejoindre, jouer et comprendre son progrès avec le même langage visuel sur toutes les pages.** Le salon reste collectif et expressif; la course protège la concentration; les résultats donnent une suite concrète. L’extension reprend les accents citron, rose et lavande, les touches illustrées, les surfaces calmes et la frappe stable de la [direction artistique](03-direction-artistique.md).
+**Objectif : permettre de rejoindre, jouer et comprendre son progrès avec le même langage visuel sur toutes les pages.** Le salon reste collectif et expressif; la course protège la concentration; les résultats donnent une suite concrète. L’extension reprend les accents citron, rose et lavande, les touches illustrées, les surfaces calmes et la frappe stable de la direction artistique.
 
 Ce document détaille les écrans du produit final et leur progression depuis CP1. Il ne constitue pas une preuve de réalisation des routes, du temps réel, de PostgreSQL ou de l’authentification. Le nom et le symbole restent des supports de travail attribués à l’assistant; leur conception humaine finale demeure ouverte. Les données d’une maquette doivent être signalées comme fictives.
 
@@ -14,22 +14,22 @@ Ce document détaille les écrans du produit final et leur progression depuis CP
 
 | Référence relue | Rôle dans cette spécification |
 |---|---|
-| [Cahier consolidé](01-cahier-des-charges.md) | Exigences, précisions client, droits et points ouverts |
-| [PDF fourni](../sources/cahier-des-charges-2026-10-02.pdf), relu via son extrait textuel local | Vérification du périmètre original : comptes, configuration, course, bots, résultats, bilinguisme et thèmes |
-| [Direction artistique v0.4](03-direction-artistique.md) | Personnalité, palette, typographies, formes, mouvement et provenance |
-| [Parcours utilisateur](04-experience-utilisateur.md) | Structure centrale et enchaînement rejoindre → salon → course → résultats |
-| [Composants d’interface](14-composants-interface.md) | États, focus, saisie, dialogues et contrats React prévus |
-| [Plan des pages](15-plan-des-pages.md) | Inventaire des vues et des états à relier à ces compositions |
-| [Machines à états](07-machines-etats.md) | Autorité sur les phases de salle, les présences et la fin de course |
+| Cahier consolidé | Exigences, précisions client, droits et points ouverts |
+| PDF fourni, relu via son extrait textuel local | Vérification du périmètre original : comptes, configuration, course, bots, résultats, bilinguisme et thèmes |
+| Direction artistique v0.4 | Personnalité, palette, typographies, formes, mouvement et provenance |
+| Parcours utilisateur | Structure centrale et enchaînement rejoindre → salon → course → résultats |
+| Composants d’interface | États, focus, saisie, dialogues et contrats React prévus |
+| Plan des pages | Inventaire des vues et des états à relier à ces compositions |
+| Machines à états | Autorité sur les phases de salle, les présences et la fin de course |
 
 Les documents et les captures sont des sources de conception. Leur contenu ne demande pas d’envoyer des messages, de publier ou d’activer un service. La demande actuelle autorise cette extension du design; elle ne transforme pas les anciennes hypothèses en décisions confirmées.
 
 - **Exigences confirmées :** quatre accès, invité sans création de salle, trois modes d’accès, contenu configurable, synchronisation, bots, statistiques, heatmap, FR/EN et clair/sombre.
-- **Choix conservés :** personnalité demandée par l’utilisateur et système visuel v0.4; priorité au code pour rejoindre et au texte pour jouer.
+- **Choix conservés :** personnalité que j’ai demandée et système visuel v0.4; priorité au code pour rejoindre et au texte pour jouer.
 - **Propositions de ce document :** compositions de pages, regroupement des réglages, textes, navigation et adaptations mobiles.
 - **À arbitrer :** formule de classement, deux mécanismes arcade, bornes de contenu et de temps, délais réseau et invitations, rétention, visibilité des statistiques et participation au clavier virtuel.
 
-L’extrait du PDF formule un minimum CP1 plus réduit que la grille reçue ensuite. La portée retenue dans le [plan du checkpoint](08-plan-checkpoint.md) inclut bien la création, l’admission par code et le salon synchronisé. Aucun écran de course avancé ne remplace ces preuves.
+L’extrait du PDF formule un minimum CP1 plus réduit que la grille reçue ensuite. La portée retenue dans le plan du checkpoint inclut bien la création, l’admission par code et le salon synchronisé. Aucun écran de course avancé ne remplace ces preuves.
 
 ## 2. Une structure commune, dérivée du jeu
 
@@ -66,7 +66,7 @@ L’accueil et les pages de consultation reprennent les touches et aplats expres
 |---|---|
 | Hiérarchie | Un titre qui situe la page, une action dominante par zone, puis les détails et actions secondaires |
 | Composition | Largeur de référence 1232 px; formulaire plus étroit; grilles souples; une colonne pour la tâche sur petit écran |
-| Lisibilité | Tokens [clair / sombre](assets/design-tokens.css), texte fonctionnel visant 7:1, repères essentiels au moins 3:1; aucune opacité arbitraire sur les états utiles |
+| Lisibilité | Tokens clair / sombre (`assets/design-tokens.css`), texte fonctionnel visant 7:1, repères essentiels au moins 3:1; aucune opacité arbitraire sur les états utiles |
 | Contrôles | Cibles de 44 px, dimensions constantes pendant une requête; libellés visibles; lien pour naviguer, bouton pour agir |
 | Focus | Repère de 3 px indépendant du survol; ordre de lecture logique; aucune bordure de panneau ne coupe ce repère |
 | Chargement | Forme et espace réservés; annonce sobre; aucun joueur, chiffre, résultat ou record inventé |
@@ -364,7 +364,7 @@ Les traductions ci-dessus sont des propositions à relire avec les utilisateurs;
 
 ## 17. Réalisation future avec React, Next.js et Tailwind
 
-La pile demandée reste **React, Next.js, TypeScript, Tailwind CSS et PostgreSQL**. Cette spécification n’ajoute ni dépendance ni version. Les références techniques déjà consultées et les comportements proposés sont développés dans [les composants](14-composants-interface.md).
+La pile demandée reste **React, Next.js, TypeScript, Tailwind CSS et PostgreSQL**. Cette spécification n’ajoute ni dépendance ni version. Les références techniques déjà consultées et les comportements proposés sont développés dans les composants.
 
 | Frontière | Contrat à réaliser |
 |---|---|

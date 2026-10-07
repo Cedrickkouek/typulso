@@ -1,15 +1,14 @@
 # Une fin de page qui donne envie de rejouer
 
-> **Lecture actuelle · 7 octobre 2026 :** ce document conserve la conception ou les observations à leur date. L’état du code et des choix implémentés figure dans [18](18-implementation.md); les procédures utilisables dans [19](19-deploiement.md); les preuves locales, CI et Railway dans [CP1](08-plan-checkpoint.md) et la synthèse de [20](20-verification-implementation.md). Une maquette ou un test prévu ne constitue pas une preuve de production.
+> **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
-[← Dossier du projet](README.md)
 
 > **Recherche ciblée · 4 octobre 2026 · footer et page de jeu**  
 > **Statut : recherche conservée et première intégration de présentation réalisée le 4 octobre 2026.**
 
 La direction recommandée garde la personnalité de Typulso : **colorée, vibrante, amusante et ludique**. Le footer devient une signature plus reconnaissable ; pendant une course, le texte à taper reste le centre de l’attention. L’énergie vient des formes, des touches de couleur et des moments de départ ou de résultat. Les observations et propositions ci-dessous documentent la collecte initiale; la première intégration est décrite à la fin du document.
 
-La collecte couvre **79 candidats, dont 54 références exploitables** : 8 examinées à l’écran et 46 par leur contenu textuel. Elle comprend **51 références au-delà de Kahoot!, Wooclap et Monkeytype**. Le [registre complet](recherche/footer-jeu-2026-10-04.md) distingue les preuves et les 25 exclusions. Les revisites ne sont pas ajoutées au total historique des recherches précédentes.
+La collecte couvre **79 candidats, dont 54 références exploitables** : 8 examinées à l’écran et 46 par leur contenu textuel. Elle comprend **51 références au-delà de Kahoot!, Wooclap et Monkeytype**. Le registre complet distingue les preuves et les 25 exclusions. Les revisites ne sont pas ajoutées au total historique des recherches précédentes.
 
 ## La base observée avant l’intégration
 
@@ -17,7 +16,7 @@ Au début de la collecte, le footer possédait déjà une identité, un slogan, 
 
 La zone de frappe possède déjà un texte stable, un curseur, des erreurs soulignées, une saisie accessible et des mesures. La course ajoute minuterie, pistes et commandes arcade. Le mode concentration masque déjà le footer et la navigation secondaire.
 
-Références locales : [footer actuel](../components/site-footer.tsx), [salon et course](../components/room-page.tsx), [zone de frappe](../components/typing-zone.tsx), [composants](14-composants-interface.md) et [design des états](16-design-pages-et-etats.md).
+Références locales : footer actuel (`components/site-footer.tsx`), salon et course (`components/room-page.tsx`), zone de frappe (`components/typing-zone.tsx`), composants et design des états.
 
 ![Zone de frappe actuelle en mode sombre](assets/recherche-footer-jeu/typulso-pratique-actuelle.jpg)
 
@@ -28,7 +27,7 @@ Cette capture montre l’échauffement local avant la première frappe. Les éta
 | Référence | Ce que montre la capture | Application à Typulso |
 |---|---|---|
 | [Blooket](https://www.blooket.com/) | Transition illustrée, footer coloré et navigation regroupée | Terminer la page par un motif de touches original |
-| [Wooclap](https://www.wooclap.com/) | Identité avant les groupes de liens, alignements simples | Donner du poids au nom et limiter les groupes à notre contenu |
+| [Wooclap](https://www.wooclap.com/) | Identité avant les groupes de liens, alignements simples | Donner du poids au nom et limiter les groupes à mon contenu |
 | [Jackbox Games](https://www.jackboxgames.com/) | Logo, action puis informations secondaires séparées | Une invitation à rejouer et une hiérarchie claire |
 | [Gartic Phone](https://garticphone.com/) | Footer léger au bord d’une aire de jeu expressive | Une variante compacte autour des activités |
 
@@ -83,7 +82,7 @@ La vague de Blooket, les personnages Gartic et la newsletter Jackbox ne sont pas
 
 ![Gartic Phone : identité du joueur, action et aide courte](assets/recherche-footer-jeu/garticphone.jpg)
 
-Les captures Keymash et ZType figurent dans le [registre](recherche/footer-jeu-2026-10-04.md). Ces observations portent sur les vues capturées ; aucune animation ni performance externe n’est déduite d’une image fixe.
+Les captures Keymash et ZType figurent dans le registre. Ces observations portent sur les vues capturées ; aucune animation ni performance externe n’est déduite d’une image fixe.
 
 ### Proposition « La piste au centre »
 
@@ -162,7 +161,7 @@ Le footer associe désormais une signature Typulso plus grande, un motif de touc
 
 La course place les mesures dans une bande compacte, la frappe au centre et l’arcade sous la saisie. Les lignes restent ordonnées de façon stable avec rang, état et repère personnel explicites. Les résultats affichent d’abord le pseudo, le rang officiel et les quatre mesures personnelles, puis les destinations de suite, le podium et le classement. Le podium emploie uniquement les rangs serveur 1–3; la Heatmap reste intacte. La palette, les contrats de données, les capacités et les droits de l’hôte restent ceux du produit existant.
 
-L’intégration est parcourue avec une vraie salle arcade, un compte, un invité indépendant et un bot : départ commun, capacité utilisée, erreur corrigée, fin de course et résultat persistant. Le bilan est bien placé avant le podium. Les relevés mobiles du footer, du jeu et des résultats ne montrent pas de débordement horizontal aux formats exercés. Les **7 tests d’intégration réussissent avec 60 assertions** contre PostgreSQL local sur `5432`; les largeurs, langues, thèmes et limites précis figurent dans le [rapport de vérification](20-verification-implementation.md).
+L’intégration est parcourue avec une vraie salle arcade, un compte, un invité indépendant et un bot : départ commun, capacité utilisée, erreur corrigée, fin de course et résultat persistant. Le bilan est bien placé avant le podium. Les relevés mobiles du footer, du jeu et des résultats ne montrent pas de débordement horizontal aux formats exercés. Les **7 tests d’intégration réussissent avec 60 assertions** contre PostgreSQL local sur `5432`; les largeurs, langues, thèmes et limites précis figurent dans le rapport de vérification.
 
-Cette recette n’ajoute pas de preuve de reconnexion, de perte réseau ou de parcours spectateur sur la nouvelle présentation. La production et l’équilibrage avec le public cible restent à vérifier. Les captures livrées pour l’application sont neutres : [footer](assets/app-v01/footer-refresh-clair.jpg) et [échauffement](assets/app-v01/jeu-refresh-clair.jpg). Les captures externes de cette recherche restent des sources d’inspiration.
+Cette recette n’ajoute pas de preuve de reconnexion, de perte réseau ou de parcours spectateur sur la nouvelle présentation. La production et l’équilibrage avec le public cible restent à vérifier. Les captures livrées pour l’application sont neutres : footer et échauffement. Les captures externes de cette recherche restent des sources d’inspiration.
 

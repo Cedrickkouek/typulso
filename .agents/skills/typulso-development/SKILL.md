@@ -39,4 +39,4 @@ description: Développer et vérifier Typulso avec React, Next.js App Router, Ta
 - Garder `bun run format:check` vert. `bun run format` applique Prettier et l'ordre des classes Tailwind; les documents historiques et sources sont exclus du formatage automatique.
 - Examiner les écrans concernés en clair/sombre, à 390 px et au breakpoint intermédiaire, sans débordement et avec focus clavier. Une capture ne prouve pas le fonctionnement d'un serveur.
 - Mettre à jour les docs quand une décision change. Distinguer spécification, implémentation locale vérifiée, CI exécutée à distance et production vérifiée. Ne pas cocher une preuve non réalisée.
-- Ne pas intégrer de secrets, de données de test ou de captures nominatives au dépôt public. Garder le nom et le logo exploratoires tant que l'équipe humaine ne les a pas validés.
+- Ne pas intégrer de secrets, de données de test ou de captures nominatives au dépôt public. Garder le nom et le logo exploratoires tant que le porteur du projet individuel ne les a pas validés.

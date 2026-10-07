@@ -4,24 +4,24 @@
 > Version consolidée du 2 octobre 2026 · Référentiel produit proposé  
 > Public principal : jeunes de 12 à 17 ans · Langues : français et anglais
 
-**Actualisation du 7 octobre 2026.** Ce cahier conserve les exigences et leurs identifiants sources. La [matrice actuelle](02-matrice-exigences.md) et le [dossier CP1](08-plan-checkpoint.md) donnent leur état de réalisation et les preuves locales, CI et production. Typulso est l’identité utilisée dans l’application; l’utilisateur a demandé le choix entre classique et arcade. Les [contributions créatives](03-direction-artistique.md) sont attribuées séparément; l’utilisation d’un logo n’établit pas sa création humaine. Les arbitrages historiques ci-dessous se lisent avec ce registre actuel.
+**Actualisation du 7 octobre 2026.** Ce cahier conserve les exigences et leurs identifiants sources. La matrice actuelle et le dossier CP1 donnent leur état de réalisation et les preuves locales, CI et production. Typulso est l’identité utilisée dans l’application; l’utilisateur a demandé le choix entre classique et arcade. Les contributions créatives sont attribuées séparément; l’utilisation d’un logo n’établit pas sa création humaine. Les arbitrages historiques ci-dessous se lisent avec ce registre actuel.
 
 **Intention.** Transformer la pratique du clavier en une compétition conviviale qui donne envie de recommencer, tout en montrant clairement les progrès en vitesse et en précision.
 
-Ce document reprend le [cahier initial](../sources/cahier-des-charges.md), complète ses formulations à partir de l'[analyse des besoins](../sources/analyse-des-besoins-cahier-des-charges.md) et intègre les réponses client et la grille du checkpoint fournies en captures. Il conserve les identifiants du cahier initial. Les réponses client confirmées sont séparées des propositions de conception. La consolidation, les noms proposés, le logo et les choix techniques n'ont pas encore fait l'objet d'une validation complète par l'utilisateur.
+Ce document reprend le cahier initial, complète ses formulations à partir de l'analyse des besoins et intègre les réponses client et la grille du checkpoint fournies en captures. Il conserve les identifiants du cahier initial. Les réponses client confirmées sont séparées des propositions de conception. La consolidation, les noms proposés, le logo et les choix techniques n'ont pas encore fait l'objet d'une validation personnelle complète.
 
-Le [PDF fourni le 2 octobre 2026](../sources/cahier-des-charges-2026-10-02.pdf) confirme les 49 exigences produit et précise leur priorisation finale : partie rapide, revanche, bots variables et deux bonus sont essentiels; la heatmap globale est souhaitable. Les réponses client spécifiques et la grille CP1 plus détaillée continuent de s'appliquer. Le [plan complet des pages](15-plan-des-pages.md) documente les écarts avec les versions précédentes, sans changer les IDs historiques.
+Le PDF fourni le 2 octobre 2026 confirme les 49 exigences produit et précise leur priorisation finale : partie rapide, revanche, bots variables et deux bonus sont essentiels; la heatmap globale est souhaitable. Les réponses client spécifiques et la grille CP1 plus détaillée continuent de s'appliquer. Le plan complet des pages documente les écarts avec les versions précédentes, sans changer les IDs historiques.
 
 ## Sommaire
 
-- [Vision et public](#vision-et-public)
-- [Glossaire](#glossaire)
-- [Exigences du produit](#exigences-du-produit)
-- [Précisions client](#précisions-client)
-- [Exigences du checkpoint 1](#exigences-du-checkpoint-1)
-- [Hypothèses et décisions à valider](#hypothèses-et-décisions-à-valider)
-- [Priorisation](#priorisation)
-- [Critères de réussite et livrables](#critères-de-réussite-et-livrables)
+- Vision et public
+- Glossaire
+- Exigences du produit
+- Précisions client
+- Exigences du checkpoint 1
+- Hypothèses et décisions à valider
+- Priorisation
+- Critères de réussite et livrables
 
 ## Vision et public
 
@@ -29,7 +29,7 @@ Un hôte crée une salle, choisit les règles et invite des participants. Tous r
 
 Le produit doit fonctionner en classe, dans une activité parascolaire et à la maison. Les enseignants et les étudiants possèdent les mêmes capacités de création : l'autorité dans une salle appartient à son hôte. Aucun espace particulier de gestion de classe ou d'accès enseignant aux résultats n'est requis par les réponses fournies.
 
-L'utilisateur souhaite une énergie inspirée de **Kahoot**, une entrée en activité aussi claire que **Wooclap** et une qualité de concentration inspirée de **Monkeytype**. Ces références orientent la conception; elles ne définissent ni une reproduction de leurs interfaces ni un nouveau catalogue de fonctionnalités. La direction recherchée est originale, captivante, accessible et adaptée aux adolescents.
+Je souhaite une énergie inspirée de **Kahoot**, une entrée en activité aussi claire que **Wooclap** et une qualité de concentration inspirée de **Monkeytype**. Ces références orientent la conception; elles ne définissent ni une reproduction de leurs interfaces ni un nouveau catalogue de fonctionnalités. La direction recherchée est originale, captivante, accessible et adaptée aux adolescents.
 
 Le projet utilisera l'écosystème **React / Next.js / Tailwind CSS / PostgreSQL** demandé. Le cahier initial impose aussi **TypeScript** pour les modules applicatifs. « React JS » et « Next JS » sont ici compris comme les technologies, avec du code applicatif TypeScript; ce point est explicité pour éviter une divergence silencieuse.
 
@@ -55,7 +55,7 @@ Le projet utilisera l'écosystème **React / Next.js / Tailwind CSS / PostgreSQL
 
 ## Exigences du produit
 
-Les identifiants suivants proviennent du cahier initial. Un énoncé décrit un besoin attendu; il ne constitue pas une preuve de réalisation. La [matrice des exigences](02-matrice-exigences.md) précise leur validation et leur place dans le checkpoint.
+Les identifiants suivants proviennent du cahier initial. Un énoncé décrit un besoin attendu; il ne constitue pas une preuve de réalisation. La matrice des exigences précise leur validation et leur place dans le checkpoint.
 
 ### Comptes et permissions
 
@@ -153,12 +153,12 @@ Les captures fournies le 1er octobre 2026 résolvent plusieurs questions ancienn
 |---|---|---|
 | **CLIENT-01** | Les enseignants n'ont pas de rôle particulier; les comptes ont les mêmes capacités de création. L'hôte est un rôle temporaire de salle. | Image 1 |
 | **CLIENT-02** | Les invités peuvent seulement participer à une course; ils ne peuvent pas en créer. | Image 1 |
-| **CLIENT-03** | Une course semi-publique se rejoint par code. Le QR est une option appréciée, sans être obligatoire. Le format alphabétique, numérique ou alphanumérique revient à l'équipe. | Image 3 |
+| **CLIENT-03** | Une course semi-publique se rejoint par code. Le QR est une option appréciée, sans être obligatoire. Le format alphabétique, numérique ou alphanumérique revient à moi dans ce projet individuel. | Image 3 |
 | **CLIENT-04** | Une course privée se rejoint seulement par lien d'invitation. Le caractère individuel et à usage unique provient du cahier initial. | Image 3 + cahier |
 | **CLIENT-05** | Après une courte déconnexion, l'hôte doit pouvoir revenir dans la course comme les participants. | Image 1 |
 | **CLIENT-06** | Si l'hôte abandonne et quitte, le participant qu'il a choisi avant son départ devient hôte; sans choix, le participant le plus ancien prend le relais. Les égalités et l'éligibilité exacte d'un invité doivent être définies. | Image 1 |
 | **CLIENT-07** | Les personnages à capacités uniques, alimentées par la frappe correcte, sont une alternative acceptée aux bonus aléatoires. Ils doivent conserver une chance de rattrapage pour les participants en difficulté. | Image 2 |
-| **CLIENT-08** | L'équipe décide de la durée de validité d'un lien privé. La durée n'a pas été fixée par le client. | Image 1 |
+| **CLIENT-08** | Je décide de la durée de validité d'un lien privé. La durée n'a pas été fixée par le client. | Image 1 |
 
 ## Exigences du checkpoint 1
 
@@ -177,7 +177,7 @@ La grille des images 4 et 5 remplace la portée trop restreinte du paragraphe CP
 | **CP1-09** | Langue, thème, qualité initiale du code et matrice des exigences démontrables. Le niveau exact de couverture linguistique reste à cadrer; proposer FR/EN et clair/sombre sur tous les écrans de CP1. |
 | **CP1-10** | Cahier et documents de conception lisibles en Markdown dans le futur dépôt; liens de remise réels vers le dépôt et le site une fois créés et déployés. |
 
-Les identifiants CP1-01 à CP1-04 correspondent aux thèmes déjà présents dans l'analyse. Les suivants explicitent les nouveaux critères de la grille. Voir le [plan du checkpoint](08-plan-checkpoint.md) pour les poids et les preuves attendues.
+Les identifiants CP1-01 à CP1-04 correspondent aux thèmes déjà présents dans l'analyse. Les suivants explicitent les nouveaux critères de la grille. Voir le plan du checkpoint pour les poids et les preuves attendues.
 
 ## Hypothèses et décisions à valider
 
@@ -199,19 +199,19 @@ Ces identifiants sont conservés pour la traçabilité du cahier initial. Leur s
 ### Points ouverts
 
 1. Fixer la formule de classement et séparer les résultats arcade des mesures pédagogiques.
-2. Définir les délais de reconnexion, d'inactivité, de fin sans minuterie et d'expiration des invitations. Le client délègue le dernier choix à l'équipe; aucune valeur n'est encore confirmée.
+2. Définir les délais de reconnexion, d'inactivité, de fin sans minuterie et d'expiration des invitations. Le client me délègue le dernier choix; aucune valeur n'est encore confirmée.
 3. Préciser le transfert d'hôte quand le participant le plus ancien est invité, déconnecté, spectateur ou bot. Le client interdit la création aux invités mais ne précise pas explicitement leur succession comme hôte.
 4. Choisir le format du code semi-public et le repli de la partie rapide pour un invité lorsque toutes les salles sont indisponibles.
 5. Définir visibilité, rétention et suppression des données permanentes et temporaires. Aucun droit supplémentaire de consultation n'est accordé automatiquement à un enseignant.
 6. Choisir les bornes des contenus, les corpus et leurs licences ainsi que la politique sur les pseudonymes. L'exclusion manuelle est conservée; un filtre automatique n'est pas confirmé.
 7. Décider la participation au clavier virtuel et tester l'ergonomie avec les utilisateurs visés.
 8. Définir les deux mécanismes de rattrapage, leur attribution et leur équilibre. Le PDF fourni le 2 octobre résout l'ancienne ambiguïté de priorité en les classant essentiels; il ne choisit pas leurs effets.
-9. Confirmer comment les propositions de nom et de logo assistées respectent UX-03 et documenter la contribution humaine réelle. La validation de l'utilisateur ne doit pas être inventée.
+9. Confirmer comment les propositions de nom et de logo assistées respectent UX-03 et documenter la contribution humaine réelle. Ma validation personnelle ne doit pas être inventée.
 10. Vérifier les offres d'hébergement et d'authentification, leurs limites et les moyens d'activation autorisés avant déploiement.
 
 ## Priorisation
 
-Une exigence numérotée n'est pas supprimée parce qu'une version précédente la présentait comme « souhaitable ». La priorisation ci-dessous est actualisée d'après le PDF fourni le 2 octobre; le [registre des sources](09-sources-et-decisions.md) conserve l'ancienne contradiction des bonus et explique sa clarification.
+Une exigence numérotée n'est pas supprimée parce qu'une version précédente la présentait comme « souhaitable ». La priorisation ci-dessous est actualisée d'après le PDF fourni le 2 octobre; le registre des sources conserve l'ancienne contradiction des bonus et explique sa clarification.
 
 | Niveau | Portée proposée |
 |---|---|
@@ -229,15 +229,15 @@ La documentation Markdown prévue comprend :
 
 | Livrable | Document |
 |---|---|
-| Cahier consolidé et validation | Ce document + [matrice](02-matrice-exigences.md) |
-| Démarche créative, nom, logo, moodboard, palette, typographies | [Direction artistique](03-direction-artistique.md) |
-| Parcours, structure, hiérarchie et maquettes | [Expérience utilisateur](04-experience-utilisateur.md) |
-| Architecture et choix des services | [Architecture](05-architecture.md) |
-| Entités, relations et contraintes | [Modèle de données](06-modele-donnees.md) |
-| Cycle de salle, course et reconnexion | [Machines à états](07-machines-etats.md) |
-| Choix du temps réel | [ADR 0001](adr/0001-temps-reel.md) |
-| Jalons, grille et preuves | [Plan du checkpoint](08-plan-checkpoint.md) |
-| Sources, contradictions et décisions | [Sources et décisions](09-sources-et-decisions.md) |
-| Installation, qualité, configuration et exploitation | [Développement et déploiement](10-developpement-et-deploiement.md) |
+| Cahier consolidé et validation | Ce document + matrice |
+| Démarche créative, nom, logo, moodboard, palette, typographies | Direction artistique |
+| Parcours, structure, hiérarchie et maquettes | Expérience utilisateur |
+| Architecture et choix des services | Architecture |
+| Entités, relations et contraintes | Modèle de données |
+| Cycle de salle, course et reconnexion | Machines à états |
+| Choix du temps réel | ADR 0001 |
+| Jalons, grille et preuves | Plan du checkpoint |
+| Sources, contradictions et décisions | Sources et décisions |
+| Installation, qualité, configuration et exploitation | Développement et déploiement |
 
 **État de livraison.** Ces documents préparent le projet. Ils ne prouvent ni une application implémentée, ni un test réussi, ni un déploiement. La matrice et le plan du checkpoint devront être mis à jour avec des preuves une fois le code et les environnements disponibles.

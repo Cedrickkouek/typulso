@@ -184,7 +184,7 @@ Les essais de capture UI de ce lot ont rencontré un blocage concret : navigateu
 
 Priorité : **Poppi, Graza, Heyday, Magic Spoon**, puis **Fishwife** et **Tony's**. Les raisons de cette sélection sont leur voix expressive, leur clarté de choix et leur manière de rendre des catégories mémorables; la palette et le rendu doivent encore être appréciés sur captures effectives.
 
-Un premier échantillon pour notre jeu peut traduire ces idées sans ajouter des fonctions :
+Un premier échantillon pour mon jeu peut traduire ces idées sans ajouter des fonctions :
 
 | Idée issue du contenu | Application proposée | Garde-fou |
 |---|---|---|

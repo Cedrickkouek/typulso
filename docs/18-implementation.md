@@ -2,9 +2,8 @@
 
 > **Structure applicative · actualisée le 7 octobre 2026 · commit applicatif vérifié 4d23075**
 
-[← Documentation](README.md) · [ADR de structure](adr/0002-structure-app-router.md) · [Déploiement](19-deploiement.md) · [Vérifications](20-verification-implementation.md)
 
-Ce document décrit le code réellement présent. Les documents 05/06/07 et l’ADR temps réel ont été harmonisés avec cette structure le 7 octobre; les explorations et recettes anciennes gardent leur date. Le [dossier CP1](08-plan-checkpoint.md) et la synthèse du [rapport 20](20-verification-implementation.md) relient le commit applicatif **4d23075**, la CI distante réussie et le salon vérifié sur Railway. Le dépôt est privé.
+Ce document décrit le code réellement présent. Les documents 05/06/07 et l’ADR temps réel ont été harmonisés avec cette structure le 7 octobre; les explorations et recettes anciennes gardent leur date. Le dossier CP1 et la synthèse du rapport 20 relient le commit applicatif **4d23075**, la CI distante réussie et le salon vérifié sur Railway. Le dépôt est privé.
 
 Les dernières itérations incluent la frappe directement dans le texte sans rectangle de saisie visible, les repères de progression des autres joueurs, les pistes animées, les sons et capacités classique/arcade, le terrain de jeu du salon et le favicon reprenant le logo. Leur intégration ne signifie pas que tous les parcours ont été vérifiés en production.
 
@@ -39,7 +38,7 @@ Next.js utilise `cacheComponents: true` et React Compiler. Les composants serveu
 
 La langue d'interface FR/EN et le thème clair/sombre sont des préférences du navigateur. La langue du texte de course est un réglage de salle indépendant. Les historiques et scores proviennent du serveur; les états sans course affichent une absence de données explicite.
 
-Les licences des polices livrées avec l'application sont conservées dans [Space Grotesk](../public/licenses/space-grotesk/LICENSE.txt) et [IBM Plex Mono](../public/licenses/ibm-plex-mono/LICENSE.txt).
+Les licences des polices livrées avec l'application sont conservées dans Space Grotesk et IBM Plex Mono.
 
 ## Présentation pleine largeur · ajustement du 4 octobre
 
@@ -51,21 +50,21 @@ Sur l'accueil, deux colonnes partagent la largeur disponible, séparées de 24 �
 
 Les titres `h1`, `h2` et `h3` de l'application utilisent maintenant la graisse **700** de Space Grotesk, déjà fournie localement, pour renforcer la hiérarchie demandée. Leurs tailles et les règles de mise en page restent identiques.
 
-Le pied de page partagé [SiteFooter](../components/site-footer.tsx) suit désormais la proposition « Dernière touche » : grande signature Typulso, motif original de touches et deux groupes de destinations, **Jouer** et **Bien jouer**. Le bas propose un retour citron vers les courses publiques. Sous 760 px, l’identité se centre au-dessus des groupes; sous 540 px, le motif et l’action s’empilent; sous 350 px, les groupes passent à une colonne. L’entraînement utilise le footer complet, comme les pages ordinaires. Les salles utilisent une variante compacte avec les trois liens d’aide. La palette, les textes encre sur les touches pastel, les contrôles de 44 px et le focus sont conservés. La règle CSS qui masque le footer en concentration reste présente; son activation n’a pas été exercée pendant cette recette.
+Le pied de page partagé SiteFooter (`components/site-footer.tsx`) suit désormais la proposition « Dernière touche » : grande signature Typulso, motif original de touches et deux groupes de destinations, **Jouer** et **Bien jouer**. Le bas propose un retour citron vers les courses publiques. Sous 760 px, l’identité se centre au-dessus des groupes; sous 540 px, le motif et l’action s’empilent; sous 350 px, les groupes passent à une colonne. L’entraînement utilise le footer complet, comme les pages ordinaires. Les salles utilisent une variante compacte avec les trois liens d’aide. La palette, les textes encre sur les touches pastel, les contrôles de 44 px et le focus sont conservés. La règle CSS qui masque le footer en concentration reste présente; son activation n’a pas été exercée pendant cette recette.
 
-Les fondations restent dans [la feuille de styles de l'application](../app/globals.css). Les styles ciblés du [footer](../app/footer.css), du [jeu](../app/race.css) et des [résultats](../app/results.css) sont importés une seule fois par le layout racine, après les fondations, sans redimensionnement artificiel de la page. Les [mesures et captures](20-verification-implementation.md#ajustement-de-largeur--4-octobre-2026) documentent cette évolution.
+Les fondations restent dans la feuille de styles de l'application (`app/globals.css`). Les styles ciblés du footer (`app/footer.css`), du jeu (`app/race.css`) et des résultats (`app/results.css`) sont importés une seule fois par le layout racine, après les fondations, sans redimensionnement artificiel de la page. Les mesures et captures documentent cette évolution.
 
 Les dialogues natifs partagés retrouvent leur centrage avec `margin: auto`, nécessaire après la remise à zéro des marges par Tailwind. Une marge de sécurité `--dialog-gutter` varie de 16 à 32 px autour du panneau. Les largeurs restent limitées à 540 px, ou 920 px pour la variante large; la hauteur suit le viewport dynamique moins ces marges. Les formulaires longs défilent à l’intérieur du dialogue. Le mécanisme natif `showModal()`, la fermeture par Échap, le focus et les couleurs sont conservés.
 
 ## Footer, course et bilan · intégration du 4 octobre
 
-Les [pistes de recherche](21-recherche-footer-et-jeu.md) sont intégrées avec les composants et dépendances déjà présents. [RaceDashboard, ArcadeControls et RaceTracks](../components/race-interface.tsx) séparent les mesures, la frappe, l’énergie arcade et les concurrents. Le tableau de bord est partagé avec l’échauffement solo. Les pistes gardent leur ordre d’arrivée pour rester stables; leur position est explicitement calculée selon la progression, distincte du classement officiel final. La connexion et les raisons de désactivation des capacités sont écrites. Les guards existants, les acquittements et la réconciliation de saisie restent inchangés.
+Les pistes de recherche sont intégrées avec les composants et dépendances déjà présents. RaceDashboard, ArcadeControls et RaceTracks (`components/race-interface.tsx`) séparent les mesures, la frappe, l’énergie arcade et les concurrents. Le tableau de bord est partagé avec l’échauffement solo. Les pistes gardent leur ordre d’arrivée pour rester stables; leur position est explicitement calculée selon la progression, distincte du classement officiel final. La connexion et les raisons de désactivation des capacités sont écrites. Les guards existants, les acquittements et la réconciliation de saisie restent inchangés.
 
-[ResultsPanel](../components/results.tsx) présente le bilan personnel avant le podium : vitesse, précision, erreurs et corrections, puis actions de suite, podium et tableau. Le rang reste celui du serveur; seuls les rangs officiels 1–3 apparaissent au podium. Les couleurs initiales et les traductions FR/EN sont conservées. À 600 px et moins, les mesures du jeu utilisent une grille 2 × 2 et les pistes se répartissent sur deux lignes. Le bilan dispose aussi de quatre mesures, puis deux colonnes sur mobile.
+ResultsPanel (`components/results.tsx`) présente le bilan personnel avant le podium : vitesse, précision, erreurs et corrections, puis actions de suite, podium et tableau. Le rang reste celui du serveur; seuls les rangs officiels 1–3 apparaissent au podium. Les couleurs initiales et les traductions FR/EN sont conservées. À 600 px et moins, les mesures du jeu utilisent une grille 2 × 2 et les pistes se répartissent sur deux lignes. Le bilan dispose aussi de quatre mesures, puis deux colonnes sur mobile.
 
-La [recette locale](20-verification-implementation.md) distingue les vérifications visuelles, les tests PostgreSQL/Socket.IO et les vérifications de production encore à réaliser.
+La recette locale distingue les vérifications visuelles, les tests PostgreSQL/Socket.IO et les vérifications de production encore à réaliser.
 
-La page de salle redirige vers Jouer (`/`) lorsque le serveur confirme une fermeture/interruption ou refuse l’accès avec `room_closed`. La navigation remplace l’entrée de salle dans l’historique et annule les lots de saisie en attente. La [recette locale](20-verification-implementation.md) couvre la fermeture en direct, l’ancien lien et le retour navigateur.
+La page de salle redirige vers Jouer (`/`) lorsque le serveur confirme une fermeture/interruption ou refuse l’accès avec `room_closed`. La navigation remplace l’entrée de salle dans l’historique et annule les lots de saisie en attente. La recette locale couvre la fermeture en direct, l’ancien lien et le retour navigateur.
 
 ## Modèle réellement persisté
 
@@ -86,7 +85,7 @@ erDiagram
     ACTORS ||--o{ COMMAND_RECEIPTS : "idempotence"
 ```
 
-Les acteurs invités et bots n'ont pas de compte `users`. `oauth_states` protège le retour OAuth; `rate_limits` conserve les fenêtres de débit; `schema_migrations` trace les migrations appliquées. Les identifiants sont UUID; les contraintes et clés étrangères sont dans [la migration initiale](../db/migrations/0001_initial.sql). La clé composite différée de l'hôte garantit son appartenance à la salle dans la transaction de création.
+Les acteurs invités et bots n'ont pas de compte `users`. `oauth_states` protège le retour OAuth; `rate_limits` conserve les fenêtres de débit; `schema_migrations` trace les migrations appliquées. Les identifiants sont UUID; les contraintes et clés étrangères sont dans la migration initiale (`db/migrations/0001_initial.sql`). La clé composite différée de l'hôte garantit son appartenance à la salle dans la transaction de création.
 
 ```mermaid
 stateDiagram-v2

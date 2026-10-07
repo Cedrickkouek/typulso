@@ -25,8 +25,8 @@
 
 - [MDN — AudioContext](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext) : réutilisation d’un contexte audio, état et reprise.
 - [MDN — bonnes pratiques Web Audio](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Best_practices) : activation audio après interaction et contrôles.
-- [Cahier consolidé](../01-cahier-des-charges.md) et [source PDF du projet](../../sources/cahier-des-charges-2026-10-02.pdf).
+- Cahier consolidé et source PDF du projet.
 - Audit local : `lib/domain/engine.ts`, `lib/client/preferences.ts`, `components/typing-zone.tsx`, `components/race-interface.tsx`.
-- [Recherche précédente et corpus étendu](../21-recherche-footer-et-jeu.md).
+- Recherche précédente et corpus étendu.
 
 Les règles Virgule, durées d’avertissement, plafonds, sons du laboratoire et mesures d’évaluation sont **des propositions originales de conception**, pas des comportements attribués aux sites étudiés.

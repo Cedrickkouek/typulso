@@ -2,11 +2,10 @@
 
 > **Schéma actuel · 7 octobre 2026 · version applicative vérifiée 4d23075.**
 
-[← Architecture](05-architecture.md) · [États](07-machines-etats.md) · [Migration initiale](../db/migrations/0001_initial.sql) · [Schéma TypeScript](../db/schema.ts)
 
 ## Sources et choix de stockage
 
-La migration SQL crée **14 tables applicatives**. Le [migrateur](../scripts/migrate.ts) ajoute `schema_migrations`, soit 15 tables avec le suivi technique. Les entités du modèle initial sont maintenant représentées par ces tables et les états JSONB; il n’existe pas de tables séparées `race_entries`, `key_metrics` ou `room_snapshots` dans cette version.
+La migration SQL crée **14 tables applicatives**. Le migrateur (`scripts/migrate.ts`) ajoute `schema_migrations`, soit 15 tables avec le suivi technique. Les entités du modèle initial sont maintenant représentées par ces tables et les états JSONB; il n’existe pas de tables séparées `race_entries`, `key_metrics` ou `room_snapshots` dans cette version.
 
 ```mermaid
 erDiagram
@@ -51,13 +50,13 @@ La contrainte `host_belongs_to_room` référence `(rooms.id, rooms.host_actor_id
 
 ## Contenu des états JSONB
 
-| Colonne | Informations principales | Source à lire |
+| Colonne | Informations principales | Emplacement dans le code |
 |---|---|---|
-| `rooms.state` | Réglages, hôte, membres avec connexion et état de frappe interne, course active, événements arcade et résultats courants. | [État interne et commandes](../lib/server/rooms.ts), [contrat public](../types/game.ts). |
-| `races.settings` | Copie des règles de la manche : langue, contenu, erreurs, durée, accès et mode. | [Types](../types/game.ts). |
-| `results.data` | Mesures, classement, mode/langue, erreurs par touche et référence de comparaison des règles. | [Résultat stocké](../types/game.ts), [API profil](../app/api/profile/route.ts). |
-| `room_events.data` | État public versionné utilisé pour la traçabilité. | [Persistance et projection](../lib/server/rooms.ts). |
-| `command_receipts.response` | Réponse de la commande, avec suppression du lien secret d’invitation avant stockage. | [Transaction de commande](../lib/server/rooms.ts). |
+| `rooms.state` | Réglages, hôte, membres avec connexion et état de frappe interne, course active, événements arcade et résultats courants. | État interne et commandes (`lib/server/rooms.ts`), contrat public (`types/game.ts`). |
+| `races.settings` | Copie des règles de la manche : langue, contenu, erreurs, durée, accès et mode. | Types (`types/game.ts`). |
+| `results.data` | Mesures, classement, mode/langue, erreurs par touche et référence de comparaison des règles. | Résultat stocké (`types/game.ts`), API profil (`app/api/profile/route.ts`). |
+| `room_events.data` | État public versionné utilisé pour la traçabilité. | Persistance et projection (`lib/server/rooms.ts`). |
+| `command_receipts.response` | Réponse de la commande, avec suppression du lien secret d’invitation avant stockage. | Transaction de commande (`lib/server/rooms.ts`). |
 
 Un instantané public n’est pas une copie brute de `rooms.state`. Le serveur filtre le texte avant le départ et la saisie privée des autres joueurs, tout en exposant leurs métriques et progression autorisées. Un invité n’a pas de ligne `users`, mais son acteur/session peut être persisté; sa suppression et la conservation des données demandent une politique d’exploitation explicite.
 
@@ -65,4 +64,4 @@ Un instantané public n’est pas une copie brute de `rooms.state`. Le serveur f
 
 Le migrateur prend un verrou PostgreSQL, applique chaque fichier SQL absent de `schema_migrations`, puis enregistre son nom dans la même transaction. Le guide Railway fait exécuter `node dist/migrate.mjs` avant le service temps réel. Une connexion à une base neuve ne crée pas à elle seule les tables.
 
-Les migrations sur base vide et leur seconde exécution ont été vérifiées localement et en CI. En production, le healthcheck, la reconnexion au même compte et la création/admission de salle établissent le fonctionnement des parcours utilisés; ils ne constituent pas un inventaire SQL exhaustif ni un essai de restauration. Voir les [preuves](08-plan-checkpoint.md) et le [guide](19-deploiement.md).
+Les migrations sur base vide et leur seconde exécution ont été vérifiées localement et en CI. En production, le healthcheck, la reconnexion au même compte et la création/admission de salle établissent le fonctionnement des parcours utilisés; ils ne constituent pas un inventaire SQL exhaustif ni un essai de restauration. Cette recette a vérifié HTTPS, compte persistant et salon partagé par code avec deux sessions indépendantes.

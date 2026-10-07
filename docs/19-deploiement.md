@@ -3,7 +3,6 @@
 > **Actualisé le 7 octobre 2026 · production Railway observée.**\
 > Échéance initialement annoncée : 5 octobre, avant 23 h 55 à Toronto; cette recette ne prouve pas une remise à cette date.
 
-[← Projet](../README.md) · [Architecture](18-implementation.md) · [Vérifications effectives](20-verification-implementation.md)
 
 ## Production observée · 7 octobre 2026
 
@@ -16,7 +15,7 @@
 | Déploiements | Statuts Railway web et realtime réussis sur ce commit. |
 | Fonctionnement en ligne | HTTPS, healthcheck web avec base disponible, compte créé et relu après reconnexion, salon/code et mises à jour entre deux sessions HTTP/Socket.IO. |
 
-Les [14 vérifications de production](08-plan-checkpoint.md) sont distinctes de la CI, qui emploie une base isolée. Les valeurs privées de connexion, le domaine du service temps réel et les réglages du compte Railway ne sont pas publiés ici. Les exemples ci-dessous sont des **instructions de configuration**, pas une capture exhaustive des variables de production.
+Les 14 vérifications de production couvrent santé HTTPS/PostgreSQL, inscription, reconnexion au même compte, profil relu, session invitée, création et code réel, admission et arrivée partagée, durée 60→45 propagée, configuration refusée au non-hôte et prêt partagé. La CI emploie une base isolée et constitue une preuve distincte. Les valeurs privées de connexion, le domaine du service temps réel et les réglages du compte Railway ne sont pas publiés ici. Les exemples ci-dessous sont des **instructions de configuration**, pas une capture exhaustive des variables de production.
 
 L’origine web observée est `https://typulso-production.up.railway.app`. `APP_URL` doit correspondre exactement à l’adresse officielle utilisée; une autre origine provoque le refus de connexion. Si PostgreSQL signale `relation "rate_limits" does not exist`, vérifier que l’application vise la bonne base et que les migrations ont été appliquées à cette base. Ajouter `DATABASE_URL` ne crée pas les tables à lui seul. Ne pas réinitialiser une base contenant des données pour résoudre ce problème.
 
@@ -94,7 +93,7 @@ Ce chemin suit l'[image PostgreSQL officielle](https://hub.docker.com/_/postgres
 
 ## Déployer sur Railway
 
-La préparation Docker du 7 octobre a été suivie du déploiement Railway par le porteur du projet. L’état observé et les preuves figurent en début de document. La procédure ci-dessous permet de reproduire les trois services; elle n’affirme pas que tous les réglages ou sauvegardes du compte d’hébergement ont été audités.
+La préparation Docker du 7 octobre a été suivie du déploiement que j’ai effectué sur Railway. L’état observé et les preuves figurent en début de document. La procédure ci-dessous permet de reproduire les trois services; elle n’affirme pas que tous les réglages ou sauvegardes du compte d’hébergement ont été audités.
 
 Vérification locale du 7 octobre : `bun run check` réussi (formatage, lint, types, 69 tests unitaires, builds web et realtime). Les deux images ont été construites puis démarrées avec Node.js 24 et un PostgreSQL 18 temporaire isolé. Migration initiale appliquée et rejouée sans changement, deux healthchecks avec base disponible, accueil HTTP 200 et inscription HTTP 201 avec Argon2 natif. La commande par défaut de l'image web est bien `node server.js`. Les conteneurs et le réseau de cet essai ont été supprimés; la base locale existante n'a pas été utilisée. Les tests d'intégration multijoueurs n'ont pas été relancés pour cette préparation de livraison.
 
@@ -189,4 +188,4 @@ Le test de charge, l’équilibrage arcade et les essais avec le public restent 
 
 Le dépôt GitHub existe et contient l’application et le dossier; il reste **privé**. Vérifier les droits de l’évaluateur avant la remise. Cette actualisation documentaire ne change pas sa visibilité et ne déclare pas un audit exhaustif des secrets de tout l’historique Git.
 
-Le [dossier CP1](08-plan-checkpoint.md) rassemble les liens réels du site, du dépôt, du commit applicatif vérifié et de la CI. Les fichiers d’environnement, bases locales, journaux et identités de recette restent hors des documents livrés. Toute soumission scolaire reste une action distincte à effectuer par le porteur du projet.
+Le dossier CP1 rassemble les liens réels du site, du dépôt, du commit applicatif vérifié et de la CI. Les fichiers d’environnement, bases locales, journaux et identités de recette restent hors des documents livrés. Toute soumission scolaire reste une action distincte à effectuer par moi.

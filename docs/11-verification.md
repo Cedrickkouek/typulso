@@ -1,11 +1,10 @@
 # Vérification du dossier et de l’aperçu
 
-> **Lecture actuelle · 7 octobre 2026 :** ce document conserve la conception ou les observations à leur date. L’état du code et des choix implémentés figure dans [18](18-implementation.md); les procédures utilisables dans [19](19-deploiement.md); les preuves locales, CI et Railway dans [CP1](08-plan-checkpoint.md) et la synthèse de [20](20-verification-implementation.md). Une maquette ou un test prévu ne constitue pas une preuve de production.
+> **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
 > **1er octobre 2026 · America/Toronto · proposition v0.4**  
 > Périmètre : documentation, skill, visuels et prototype local. Aucune preuve d’application ou de production.
 
-[← Documentation](README.md) · [Recherche initiale](12-recherche-inspiration.md) · [Recherche complémentaire](13-recherche-composants.md) · [Composants](14-composants-interface.md) · [Direction artistique](03-direction-artistique.md)
 
 ## Contrôles initiaux — historique v0.1 à v0.3
 
@@ -67,9 +66,9 @@ Les captures locales et le moodboard ont été actualisés après cette révisio
 
 ## Révision v0.4 : recherche complémentaire et composants
 
-Les [lots D–F](13-recherche-composants.md) ajoutent **51 nouvelles références**, soit **102 entrées A–F** hors Kahoot, Wooclap et Monkeytype. Le contrôle des registres retrouve 17 identifiants par lot et aucun domaine primaire répété entre les 102 entrées. Huit nouvelles références ont fait l’objet d’une revue rendue : cinq exploitables et trois partielles, avec limites et captures consignées. Les fonctions décrites dans une aide officielle restent distinguées des interactions réellement testées.
+Les lots D–F ajoutent **51 nouvelles références**, soit **102 entrées A–F** hors Kahoot, Wooclap et Monkeytype. Le contrôle des registres retrouve 17 identifiants par lot et aucun domaine primaire répété entre les 102 entrées. Huit nouvelles références ont fait l’objet d’une revue rendue : cinq exploitables et trois partielles, avec limites et captures consignées. Les fonctions décrites dans une aide officielle restent distinguées des interactions réellement testées.
 
-La palette v0.3 est conservée. Le prototype v0.4 précise les contrôles, le salon, la frappe et les résultats; la [spécification des 18 composants](14-composants-interface.md) prépare leur future réalisation React/Next.js/Tailwind. Aucun framework, kit de composants, serveur ou base de données n’a été installé pour cette révision.
+La palette v0.3 est conservée. Le prototype v0.4 précise les contrôles, le salon, la frappe et les résultats; la spécification des 18 composants prépare leur future réalisation React/Next.js/Tailwind. Aucun framework, kit de composants, serveur ou base de données n’a été installé pour cette révision.
 
 | Contrôle | Observation réelle | Portée |
 |---|---|---|
@@ -92,7 +91,6 @@ Deux finitions ont été corrigées pendant la vérification : un changement de 
 
 ![Salon v0.4](assets/preview-lobby.jpg)
 
-[Course v0.4](assets/preview-race.jpg) · [Salon sur petit écran](assets/preview-mobile-v04.jpg) · [Invitation](assets/preview-invitation-v04.jpg)
 
 Ces vérifications ne couvrent pas toutes les combinaisons d’états. La composition IME est protégée dans le code mais n’a pas été testée avec un clavier IME réel; la saisie tactile, les lecteurs d’écran et les essais avec le public cible restent à réaliser. Les captures n’attestent pas les animations des références externes.
 
@@ -112,4 +110,4 @@ Les livrables ont été déplacés dans `projet-course-de-frappe/`. Les sources 
 
 ## Révision v0.5 : toutes les pages
 
-Le [rapport du 2 octobre](17-verification-pages.md) documente la revue de 20 écrans et 74 combinaisons d’états, leurs contrastes et les parcours locaux réellement contrôlés. Les résultats v0.3 et v0.4 ci-dessus restent des vérifications historiques. L’ancienne planche est conservée dans [atelier.html](preview/atelier.html); l’[aperçu principal](preview/index.html) montre maintenant le site de conception complet. La stack future, les choix d’identité et les preuves réseau du checkpoint restent distincts de cette maquette.
+Le rapport du 2 octobre documente la revue de 20 écrans et 74 combinaisons d’états, leurs contrastes et les parcours locaux réellement contrôlés. Les résultats v0.3 et v0.4 ci-dessus restent des vérifications historiques. L’ancienne planche est conservée dans atelier.html; l’aperçu principal montre maintenant le site de conception complet. La stack future, les choix d’identité et les preuves réseau du checkpoint restent distincts de cette maquette.

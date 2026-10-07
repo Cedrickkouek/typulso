@@ -4,7 +4,7 @@
 
 Ce lot étudie le soin apporté aux états, à la composition et aux interactions. Il complète les inspirations de marque et de jeu : une personnalité colorée, vibrante, amusante et ludique peut s’appuyer sur des contrôles précis et prévisibles.
 
-Les preuves ci-dessous proviennent des **pages finales officielles ouvertes et de leur contenu textuel/code extrait**. Ce relevé ne constitue pas une observation des pixels, des couleurs réellement rendues, des animations en mouvement ou de la navigation au clavier. Les personnalités indiquées sont des **interprétations du positionnement et de la documentation**, pas des évaluations visuelles. Les formulations d’accessibilité des éditeurs sont rapportées comme leurs engagements ; elles ne certifient pas notre future application.
+Les preuves ci-dessous proviennent des **pages finales officielles ouvertes et de leur contenu textuel/code extrait**. Ce relevé ne constitue pas une observation des pixels, des couleurs réellement rendues, des animations en mouvement ou de la navigation au clavier. Les personnalités indiquées sont des **interprétations du positionnement et de la documentation**, pas des évaluations visuelles. Les formulations d’accessibilité des éditeurs sont rapportées comme leurs engagements ; elles ne certifient pas ma future application.
 
 Chaque identité compte une fois : Untitled UI Figma/React, les documents d’un même système, les redirections et les exemples ne créent pas de sites supplémentaires. Les documentations React/Next/Tailwind de fin de page constituent des vérifications techniques, sans augmenter le total de ce lot. Aucun des 17 sites retenus n’appartient aux lots A–C ni aux références Kahoot, Wooclap et Monkeytype.
 
@@ -14,7 +14,7 @@ Chaque identité compte une fois : Untitled UI Figma/React, les documents d’un
 |---|---|---|---|---|
 | F01 | [shadcn/ui](https://ui.shadcn.com/) | 2026-10-01 | Démonstrations de boutons, dialogues et formulaires ; documentation proposant plusieurs bases de composants. | Modulaire et précis : personnaliser une base cohérente. |
 | F02 | [Radix UI](https://www.radix-ui.com/) | 2026-10-01 | Catalogue Themes/Primitives ; guide explicite de labels, focus et navigation clavier. | Structuré : le comportement fait partie de la finition. |
-| F03 | [Headless UI](https://headlessui.com/) | 2026-10-01 | Catalogue React ; Dialog, Tabs et formulaires ; exemples avec classes Tailwind. | Discret et adaptable : conserver notre propre expression. |
+| F03 | [Headless UI](https://headlessui.com/) | 2026-10-01 | Catalogue React ; Dialog, Tabs et formulaires ; exemples avec classes Tailwind. | Discret et adaptable : conserver ma propre expression. |
 | F04 | [React Aria](https://react-aria.adobe.com/) | 2026-10-01 | Composition de champs ; exemples Tailwind avec états ; paragraphes clavier, tactile et gestion du focus. | Méticuleux : adapter l’interaction au mode d’entrée. |
 | F05 | [Mantine](https://mantine.dev/) | 2026-10-01 | Exemples de champs, combobox, hooks et thèmes ; guide Next.js accessible. | Complet : prévoir les cas ordinaires et les erreurs. |
 | F06 | [Chakra UI](https://chakra-ui.com/) | 2026-10-01 | Tokens, typographie et recipes ; documentation Button avec tailles, chargement et largeur stable. | Systémique : faire évoluer les variantes ensemble. |
@@ -36,9 +36,9 @@ Chaque identité compte une fois : Untitled UI Figma/React, les documents d’un
 
 **Preuve complémentaire :** [Dialog](https://ui.shadcn.com/docs/components/base/dialog), effectivement ouvert après redirection, décrit titre, description, contenu et actions séparés ; il propose Base UI, React Aria et Radix. Ne pas supposer que tout le catalogue repose obligatoirement sur un seul moteur.
 
-**Application proposée :** faire de `Button`, `Field`, `Dialog`, `Badge` et `Tabs` une petite base partagée ; y raccorder nos tokens et états. Le salon, la configuration et les résultats doivent employer les mêmes règles de taille et de hiérarchie.
+**Application proposée :** faire de `Button`, `Field`, `Dialog`, `Badge` et `Tabs` une petite base partagée ; y raccorder mes tokens et états. Le salon, la configuration et les résultats doivent employer les mêmes règles de taille et de hiérarchie.
 
-**Couleur/mouvement/layout :** la personnalisation et l’anatomie sont documentées ; les pixels et transitions restent à observer. Copier un exemple ne démontre pas les contrastes, le focus ou l’adaptation mobile de notre version.
+**Couleur/mouvement/layout :** la personnalisation et l’anatomie sont documentées ; les pixels et transitions restent à observer. Copier un exemple ne démontre pas les contrastes, le focus ou l’adaptation mobile de ma version.
 
 ### F02 · Radix UI — soigner le comportement autant que le contour
 
@@ -46,15 +46,15 @@ Chaque identité compte une fois : Untitled UI Figma/React, les documents d’un
 
 **Application proposée :** pour quitter une course, prévoir un retour sûr vers l’action d’origine ; pour rejoindre un salon, nommer le champ et les actions explicitement. Les onglets de paramètres doivent fonctionner au clavier.
 
-**Couleur/mouvement/layout :** intérêt principal comportemental. Une primitive n’impose ni nos couleurs ni le placement de nos blocs. Son usage ne dispense pas de fournir les labels et de vérifier l’interface intégrée.
+**Couleur/mouvement/layout :** intérêt principal comportemental. Une primitive n’impose ni mes couleurs ni le placement de mes blocs. Son usage ne dispense pas de fournir les labels et de vérifier l’interface intégrée.
 
-### F03 · Headless UI — donner notre personnalité aux contrôles
+### F03 · Headless UI — donner ma personnalité aux contrôles
 
 **Preuve complémentaire :** [Dialog](https://headlessui.com/react/dialog), effectivement ouvert, documente `DialogPanel`, titre, description, fond, défilement et focus initial ; le contenu extérieur devient inerte pendant l’ouverture.
 
 **Application proposée :** une modale courte pour rejoindre une salle, avec code et message de validation ; un panneau de règles qui reste lisible sur petit écran. Le style citron/rose/lavande peut être conservé sans réécrire le mécanisme de focus.
 
-**Couleur/mouvement/layout :** exemples Tailwind lus, pas rendus. Les choix de fond, marge, contraste et animation sont à définir. La documentation du système ne prouve pas que notre modale future restitue correctement le focus dans tous ses parcours.
+**Couleur/mouvement/layout :** exemples Tailwind lus, pas rendus. Les choix de fond, marge, contraste et animation sont à définir. La documentation du système ne prouve pas que ma modale future restitue correctement le focus dans tous ses parcours.
 
 ### F04 · React Aria — traiter le clavier et le tactile avec précision
 
@@ -78,7 +78,7 @@ Chaque identité compte une fois : Untitled UI Figma/React, les documents d’un
 
 **Application proposée :** une action « Créer une salle » garde sa place lorsqu’elle devient « Création… » ; « Prêt » possède un état sélectionné, et non un simple changement de couleur. Les recettes de composants doivent partager hauteur, rayon et espacements.
 
-**Couleur/mouvement/layout :** propriétés et recettes lues, pas pixels observés. Les palettes de l’éditeur ne remplacent pas notre palette. Les garanties devront être évaluées dans la version effectivement retenue.
+**Couleur/mouvement/layout :** propriétés et recettes lues, pas pixels observés. Les palettes de l’éditeur ne remplacent pas ma palette. Les garanties devront être évaluées dans la version effectivement retenue.
 
 ### F07 · HeroUI — formaliser les états qui donnent de la finition
 
@@ -134,7 +134,7 @@ Chaque identité compte une fois : Untitled UI Figma/React, les documents d’un
 
 **Application proposée :** définir une convention d’icônes, des tailles cohérentes et des variantes communes aux champs, badges et cartes. Une icône, son texte et son état doivent exprimer la même action.
 
-**Couleur/mouvement/layout :** cohérence revendiquée et mécanismes documentés, pas audit visuel. Le ton du kit ne doit pas remplacer notre personnalité ludique ; les composants gratuits et les ensembles payants doivent être distingués si une intégration est envisagée.
+**Couleur/mouvement/layout :** cohérence revendiquée et mécanismes documentés, pas audit visuel. Le ton du kit ne doit pas remplacer ma personnalité ludique ; les composants gratuits et les ensembles payants doivent être distingués si une intégration est envisagée.
 
 ### F14 · Base UI — séparer mécanique et habillage
 
@@ -142,7 +142,7 @@ Chaque identité compte une fois : Untitled UI Figma/React, les documents d’un
 
 **Application proposée :** garder l’état métier du salon et de la course en dehors des composants décoratifs ; donner à une modale un titre, une description, une fermeture et un retour de focus précis.
 
-**Couleur/mouvement/layout :** anatomie/API lues, pas rendu évalué. Ne pas ajouter des dialogues imbriqués ou des gestes simplement parce qu’ils existent dans la documentation. Le composant futur doit rester simple pour notre parcours.
+**Couleur/mouvement/layout :** anatomie/API lues, pas rendu évalué. Ne pas ajouter des dialogues imbriqués ou des gestes simplement parce qu’ils existent dans la documentation. Le composant futur doit rester simple pour mon parcours.
 
 ### F15 · Carbon — clarifier la priorité des actions
 
@@ -158,7 +158,7 @@ Chaque identité compte une fois : Untitled UI Figma/React, les documents d’un
 
 **Application proposée :** garder un vocabulaire et des états cohérents entre création, attente et résultats ; documenter où chaque composant peut être utilisé et ce qu’il fait.
 
-**Couleur/mouvement/layout :** structure des références lue, pas interface finale rendue. Polaris concerne les surfaces de Shopify ; il constitue ici une référence de système et de continuité. Ce relevé ne propose pas d’en faire notre bibliothèque React/Tailwind indépendante.
+**Couleur/mouvement/layout :** structure des références lue, pas interface finale rendue. Polaris concerne les surfaces de Shopify ; il constitue ici une référence de système et de continuité. Ce relevé ne propose pas d’en faire ma bibliothèque React/Tailwind indépendante.
 
 ### F17 · PrimeReact — choisir le niveau d’abstraction utile
 
@@ -168,7 +168,7 @@ Chaque identité compte une fois : Untitled UI Figma/React, les documents d’un
 
 **Couleur/mouvement/layout :** démonstration et code extraits, pas pixels vérifiés. Le tableau de bord financier n’est pas un modèle visuel à reproduire. Vérifier les API et la compatibilité de la version retenue avant l’intégration.
 
-## Traduction proposée dans nos composants
+## Traduction proposée dans mes composants
 
 Ces décisions sont des **propositions issues de la recherche**, à confronter aux parcours et au prototype.
 
@@ -215,4 +215,4 @@ Le relevé de ce lot demeure textuel. Pour examiner réellement le soin des comp
 - `flowbite.com` : réponse 403 ; remplacé dans le relevé par la branche officielle `flowbite-react.com`, accessible et reliée à l’écosystème Flowbite.
 - [Park UI](https://park-ui.com/) a été ouvert, mais **exclu du total** pour éviter de multiplier les entrées d’une même famille : son site annonce actuellement le rapprochement avec Chakra et affiche Chakra Systems. PrimeReact fournit la 17e identité retenue.
 - Les bibliothèques et documentations ne constituent pas des choix définitifs de packages, de versions ou d’hébergement. Aucune installation, aucun achat et aucune création de compte n’a été effectuée.
-- L’identité propre du projet — nom, logo, palette, typographies et tone of voice — reste à concevoir et valider avec l’équipe. Les marques, templates et actifs de ces références ne sont pas reproduits.
+- L’identité propre du projet — nom, logo, palette, typographies et tone of voice — reste à concevoir et à justifier par mes décisions personnelles. Les marques, templates et actifs de ces références ne sont pas reproduits.

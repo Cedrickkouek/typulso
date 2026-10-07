@@ -1,6 +1,5 @@
 # Registre · footer et page de jeu
 
-[← Synthèse et propositions](../21-recherche-footer-et-jeu.md)
 
 > **4 octobre 2026 · personnalité : colorée, vibrante, amusante, ludique**  
 > 79 candidats ouverts ; 54 références exploitables ; 25 exclus de la sélection.  
@@ -109,15 +108,15 @@ Toutes prises le 4 octobre 2026 dans une fenêtre de 1280 × 720 pixels. Elles s
 
 | Source | Vue effectivement examinée | Capture locale |
 |---|---|---|
-| Monkeytype | Frappe, réglages et footer bas | [Capture](../assets/recherche-footer-jeu/monkeytype.jpg) |
-| TypeRacer | Accueil avec choix de pratique | [Capture](../assets/recherche-footer-jeu/typeracer-accueil.jpg) |
-| TypeRacer | Pratique solo avant la première frappe | [Capture](../assets/recherche-footer-jeu/typeracer-pratique.jpg) |
-| Keymash | Accueil : rapide, personnalisé et compétition | [Capture](../assets/recherche-footer-jeu/keymash.jpg) |
-| Blooket | Footer après fermeture du consentement | [Capture](../assets/recherche-footer-jeu/blooket-footer.jpg) |
-| Jackbox Games | Footer ; formulaire désactivé faute de cookies optionnels | [Capture](../assets/recherche-footer-jeu/jackbox-footer.jpg) |
-| Wooclap | Footer et groupes de liens | [Capture](../assets/recherche-footer-jeu/wooclap-footer.jpg) |
-| ZType | Menu initial, jeu non lancé | [Capture](../assets/recherche-footer-jeu/ztype.jpg) |
-| Gartic Phone | Accueil, pseudo, aide et footer ; salon non créé | [Capture](../assets/recherche-footer-jeu/garticphone.jpg) |
-| Typulso | Échauffement local sombre avant la première frappe | [Base actuelle](../assets/recherche-footer-jeu/typulso-pratique-actuelle.jpg) |
+| Monkeytype | Frappe, réglages et footer bas | Capture |
+| TypeRacer | Accueil avec choix de pratique | Capture |
+| TypeRacer | Pratique solo avant la première frappe | Capture |
+| Keymash | Accueil : rapide, personnalisé et compétition | Capture |
+| Blooket | Footer après fermeture du consentement | Capture |
+| Jackbox Games | Footer ; formulaire désactivé faute de cookies optionnels | Capture |
+| Wooclap | Footer et groupes de liens | Capture |
+| ZType | Menu initial, jeu non lancé | Capture |
+| Gartic Phone | Accueil, pseudo, aide et footer ; salon non créé | Capture |
+| Typulso | Échauffement local sombre avant la première frappe | Base actuelle |
 
 Aucun match public rejoint, compte créé ou formulaire envoyé. Aucun gameplay multijoueur ni animation externe n’est déclaré testé. L’échauffement local Typulso a été ouvert sans saisie ; il ne produit pas de résultat de compte.

@@ -2,15 +2,15 @@
 
 **Un clavier. Toute une arène.**
 
-Une application de courses de frappe pour jouer ensemble et progresser, avec une direction colorée, vibrante et ludique. L’application livrée utilise le nom **Typulso** et son logo clavier/pulsation. Les choix et retours du porteur du projet sont consignés dans la [démarche créative](docs/03-direction-artistique.md); l’origine humaine d’éventuels croquis ou idées de marque reste à compléter avec l’équipe.
+Je développe **Typulso**, un projet individuel de courses de frappe pour jouer ensemble et progresser. J’ai retenu une direction colorée, vibrante et ludique, avec une identité de clavier/pulsation. Je présente mes choix, les retours qui ont guidé les itérations et le rôle de l’assistance de l’IA dans ma démarche.
 
-[Jouer en production](https://typulso-production.up.railway.app/) · [Dépôt GitHub](https://github.com/Cedrickkouek/typulso) · [CI vérifiée](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231) · [Dossier du checkpoint 1](docs/08-plan-checkpoint.md)
+[Jouer en production](https://typulso-production.up.railway.app/) · [Dépôt GitHub](https://github.com/Cedrickkouek/typulso) · [CI vérifiée](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231) · Dossier du checkpoint 1
 
 **État vérifié le 7 octobre 2026 :** inscription et connexion locales, PostgreSQL et salon rejoint par code contrôlés sur Railway avec deux sessions HTTP/Socket.IO indépendantes. Les modes classique/arcade, les sons optionnels, les statistiques et la frappe directe sont intégrés au code; les contrôles de parties détaillés restent des preuves locales et de CI. Le dépôt est privé : sa consultation demande les droits GitHub appropriés.
 
 ![Direction artistique](docs/assets/moodboard.png)
 
-[Dossier de conception](docs/README.md) · [Architecture actuelle](docs/18-implementation.md) · [Installer et déployer](docs/19-deploiement.md) · [Cahier des charges](docs/01-cahier-des-charges.md)
+Le projet propose inscription/connexion, salles publiques ou par code, salon partagé, courses classique/arcade, entraînement et statistiques personnelles. Le serveur arbitre les permissions, le départ, la progression et les résultats; PostgreSQL conserve les comptes, sessions et données du jeu.
 
 ## Stack
 
@@ -60,8 +60,8 @@ bun run check
 bun run test:integration
 ```
 
-GitHub Actions a exécuté avec succès les contrôles, les migrations, l’intégration avec PostgreSQL et les trois scénarios navigateur au [commit applicatif 4d23075](https://github.com/Cedrickkouek/typulso/commit/4d23075557799c02acbb8253bd830409f8ebe446). La [CI consultable](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231) utilise une base isolée; elle ne teste pas le site Railway. Le [rapport de vérification](docs/20-verification-implementation.md) distingue ces preuves des contrôles réalisés en production.
+GitHub Actions a exécuté avec succès les contrôles, les migrations, l’intégration avec PostgreSQL et les trois scénarios navigateur au [commit applicatif 4d23075](https://github.com/Cedrickkouek/typulso/commit/4d23075557799c02acbb8253bd830409f8ebe446). La [CI consultable](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231) utilise une base isolée; elle ne teste pas le site Railway. Le rapport de vérification distingue ces preuves des contrôles réalisés en production.
 
 ## Checkpoint 1 · état du 7 octobre 2026
 
-Les [six critères et leurs preuves](docs/08-plan-checkpoint.md) sont reliés aux documents et au commit applicatif vérifié. L’échéance annoncée était le 5 octobre; ce dossier actualisé ne constitue pas une preuve de remise à cette date. Les contributions créatives connues sont attribuées; les croquis humains et leurs auteurs restent à renseigner si l’équipe en a réalisés. Le test de charge à 30 personnes, les vrais retours OAuth et la restauration des sauvegardes ne sont pas déclarés vérifiés.
+Les six critères et leurs preuves sont reliés aux documents et au commit applicatif vérifié. L’échéance annoncée était le 5 octobre; ce dossier actualisé ne constitue pas une preuve de remise à cette date. Je distingue mes décisions personnelles des propositions réalisées avec l’IA; mes éventuels croquis originaux restent à ajouter si je souhaite les présenter. Le test de charge à 30 personnes, les vrais retours OAuth et la restauration des sauvegardes ne sont pas déclarés vérifiés.

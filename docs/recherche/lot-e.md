@@ -2,9 +2,8 @@
 
 > **17 nouveaux sites distincts · 1er octobre 2026 · America/Toronto**  
 > Direction recherchée : **colorée, vibrante, amusante et ludique**  
-> Corpus complémentaire aux 51 sites du [registre initial](../12-recherche-inspiration.md)
+> Corpus complémentaire aux 51 sites du registre initial
 
-[← Recherche initiale](../12-recherche-inspiration.md) · [Direction artistique](../03-direction-artistique.md)
 
 Ce lot cherche des motifs adaptés à une course de frappe : entrer dans un groupe, comprendre un mode, jouer sans perdre le fil, puis voir ses progrès et recommencer. Les personnalités décrites sont des **inférences à partir des contenus lus**, sauf intention explicitement annoncée par le site. La sélection ne prouve pas que chaque référence possède une palette vibrante.
 
@@ -44,7 +43,7 @@ Ce lot cherche des motifs adaptés à une course de frappe : entrer dans un grou
 
 **Consultation : 2026-10-01.** Personnalité inférée : collective, espiègle, créative. L'accueil extrait propose une identité anonyme ou authentifiée, un personnage et un pseudo, puis une action de départ. Le tutoriel décrit six étapes, de l'invitation des amis au résultat du téléphone dessiné. [Page lue](https://garticphone.com/).
 
-**Transposition :** une entrée de salon centrée sur le pseudo et un personnage original; trois repères brefs pour comprendre la course; un résultat collectif présenté comme un moment partagé. **Limite :** l'option anonyme de ce jeu ne change pas notre règle : les invités participent mais ne créent pas une salle. La recommandation de conversation vocale ne devient pas une fonction du projet.
+**Transposition :** une entrée de salon centrée sur le pseudo et un personnage original; trois repères brefs pour comprendre la course; un résultat collectif présenté comme un moment partagé. **Limite :** l'option anonyme de ce jeu ne change pas ma règle : les invités participent mais ne créent pas une salle. La recommandation de conversation vocale ne devient pas une fonction du projet.
 
 **Complément rendu partiel :** la revue navigateur du projet a signalé un accueil à 1280 × 720, à dominante violette, avec pseudo, onglets d'identité, action de départ et tutoriel; certaines images/polices n'avaient pas chargé. Cette preuve ne démontre ni le rendu complet ni une animation. Aucun départ de partie n'a été déclenché.
 
@@ -52,19 +51,19 @@ Ce lot cherche des motifs adaptés à une course de frappe : entrer dans un grou
 
 **Consultation : 2026-10-01 · Texte extrait.** Personnalité inférée : sociale, légère, directe. Le contenu d'accueil présente le pseudo puis les actions jouer/créer une salle privée. Les règles expliquent les tours de dessin, les réponses et les points. Les modèles d'interface nomment langue, temps de dessin, manches, indices et invitation copiée. [Page lue](https://skribbl.io/).
 
-**Transposition :** faire comprendre immédiatement rejoindre et créer, puis déplier les réglages de la salle; afficher l'invitation près du groupe. **Limite :** les champs extraits ne prouvent pas que tous ces réglages sont visibles ensemble. Les pouvoirs de création de ce jeu ne sont pas repris pour nos invités. Palette et mouvement : non vérifiés visuellement.
+**Transposition :** faire comprendre immédiatement rejoindre et créer, puis déplier les réglages de la salle; afficher l'invitation près du groupe. **Limite :** les champs extraits ne prouvent pas que tous ces réglages sont visibles ensemble. Les pouvoirs de création de ce jeu ne sont pas repris pour mes invités. Palette et mouvement : non vérifiés visuellement.
 
 ### E03 — Jackbox Games
 
 **Consultation : 2026-10-01 · Texte extrait.** Personnalité inférée : rassembleuse, théâtrale, humoristique. L'accueil présente des jeux de soirée et une FAQ; celle-ci explique que les participants voient l'écran de l'hôte pour trouver le code, puis utilisent un appareil connecté. Elle mentionne aussi la reconnexion après interruption. [Page lue](https://www.jackboxgames.com/).
 
-**Transposition :** code très lisible dans le salon, courte explication de l'invitation et message de retour après déconnexion. **Limite :** le dispositif à écran partagé ne correspond pas exactement à notre jeu, où chaque participant tape son texte. Le registre violent de certains titres n'est pas adapté tel quel aux 12–17 ans. Couleurs et animation : non vérifiées visuellement.
+**Transposition :** code très lisible dans le salon, courte explication de l'invitation et message de retour après déconnexion. **Limite :** le dispositif à écran partagé ne correspond pas exactement à mon jeu, où chaque participant tape son texte. Le registre violent de certains titres n'est pas adapté tel quel aux 12–17 ans. Couleurs et animation : non vérifiées visuellement.
 
 ### E04 — Poki
 
 **Consultation : 2026-10-01 · Texte extrait.** Personnalité inférée : immédiate, variée, tournée vers l'essai. Une question invite à choisir quoi jouer; le contenu distingue popularité, catégories et intentions telles que jouer avec des amis, se dépasser ou se détendre. Chaque sélection s'accompagne de noms et descriptions. [Page lue](https://poki.com/).
 
-**Transposition :** proposer quelques portes d'entrée par envie : s'entraîner, rejoindre le groupe, relever un défi. Les cartes de thèmes pourraient porter un titre expressif et une difficulté claire. **Limite :** l'abondance d'un portail de jeux ne justifie pas un accueil saturé pour notre application. Les classements populaires du site ne sont pas des mesures de notre public. Palette et mouvement : non vérifiés visuellement.
+**Transposition :** proposer quelques portes d'entrée par envie : s'entraîner, rejoindre le groupe, relever un défi. Les cartes de thèmes pourraient porter un titre expressif et une difficulté claire. **Limite :** l'abondance d'un portail de jeux ne justifie pas un accueil saturé pour mon application. Les classements populaires du site ne sont pas des mesures de mon public. Palette et mouvement : non vérifiés visuellement.
 
 ### E05 — Chess.com
 
@@ -76,7 +75,7 @@ Ce lot cherche des motifs adaptés à une course de frappe : entrer dans un grou
 
 **Consultation : 2026-10-01 · Texte extrait, articles officiels.** Personnalité inférée : sportive, communautaire, centrée sur les records. Un [article de 2025](https://blog.typeracer.com/2025/10/10/new-mode-type-on-race-results/) décrit l'enregistrement du contexte d'une course : multijoueur, pratique, fantôme ou salle privée. Un [article de septembre 2026](https://blog.typeracer.com/2026/09/17/fall-2026-avatars-new-classic-car-defaults-and-a-brand-new-codebase/) annonce des variantes de véhicules et un retour aux voitures classiques.
 
-**Transposition :** joindre aux résultats le mode, les règles et les conditions comparables; utiliser des concurrents originaux reconnaissables sur la piste. **Limite :** le jeu lui-même n'a pas été exécuté; les annonces de fluidité et les couleurs des avatars ne sont pas mesurées ou vues. Notre univers ne doit pas être une copie des voitures de TypeRacer.
+**Transposition :** joindre aux résultats le mode, les règles et les conditions comparables; utiliser des concurrents originaux reconnaissables sur la piste. **Limite :** le jeu lui-même n'a pas été exécuté; les annonces de fluidité et les couleurs des avatars ne sont pas mesurées ou vues. Mon univers ne doit pas être une copie des voitures de TypeRacer.
 
 ### E07 — TETR.IO
 
@@ -88,7 +87,7 @@ Ce lot cherche des motifs adaptés à une course de frappe : entrer dans un grou
 
 **Consultation : 2026-10-01 · Texte extrait.** Personnalité inférée : pratique, modulable, orientée activité. Le contenu déroule choisir un modèle, entrer son contenu puis jouer. Il présente plusieurs types d'activités et explique qu'un même contenu peut recevoir des règles différentes; le jeu peut se faire en groupe ou sur appareils individuels. [Page lue](https://wordwall.net/).
 
-**Transposition :** expliquer la création d'une course en quelques étapes : texte, mode, invitation. Montrer un aperçu des conséquences de chaque réglage. **Limite :** les fonctions IA, l'impression et les rôles enseignants de Wordwall ne sont pas introduits dans notre cahier. Ses affirmations de bénéfices scolaires ne sont pas validées ici. Couleurs personnalisables annoncées; palette rendue et mouvement non vérifiés.
+**Transposition :** expliquer la création d'une course en quelques étapes : texte, mode, invitation. Montrer un aperçu des conséquences de chaque réglage. **Limite :** les fonctions IA, l'impression et les rôles enseignants de Wordwall ne sont pas introduits dans mon cahier. Ses affirmations de bénéfices scolaires ne sont pas validées ici. Couleurs personnalisables annoncées; palette rendue et mouvement non vérifiés.
 
 ### E09 — Quizlet
 
@@ -100,7 +99,7 @@ Ce lot cherche des motifs adaptés à une course de frappe : entrer dans un grou
 
 **Consultation : 2026-10-01 · Texte extrait, aide officielle mise à jour le 19 mai 2026.** Personnalité inférée : collective, ludique, organisée. Le [guide d'hébergement](https://help.gimkit.com/en/article/host-a-live-game-g4n2cd/) enchaîne contenu, mode, options, invitation et lancement. Il décrit un salon avec code, des personnages pour certains modes, et le choix joueur/spectateur. Le QR, le lien et le code sont documentés.
 
-**Transposition :** garder l'invitation et les membres au cœur du salon; expliquer le mode avant ses options; afficher le rôle temporaire de l'hôte. **Limite :** notre salle privée reste accessible par lien uniquement; le QR facultatif concerne la salle semi-publique. Les classes et comptes enseignants de Gimkit ne deviennent pas des rôles permanents du projet. Aucun salon n'a été créé; palette et mouvement non vérifiés.
+**Transposition :** garder l'invitation et les membres au cœur du salon; expliquer le mode avant ses options; afficher le rôle temporaire de l'hôte. **Limite :** ma salle privée reste accessible par lien uniquement; le QR facultatif concerne la salle semi-publique. Les classes et comptes enseignants de Gimkit ne deviennent pas des rôles permanents du projet. Aucun salon n'a été créé; palette et mouvement non vérifiés.
 
 ### E11 — Wayground
 
@@ -124,27 +123,27 @@ Ce lot cherche des motifs adaptés à une course de frappe : entrer dans un grou
 
 **Consultation : 2026-10-01 · Texte extrait.** Personnalité inférée : encourageante, pédagogique, gamifiée selon la présentation. L'accueil décrit des leçons à son rythme, des défis et accomplissements. Il relie l'apprentissage à la vitesse, la précision et la confiance; des thèmes de contenu sont également présentés. [Page lue](https://www.typing.com/).
 
-**Transposition :** afficher la précision à côté de la vitesse; valoriser un progrès personnel et proposer une pratique courte après le podium. **Limite :** la séparation enseignant/élève et la gestion de classes ne s'appliquent pas à nos comptes de même rôle. Les affirmations d'efficacité et les chiffres de fréquentation restent ceux du site. Les lettres séparées dans l'extraction ne prouvent pas une animation typographique. Couleurs non vérifiées visuellement.
+**Transposition :** afficher la précision à côté de la vitesse; valoriser un progrès personnel et proposer une pratique courte après le podium. **Limite :** la séparation enseignant/élève et la gestion de classes ne s'appliquent pas à mes comptes de même rôle. Les affirmations d'efficacité et les chiffres de fréquentation restent ceux du site. Les lettres séparées dans l'extraction ne prouvent pas une animation typographique. Couleurs non vérifiées visuellement.
 
 ### E15 — TypingClub
 
 **Consultation : 2026-10-01 · Texte extrait.** Personnalité annoncée/inférée : ludique, progressive, narrative. Le site présente des leçons, niveaux, badges et étoiles; il explique qu'un profil facultatif enregistre le progrès et annonce une relecture des performances. Il propose aussi des séries de récits de frappe. [Page lue](https://www.typingclub.com/).
 
-**Transposition :** comparer la course aux performances personnelles; produire un badge de précision accompagné de sa règle; rendre le prochain défi compréhensible. **Limite :** les récompenses ne prouvent pas un apprentissage réel et ne doivent pas masquer les mesures. L'absence de compte possible chez ce produit ne change pas les restrictions de nos invités. Les récits animés annoncés n'ont pas été exécutés; palette et mouvement non vérifiés visuellement.
+**Transposition :** comparer la course aux performances personnelles; produire un badge de précision accompagné de sa règle; rendre le prochain défi compréhensible. **Limite :** les récompenses ne prouvent pas un apprentissage réel et ne doivent pas masquer les mesures. L'absence de compte possible chez ce produit ne change pas les restrictions de mes invités. Les récits animés annoncés n'ont pas été exécutés; palette et mouvement non vérifiés visuellement.
 
 ### E16 — Coolmath Games
 
 **Consultation : 2026-10-01 · Texte extrait.** Personnalité inférée : joyeuse, curieuse, tournée vers la découverte. L'accueil organise nouveautés, sélection, classement et familles de jeux; les descriptions utilisent des défis et petites accroches. La présentation relie le plaisir au raisonnement et à la créativité. [Page lue](https://www.coolmathgames.com/).
 
-**Transposition :** quelques collections de textes à titre amusant, distinctes par objectif; une sélection de première course sans menu immense. **Limite :** ni catalogue exhaustif, ni classement de popularité supplémentaire ne sont nécessaires au projet. La promesse d'accessibilité du site ne vaut pas audit de notre interface. Les visuels des différents jeux n'ont pas été inspectés; couleurs et animation non vérifiées.
+**Transposition :** quelques collections de textes à titre amusant, distinctes par objectif; une sélection de première course sans menu immense. **Limite :** ni catalogue exhaustif, ni classement de popularité supplémentaire ne sont nécessaires au projet. La promesse d'accessibilité du site ne vaut pas audit de mon interface. Les visuels des différents jeux n'ont pas été inspectés; couleurs et animation non vérifiées.
 
 ### E17 — Board Game Arena
 
 **Consultation : 2026-10-01 · Texte extrait.** Personnalité inférée : conviviale, compétitive, attentive au rythme. La destination finale anglaise présente le jeu avec des amis, la découverte à son rythme et la compétition classée. Elle distingue temps réel et tour par tour; une consigne propose une courte manipulation d'essai suivie d'un encouragement. [Page lue](https://en.boardgamearena.com/).
 
-**Transposition :** expliquer le geste avant la première course, puis garder un choix clair entre pratique et compétition. Le salon pourrait présenter le groupe comme une table partagée. **Limite :** la démonstration n'a pas été manipulée; l'extraction inclut aussi un avertissement de chargement. Le tour par tour n'est pas adopté pour notre course synchronisée. Palette et animation non vérifiées visuellement.
+**Transposition :** expliquer le geste avant la première course, puis garder un choix clair entre pratique et compétition. Le salon pourrait présenter le groupe comme une table partagée. **Limite :** la démonstration n'a pas été manipulée; l'extraction inclut aussi un avertissement de chargement. Le tour par tour n'est pas adopté pour ma course synchronisée. Palette et animation non vérifiées visuellement.
 
-## Trois motifs à explorer dans notre aperçu
+## Trois motifs à explorer dans mon aperçu
 
 | Moment | Motif proposé | Références de contenu | Application concrète et limite |
 |---|---|---|---|

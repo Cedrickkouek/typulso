@@ -1,22 +1,21 @@
 # Une course qui donne envie d’une revanche
 
-[← Dossier du projet](README.md)
 
 > **Recherche du 6 octobre · intégration du 7 octobre 2026**  
-> **Choix confirmé par l’utilisateur : un mélange, avec le choix entre classique et arcade.**  
-> Les sons, duels, séries, reconnaissances mesurées et trois capacités sont maintenant intégrés aux vraies parties. Les mini-séries, fantômes, cosmétiques et musique restent proposés. Le [prototype interactif](preview/arcade-lab.html) conserve son scénario fictif ; l’application utilise les données et commandes du serveur.
+> **Mon choix : un mélange, avec les modes classique et arcade.**\
+> Les sons, duels, séries, reconnaissances mesurées et trois capacités sont maintenant intégrés aux vraies parties. Les mini-séries, fantômes, cosmétiques et musique restent proposés. Le prototype interactif conserve son scénario fictif ; l’application utilise les données et commandes du serveur.
 
 La direction recommandée est une **arène de touches** : une frappe agréable, des adversaires reconnaissables, une occasion claire de revenir et une arrivée qui récompense le progrès. La personnalité et la palette actuelles restent la base. Le texte à reproduire garde sa stabilité ; la piste, les sons et quelques messages courts portent le spectacle.
 
 ## Le cahier et le choix actuel
 
-Le [cahier consolidé](01-cahier-des-charges.md), fondé sur le [PDF fourni le 2 octobre](../sources/cahier-des-charges-2026-10-02.pdf), demande deux mécanismes de rattrapage (**BONUS-01**), un avantage surtout destiné aux personnes derrière sans victoire garantie (**BONUS-02**), des règles compréhensibles et testées (**BONUS-03**), un classement visible de vitesse et précision (**STAT-01**) et un progrès perceptible (**STAT-06**). Le départ, le texte et les règles sont communs et figés (**RACE-01**). Le public principal a 12–17 ans, avec interface français/anglais et options d’accessibilité.
+Le cahier consolidé, fondé sur le PDF fourni le 2 octobre, demande deux mécanismes de rattrapage (**BONUS-01**), un avantage surtout destiné aux personnes derrière sans victoire garantie (**BONUS-02**), des règles compréhensibles et testées (**BONUS-03**), un classement visible de vitesse et précision (**STAT-01**) et un progrès perceptible (**STAT-06**). Le départ, le texte et les règles sont communs et figés (**RACE-01**). Le public principal a 12–17 ans, avec interface français/anglais et options d’accessibilité.
 
-Les attaques entre joueurs, une boutique ou un championnat ne sont pas imposés par l’énoncé. Les pièges répondent à la nouvelle demande de l’utilisateur ; ils enrichissent le mode arcade choisi, sans devenir la condition de réussite du minimum scolaire.
+Les attaques entre joueurs, une boutique ou un championnat ne sont pas imposés par l’énoncé. Les pièges répondent à ma nouvelle demande ; ils enrichissent le mode arcade choisi, sans devenir la condition de réussite du minimum scolaire.
 
 ## Audit initial avant intégration
 
-État observé le 6 octobre, avant les changements décrits dans « État des livrables ». Audit du [moteur](../lib/domain/engine.ts), des [commandes arcade](../components/race-interface.tsx), de la [frappe](../components/typing-zone.tsx) et des [préférences](../lib/client/preferences.ts).
+État observé le 6 octobre, avant les changements décrits dans « État des livrables ». Audit du moteur (`lib/domain/engine.ts`), des commandes arcade (`components/race-interface.tsx`), de la frappe (`components/typing-zone.tsx`) et des préférences (`lib/client/preferences.ts`).
 
 | Élément | Comportement présent | Occasion d’amélioration |
 |---|---|---|
@@ -33,7 +32,7 @@ Les attaques entre joueurs, une boutique ou un championnat ne sont pas imposés 
 
 ## Ce que les références apportent
 
-Cette étude approfondit **7 expériences**, dont **3 revues à l’écran**. Elle complète le corpus de la [recherche précédente](21-recherche-footer-et-jeu.md), sans annoncer 50 nouveaux sites ni changer la direction artistique. Le [registre](recherche/sensations-jeu-2026-10-06.md) sépare contenu lu, rendu et interaction.
+Cette étude approfondit **7 expériences**, dont **3 revues à l’écran**. Elle complète le corpus de la recherche précédente, sans annoncer 50 nouveaux sites ni changer la direction artistique. Le registre sépare contenu lu, rendu et interaction.
 
 | Référence officielle | Observation vérifiée | Transposition proposée |
 |---|---|---|
@@ -43,7 +42,7 @@ Cette étude approfondit **7 expériences**, dont **3 revues à l’écran**. El
 | [Kahoot — paramètres](https://support.kahoot.com/hc/en-us/articles/115016055107-Live-game-settings) et [points](https://support.kahoot.com/hc/en-us/articles/115002303908-How-points-work) | Musique de salon prévisualisable, effets désactivables, réglages de contraste ; les séries de bonnes réponses n’ajoutent pas de points | Ritualiser départ et arrivée ; célébrer une série sans multiplier automatiquement le score |
 | [Mario Kart World — Nintendo](https://www.nintendo.com/en-gb/Games/Nintendo-Switch-2-games/Mario-Kart-World-2790000.html) | Objets offensifs, esquives, courses en plusieurs étapes, fantômes et personnalisation décrits | Une action offensive lisible doit avoir une réponse ; une mini-série crée un enjeu supplémentaire |
 | [Gimkit — actions](https://help.gimkit.com/en/article/quick-actions-149wiq2/) et [modes](https://help.gimkit.com/en/article/select-a-game-mode-6v16fo/) | L’hôte peut modifier les balances dans certains modes ; les modes portent des descriptions d’ambiance | Annoncer le type d’expérience avant de jouer. Éviter d’importer un rééquilibrage arbitraire de l’hôte dans une compétition de frappe |
-| [ZType](https://zty.pe/) | Menu puis première vague de mots sur des cibles descendantes observés | Donner aux touches une présence physique et un but immédiat, en gardant notre texte collectif stable |
+| [ZType](https://zty.pe/) | Menu puis première vague de mots sur des cibles descendantes observés | Donner aux touches une présence physique et un but immédiat, en gardant mon texte collectif stable |
 
 Ces observations n’établissent pas que telle mécanique explique le succès d’un jeu. Le bénéfice attendu pour Typulso est une hypothèse de conception à vérifier avec des joueurs.
 
@@ -64,7 +63,7 @@ Un changement d’écart n’est pas un événement sonore. Pour un dépassement
 
 ## Une identité sonore, pas un bruit permanent
 
-Le [prototype](preview/arcade-lab.html) présente **12 sons synthétisés originaux**. Une palette correspondante est maintenant intégrée à l’application, avec douze aperçus dans les préférences, deux commandes indépendantes (frappe/événements) et un volume commun. La musique reste proposée.
+Le prototype présente **12 sons synthétisés originaux**. Une palette correspondante est maintenant intégrée à l’application, avec douze aperçus dans les préférences, deux commandes indépendantes (frappe/événements) et un volume commun. La musique reste proposée.
 
 | Son | Intention | Budget proposé en application |
 |---|---|---|
@@ -153,6 +152,6 @@ Vérification technique pour l’intégration : commandes idempotentes, effets c
 - **Restent proposés :** musique, reconnaissance de remontée à mi-course, série de trois manches, défis quotidiens, fantômes et cosmétiques. Aucune donnée inventée ne les remplace dans l’application.
 - **Conservé :** mode classique, palette, texte stable, saisie directe sans rectangle, corrections de fin de course et sortie vers Jouer après fermeture.
 
-Les contrôles complets passent : **69 tests unitaires**, **9 tests d’intégration PostgreSQL/HTTP/Socket.IO** (dont le scénario arcade à trois sessions), TypeScript, lint et compilations. La recette navigateur utilise une véritable salle avec un hôte de fixture, un bot et une session invitée : frappe, énergie, lancement de piège, usage unique, FR/EN, clair/sombre, mobile à 390 px sans débordement, aperçu Bouclier et commandes sonores. Voir le [rapport](20-verification-implementation.md).
+Les contrôles complets passent : **69 tests unitaires**, **9 tests d’intégration PostgreSQL/HTTP/Socket.IO** (dont le scénario arcade à trois sessions), TypeScript, lint et compilations. La recette navigateur utilise une véritable salle avec un hôte de fixture, un bot et une session invitée : frappe, énergie, lancement de piège, usage unique, FR/EN, clair/sombre, mobile à 390 px sans débordement, aperçu Bouclier et commandes sonores. Voir le rapport.
 
 L’écoute humaine sur différents équipements et l’équilibrage avec des joueurs restent à réaliser. Le prototype demeure une illustration distincte des parties persistées.

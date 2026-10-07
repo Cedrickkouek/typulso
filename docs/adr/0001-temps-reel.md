@@ -4,17 +4,16 @@
 > Décision initiale : 1er octobre. Structure effective : racine App Router selon l’ADR 0002.\
 > Version applicative des preuves : 4d23075.
 
-[← Architecture](../05-architecture.md) · [Structure App Router](0002-structure-app-router.md) · [États](../07-machines-etats.md) · [Preuves](../08-plan-checkpoint.md)
 
 ## Contexte et options
 
 Une classe doit partager présences, règles et progression d’une course, avec un hôte temporaire et des permissions serveur. Polling HTTP et SSE imposent des compromis de fréquence ou deux chemins de commandes/diffusion. WebSocket natif demande d’écrire gestion de canaux, reconnexion et acquittements. Un broker ou une plateforme gérée ajouterait une dépendance d’exploitation sans retirer le besoin d’un moteur autoritaire.
 
-**Décision :** un processus Node.js [Socket.IO](../../server/index.ts) distinct reçoit les commandes et diffuse les états; Next.js conserve pages et routes HTTP. Les deux utilisent PostgreSQL. Ce choix permet une horloge de course persistante et un contrôle explicite du cycle du moteur. La décision ne dépend pas d’une affirmation générale sur les capacités WebSocket d’un autre hébergeur.
+**Décision :** un processus Node.js Socket.IO (`server/index.ts`) distinct reçoit les commandes et diffuse les états; Next.js conserve pages et routes HTTP. Les deux utilisent PostgreSQL. Ce choix permet une horloge de course persistante et un contrôle explicite du cycle du moteur. La décision ne dépend pas d’une affirmation générale sur les capacités WebSocket d’un autre hébergeur.
 
 ## Contrat effectivement utilisé
 
-Le [contrat partagé](../../types/game.ts) définit :
+Le contrat partagé (`types/game.ts`) définit :
 
 ```ts
 interface RoomCommand {
@@ -52,8 +51,8 @@ La reprise du transport est complétée par un ticket autorisé et `sync`; la co
 
 Une seule instance temps réel est prévue. Plusieurs instances exigeraient une coordination des diffusions, de l’horloge et de la propriété des salles. PostgreSQL arbitre les mutations avec des verrous transactionnels; aucune file de salle en mémoire n’est présentée comme une garantie durable.
 
-Une courte coupure dispose de 60 secondes de grâce. Au redémarrage du processus, les courses actives sont interrompues, les salons conservés et aucune victoire inventée. Une reprise équitable de course demanderait une nouvelle décision sur l’horloge et la reconnexion. Le [guide Railway](../19-deploiement.md) prévoit le processus persistant et la migration préalable.
+Une courte coupure dispose de 60 secondes de grâce. Au redémarrage du processus, les courses actives sont interrompues, les salons conservés et aucune victoire inventée. Une reprise équitable de course demanderait une nouvelle décision sur l’horloge et la reconnexion. Le guide Railway prévoit le processus persistant et la migration préalable.
 
 ## Preuves disponibles
 
-Les contrôles locaux et la CI distante couvrent sessions, deux connexions, admission, commandes refusées, répétition, invitation unique, séquence, fin et résultats. Le 7 octobre, le salon par code et ses modifications ont aussi été vérifiés en production avec un compte et un invité HTTP/Socket.IO; voir [CP1](../08-plan-checkpoint.md). Les scénarios de charge à 30 clients, la latence au 95e percentile et toutes les pannes de production restent **à mesurer**, et ne sont pas cochés comme réussis.
+Les contrôles locaux et la CI distante couvrent sessions, deux connexions, admission, commandes refusées, répétition, invitation unique, séquence, fin et résultats. Le 7 octobre, le salon par code et ses modifications ont aussi été vérifiés en production avec un compte et un invité HTTP/Socket.IO; voir bilan du checkpoint 1. Les scénarios de charge à 30 clients, la latence au 95e percentile et toutes les pannes de production restent **à mesurer**, et ne sont pas cochés comme réussis.

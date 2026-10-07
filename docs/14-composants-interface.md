@@ -1,16 +1,16 @@
 # Composants d’interface
 
-> **Lecture actuelle · 7 octobre 2026 :** ce document conserve la conception ou les observations à leur date. L’état du code et des choix implémentés figure dans [18](18-implementation.md); les procédures utilisables dans [19](19-deploiement.md); les preuves locales, CI et Railway dans [CP1](08-plan-checkpoint.md) et la synthèse de [20](20-verification-implementation.md). Une maquette ou un test prévu ne constitue pas une preuve de production.
+> **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
-> **Statut : catalogue initial du 1er octobre 2026, complété par les intégrations du 4 octobre.** Les comportements proposés ci-dessous restent des critères de réalisation et de vérification. Les sections d’intégration et le [rapport d’implémentation](18-implementation.md) précisent ce qui existe dans l’application React.
+> **Statut : catalogue initial du 1er octobre 2026, complété par les intégrations du 4 octobre.** Les comportements proposés ci-dessous restent des critères de réalisation et de vérification. Les sections d’intégration et le rapport d’implémentation précisent ce qui existe dans l’application React.
 
-Cette bibliothèque donne à Typulso — nom de travail — une identité accueillante : des surfaces calmes pour lire et taper, des accents francs pour agir, des détails de touches de clavier pour reconnaître la marque. Les composants suivent les [parcours utilisateur](04-experience-utilisateur.md), l’[architecture prévue](05-architecture.md) et la [recherche de composants](13-recherche-composants.md).
+Cette bibliothèque donne à Typulso — nom de travail — une identité accueillante : des surfaces calmes pour lire et taper, des accents francs pour agir, des détails de touches de clavier pour reconnaître la marque. Les composants suivent les parcours utilisateur, l’architecture prévue et la recherche de composants.
 
-La [planche interactive](preview/index.html) sert à discuter la direction visuelle. Son HTML, son CSS et ses interactions de démonstration ne prouvent pas que les contrats React, le temps réel ou l’accessibilité décrits ici sont réalisés.
+La planche interactive sert à discuter la direction visuelle. Son HTML, son CSS et ses interactions de démonstration ne prouvent pas que les contrats React, le temps réel ou l’accessibilité décrits ici sont réalisés.
 
 ## 1. Fondations communes
 
-Les [tokens CSS](assets/design-tokens.css) sont la source de référence. Les [styles de la planche](preview/styles.css) donnent un premier aperçu de leur application. Les valeurs ci-dessous sont des choix de projet, à vérifier sur les futurs composants dans les deux thèmes.
+Les tokens CSS (`assets/design-tokens.css`) sont la source de référence. Les styles de la planche (`preview/styles.css`) donnent un premier aperçu de leur application. Les valeurs ci-dessous sont des choix de projet, à vérifier sur les futurs composants dans les deux thèmes.
 
 | Fondation | Proposition | Usage |
 |---|---|---|
@@ -26,7 +26,7 @@ Les [tokens CSS](assets/design-tokens.css) sont la source de référence. Les [s
 
 Une couleur renforce une information déjà exprimée par un libellé, une icône ou une forme. « Prêt », « Hôte », « Reconnexion » et « Erreur » restent compréhensibles sans distinguer leurs couleurs. Le focus visible proposé est un contour de 3 px avec un décalage de 4 px ; il doit rester visible sur chaque fond et ne pas être coupé par un panneau.
 
-Les composants ont une peau originale commune. La recommandation est d’utiliser le HTML natif pour les contrôles simples, puis **une seule bibliothèque de primitives accessibles**, à choisir après la [comparaison](13-recherche-composants.md), pour les comportements complexes. Une primitive apporte une structure et un comportement ; les tokens, la composition, les illustrations et les textes apportent l’identité du projet. Ce document n’ajoute aucune dépendance et ne fixe aucune version.
+Les composants ont une peau originale commune. La recommandation est d’utiliser le HTML natif pour les contrôles simples, puis **une seule bibliothèque de primitives accessibles**, à choisir après la comparaison, pour les comportements complexes. Une primitive apporte une structure et un comportement ; les tokens, la composition, les illustrations et les textes apportent l’identité du projet. Ce document n’ajoute aucune dépendance et ne fixe aucune version.
 
 ## 2. Catalogue proposé
 
@@ -146,7 +146,7 @@ Pour le thème, un contrôle natif nommé « Thème » peut proposer Clair, Somb
 | ThemeToggle / LanguageSelect | — pour l’application locale de la préférence | — | Préférence par défaut explicite | Échec de sauvegarde sans bloquer le choix local | Commandes locales utilisables |
 | ConnectionBanner / EmptyState | Message de connexion distinct | Action selon la situation | Titre et prochaine action | Cause compréhensible et réessai | Bandeau persistant avec état de reconnexion |
 
-Une course annulée après redémarrage du service suit le comportement prévu dans l’[architecture](05-architecture.md) : aucun podium gagnant ni récompense fabriqués. L’interface annonce l’annulation et la possibilité de revenir au salon.
+Une course annulée après redémarrage du service suit le comportement prévu dans l’architecture : aucun podium gagnant ni récompense fabriqués. L’interface annonce l’annulation et la possibilité de revenir au salon.
 
 ## 5. Intégration future dans Next.js et Tailwind
 
@@ -223,8 +223,8 @@ Les tests React, les essais de lecteur d’écran et les mesures de performance 
 
 ## Pied de page et jeu implémentés · 4 octobre 2026
 
-Le catalogue initial ci-dessus reste la spécification de référence; le [rapport d’implémentation](18-implementation.md) décrit les composants React réalisés. Le footer comporte une signature, un motif de touches, deux groupes de liens dans une navigation nommée « Navigation de bas de page » et une action citron. L’entraînement utilise le footer complet, comme les pages ordinaires. Les salles utilisent sa variante compacte « Aide pour jouer ». Destinations existantes, traductions FR/EN, icônes décoratives, focus visible et cibles de 44 px sont conservés.
+Le catalogue initial ci-dessus reste la spécification de référence; le rapport d’implémentation décrit les composants React réalisés. Le footer comporte une signature, un motif de touches, deux groupes de liens dans une navigation nommée « Navigation de bas de page » et une action citron. L’entraînement utilise le footer complet, comme les pages ordinaires. Les salles utilisent sa variante compacte « Aide pour jouer ». Destinations existantes, traductions FR/EN, icônes décoratives, focus visible et cibles de 44 px sont conservés.
 
 `RaceDashboard` partage quatre mesures entre course et échauffement; `ArcadeControls` affiche l’énergie réelle et les conditions des capacités; `RaceTracks` conserve des lignes stables avec position selon progression, état et piste de chaque participant. Le résultat personnel précède le podium, qui utilise les rangs officiels. La palette initiale, les textes encre sur les surfaces pastel et les préférences de mouvement restent la base.
 
-Le [registre de recherche](21-recherche-footer-et-jeu.md) explique les choix. Le [rapport de vérification](20-verification-implementation.md) précise les écrans et les comportements réellement exercés, ainsi que leurs limites.
+Le registre de recherche explique les choix. Le rapport de vérification précise les écrans et les comportements réellement exercés, ainsi que leurs limites.

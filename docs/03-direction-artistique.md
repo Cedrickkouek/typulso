@@ -5,53 +5,50 @@
 
 ![Planche de direction artistique](assets/moodboard.png)
 
-## Registre créatif actuel · 7 octobre 2026
+## Ma démarche créative · 7 octobre 2026
 
-L’application livrée utilise **Typulso** et le symbole clavier/pulsation visible dans le [logo du site](../public/logo.svg), l’en-tête et le [favicon](../app/favicon.ico). Cette identité est celle adoptée dans les itérations du projet; elle n’est pas présentée comme une marque juridiquement disponible ni comme un logo original dessiné humainement. Les pistes Rytapo/Typulso/Frappiq et les esquisses des sections historiques ci-dessous montrent l’exploration assistée initiale.
+**Typulso est un projet individuel.** J’ai orienté sa conception par mes choix et mes retours. J’ai utilisé l’assistance de l’IA pour les recherches, les propositions visuelles et la réalisation technique; je distingue cette contribution de mes décisions personnelles.
 
-### Contributions identifiables dans les échanges
+### Mes décisions et leurs effets
 
-| Contribution | Auteur / provenance établie | Effet sur la version actuelle |
+| Ma décision | Mon intention | Résultat dans l’application |
 |---|---|---|
-| Demande d’une personnalité colorée, vibrante, amusante et ludique. | Utilisateur, direction confirmée dans les échanges du projet. | Palette expressive et repères de clavier; recherche visuelle orientée vers le jeu collectif. |
-| « make the Logo and website name Bigger »; demandes répétées de texte plus lisible, surtout en sombre. | Utilisateur, retours du 6 octobre. | Marque agrandie, contrastes des textes renforcés et couleurs de progression cohérentes dans les thèmes. |
-| Ajouter des motifs de clavier, lettres et symboles sur le fond général, puis les densifier. | Utilisateur, demande du 6 octobre. | Motif de page hors des surfaces de composants, lié au thème de la frappe. |
-| Aérer l’aide, équilibrer la hauteur des cartes, répartir les contenus, améliorer menus, statistiques et tableau de résultats. | Utilisateur, séries de critiques et captures du 6–7 octobre. | Hiérarchie, espaces, alignement et composants remaniés; actions et chiffres mieux repérés. |
-| Écrire sans cliquer dans une case, puis supprimer cette case visible. | Utilisateur, clarification progressive du 6 octobre. | Saisie native intégrée au texte; point de concentration principal conservé. |
-| Progression plus animée : tête, voiture ou forme originale; repères des autres joueurs avançant/reculant sur le texte. | Utilisateur, direction d’expérience du 6 octobre. | Pistes avec concurrents animés et curseurs de progression; les lettres privées des autres ne sont pas transmises. |
-| « Un mélange, avec le choix entre classique et arcade ». | Utilisateur, réponse explicite au choix d’ambiance le 6 octobre. | Deux modes : frappe classique et capacités arcade; la proposition du laboratoire a ensuite été demandée dans le projet. |
-| Ajouter un favicon correspondant au logo du site. | Utilisateur, demande du 7 octobre. | Favicon intégré et contrôlé dans les actifs servis en production. |
-| Propositions de noms, esquisses SVG, moodboard, recherches, traduction des retours en composants et code. | Assistant IA, création assistée et réalisation technique. | Matière de discussion puis intégration selon les demandes du porteur du projet. |
+| Retenir une personnalité colorée, vibrante, amusante et ludique. | Donner envie de participer à une course collective. | Palette expressive et repères de clavier, sans détourner l’attention du texte à taper. |
+| Agrandir le logo et le nom, renforcer les textes surtout en sombre. | Rendre la marque et les explications faciles à lire. | Marque agrandie, textes secondaires plus contrastés et progression citron dans les deux thèmes. |
+| Ajouter puis densifier les motifs de clavier, lettres et symboles sur le fond. | Relier le décor au thème du projet. | Motif général placé hors des surfaces des composants. |
+| Aérer l’aide et équilibrer cartes, statistiques, tableau de résultats et menus. | Mieux répartir l’information et réduire les espaces inutiles. | Hiérarchie, alignements, espaces et composants ajustés au fil des retours. |
+| Écrire directement, sans devoir cliquer dans une case visible. | Concentrer le jeu sur le texte et la frappe. | Saisie native intégrée au texte, avec corrections et erreurs repérables. |
+| Animer la progression et montrer les repères des autres joueurs. | Renforcer la présence des concurrents et le sentiment de course. | Touches concurrentes animées et curseurs de progression; les lettres privées des autres restent confidentielles. |
+| Choisir un mélange avec les modes classique et arcade. | Proposer à la fois une compétition de frappe et des décisions tactiques. | Classique conserve les mesures brutes; arcade ajoute Pulsation, Bouclier et Virgule piégée. |
+| Utiliser le logo comme favicon. | Rendre l’application reconnaissable dans un onglet. | Icône de navigateur correspondant à l’identité du site. |
 
-Les citations courtes ci-dessus proviennent des demandes de l’utilisateur dans cette conversation. Elles établissent des décisions, intentions et critiques humaines. Elles n’établissent pas l’auteur d’une idée de nom antérieure, d’un croquis initial ou d’un redessin original. Aucune contribution d’un autre membre n’est attribuée sans information fournie par l’équipe.
+Ces décisions proviennent de mes demandes et critiques du 6–7 octobre. Elles documentent ma direction de projet. Les propositions de noms, esquisses SVG, moodboard et adaptations techniques ont été produites avec l’IA; je ne les présente pas comme des croquis manuels que j’aurais dessinés seul.
 
-### Nom, signe et choix visuels utilisés
+### Nom et symbole utilisés
 
-**Nom utilisé : Typulso.** Le territoire proposé relie la frappe au rythme et à la pulsation. Les alternatives et raisons initiales figurent dans l’exploration historique. L’emploi répété de Typulso dans l’application et les retours sur son logo atteste l’identité utilisée; il ne remplace pas une note personnelle de l’équipe sur sa propre création du nom.
+J’utilise le nom **Typulso** pour l’application actuelle. Le territoire proposé associe la frappe au rythme et à la pulsation. Les pistes et raisons initiales sont expliquées plus bas dans ce même document. L’emploi du nom n’est pas présenté comme une vérification juridique de disponibilité.
 
-**Signe utilisé : clavier/pulsation.** Le symbole et sa surface citron restent reconnaissables dans la navigation, le pied de page et l’icône de navigateur. Les esquisses documentées ont été produites avec l’assistant; les éventuelles transformations humaines doivent être ajoutées avec leur auteur et leur fichier source.
+Le symbole associe **clavier et pulsation**, sur une surface citron. Il apparaît dans la navigation, le pied de page et l’icône de navigateur. Les esquisses initiales sont assistées par l’IA. Mes éventuelles transformations originales ou croquis personnels devront être accompagnés de leurs pièces et dates si je les ajoute au dossier.
 
-La palette de production et les thèmes sont définis dans [app/globals.css](../app/globals.css). Les valeurs ci-dessous décrivent le code actuel; les mesures de la palette historique restent datées dans leur section.
+### Palette et typographies actuelles
 
-| Usage | Valeur actuelle | Rôle |
+| Usage | Valeur | Rôle |
 |---|---|---|
-| Citron | `#D7FF3F` | Action, identité et progression, conservé dans les deux thèmes. |
-| Rose | `#FF8FCE` | Accent expressif, repères de concurrents et surfaces ponctuelles. |
+| Citron | `#D7FF3F` | Action, identité et progression dans les deux thèmes. |
+| Rose | `#FF8FCE` | Accent expressif et repères de concurrents. |
 | Lavande | `#BBA3FF` | Terrain de frappe et accent secondaire. |
-| Bleu ciel / corail | `#82B4FF` / `#FF9478` | Repères de statistiques et d’événements. |
-| Texte / fond clair | `#171C2B` / `#F4F3ED` | Lecture principale; surfaces de cartes blanches. |
-| Texte / surface sombre | `#F6F7FB` / `#232B3E` | Lecture sur les composants sombres; fond général `#171C2B`. |
-| Texte secondaire | Clair `#303E55`, sombre `#E0E6F1` | Lisibilité renforcée après les retours de l’utilisateur. |
+| Bleu ciel / corail | `#82B4FF` / `#FF9478` | Statistiques et événements. |
+| Texte / fond clair | `#171C2B` / `#F4F3ED` | Lecture principale, cartes blanches. |
+| Texte / surface sombre | `#F6F7FB` / `#232B3E` | Lecture sur les composants; fond général `#171C2B`. |
+| Texte secondaire | Clair `#303E55`, sombre `#E0E6F1` | Lisibilité renforcée après mes retours. |
 
-**Typographies :** Space Grotesk pour l’interface, IBM Plex Mono pour la frappe et les repères techniques. Les polices sont livrées avec l’application par les packages Fontsource. Le [moodboard](assets/moodboard.png) et les [registres de recherche](12-recherche-inspiration.md) conservent la provenance des références; les actifs d’autres jeux ne sont pas utilisés comme logo du projet.
+J’utilise **Space Grotesk** pour l’interface et **IBM Plex Mono** pour la frappe et les repères techniques. Les polices sont livrées avec l’application par Fontsource. Le moodboard placé en tête de ce document illustre clavier, touches en mouvement, lettres et couleurs; les références de recherche sont expliquées dans les sections suivantes.
 
-### Démarche et pièce humaine à compléter
+### Bilan de ma démarche
 
-La démarche suivie est documentée : exigences et public → références et propositions assistées → critiques/choix du porteur du projet → itérations dans l’application → vérifications techniques et visuelles datées. Les validations techniques ne sont pas des essais d’amusement auprès des 12–17 ans.
+J’ai suivi les étapes suivantes : besoins et public → recherche de références → propositions assistées → choix et critiques personnels → itérations dans l’application → contrôles techniques et visuels datés. Les vérifications techniques ne remplacent pas un essai d’amusement auprès des 12–17 ans.
 
-Pour la partie originale humaine attendue par UX-03, il manque encore les informations suivantes, si elles existent : **auteurs de l’équipe, idées de noms réellement proposées, croquis initiaux, redessins ou modifications du symbole, choix final motivé et dates**. Une question a été adressée au porteur du projet lors de cette actualisation; aucune réponse factuelle n’est remplacée par une attribution inventée. Les retours connus ci-dessus sont déjà consignés et ne sont pas présentés comme des croquis.
-
-**État du dossier :** nom, logo utilisé, moodboard, palette, typographies et contribution humaine de direction/critique sont présents. La création originale du nom/logo par l’équipe reste **non établie** tant que ses pièces et auteurs ne sont pas fournis. Voir le [bilan CP1](08-plan-checkpoint.md).
+Je documente ici le nom utilisé, le symbole, le moodboard, la palette, les typographies et mes décisions. L’origine assistée des esquisses est déclarée; aucun croquis manuel original n’est ajouté fictivement. Pour compléter une exigence de création humaine originale, je dois joindre les idées ou transformations que j’ai effectivement réalisées, avec leur date.
 
 ## Exploration initiale conservée · 1er–2 octobre
 
@@ -61,7 +58,7 @@ Les sections numérotées qui suivent conservent les propositions et décisions 
 
 **Une arène de frappe rythmée : expressive quand le groupe se rassemble, précise quand les doigts jouent.**
 
-Le clavier devient un terrain de jeu. Les curseurs deviennent des concurrents, les touches des repères et les pistes des lignes de progression. La personnalité confirmée par l’utilisateur est **colorée, vibrante, amusante et ludique**. Elle se traduit par des aplats citron, rose et lavande, de grandes lettres, des touches illustrées et un rythme accueillant. Elle doit donner envie de participer sans ridiculiser les débutants ni distraire la personne qui lit et tape.
+Le clavier devient un terrain de jeu. Les curseurs deviennent des concurrents, les touches des repères et les pistes des lignes de progression. La personnalité que j’ai confirmée est **colorée, vibrante, amusante et ludique**. Elle se traduit par des aplats citron, rose et lavande, de grandes lettres, des touches illustrées et un rythme accueillant. Elle doit donner envie de participer sans ridiculiser les débutants ni distraire la personne qui lit et tape.
 
 | Moment | Sensation recherchée | Traduction visuelle |
 |---|---|---|
@@ -74,7 +71,7 @@ Ces choix sont des propositions de conception. Ils n'ont pas encore été testé
 
 ## 2. Références et transformation
 
-L'inspiration porte sur des principes d'expérience. Notre identité repose sur un **curseur mobile et des touches rythmiques**, avec ses propres formes, couleurs et textes.
+L'inspiration porte sur des principes d'expérience. Mon identité repose sur un **curseur mobile et des touches rythmiques**, avec ses propres formes, couleurs et textes.
 
 | Référence consultée | Ce qu'elle apporte | Application proposée |
 |---|---|---|
@@ -82,15 +79,15 @@ L'inspiration porte sur des principes d'expérience. Notre identité repose sur 
 | [Wooclap](https://www.wooclap.com/) | Entrée par code et participation à une session en direct. | Le code est l'accès principal au groupe; les réglages ont une hiérarchie claire. |
 | [Monkeytype](https://github.com/monkeytypegame/monkeytype) | Frappe minimaliste, personnalisation et suivi de progression. | Le texte à saisir occupe le centre; les métriques restent secondaires pendant l'effort. |
 
-**Interprétation de design :** ces références nous conduisent à alterner une ambiance collective et une phase de concentration. Cette alternance est notre proposition, pas une caractéristique revendiquée par les trois produits. Sources consultées le 1er octobre 2026; aucun actif de marque n'est repris.
+**Interprétation de design :** ces références me conduisent à alterner une ambiance collective et une phase de concentration. Cette alternance est ma proposition, pas une caractéristique revendiquée par les trois produits. Sources consultées le 1er octobre 2026; aucun actif de marque n'est repris.
 
-La [recherche initiale de 51 sites supplémentaires](12-recherche-inspiration.md), lots A–C, explore la personnalité **colorée, vibrante, amusante et ludique** demandée ensuite par l'utilisateur. Une [deuxième exploration](13-recherche-composants.md), lots D–F, ajoute **51 nouvelles références**, soit **102 sites distincts cumulés**, hors des trois inspirations de départ. Elle approfondit les applications, jeux et systèmes de composants. Les registres distinguent contenu extrait, rendu réellement observé et transpositions proposées.
+La recherche initiale de 51 sites supplémentaires, lots A–C, explore la personnalité **colorée, vibrante, amusante et ludique** que j’ai demandée ensuite. Une deuxième exploration, lots D–F, ajoute **51 nouvelles références**, soit **102 sites distincts cumulés**, hors des trois inspirations de départ. Elle approfondit les applications, jeux et systèmes de composants. Les registres distinguent contenu extrait, rendu réellement observé et transpositions proposées.
 
-La v0.4 conserve cette personnalité, les accents citron/rose/lavande et les contrastes renforcés en v0.3. Elle affine la composition des contrôles et des surfaces : boutons cohérents, invitation lisible, états prêts explicites, métriques séparées, saisie stable et résultats hiérarchisés. La [spécification des composants](14-composants-interface.md) décrit les contrats à réaliser dans la future application React / Next.js / Tailwind ; la planche reste un aperçu local.
+La v0.4 conserve cette personnalité, les accents citron/rose/lavande et les contrastes renforcés en v0.3. Elle affine la composition des contrôles et des surfaces : boutons cohérents, invitation lisible, états prêts explicites, métriques séparées, saisie stable et résultats hiérarchisés. La spécification des composants décrit les contrats à réaliser dans la future application React / Next.js / Tailwind ; la planche reste un aperçu local.
 
 ## 3. Recherche du nom
 
-Le nom doit se dire facilement dans une classe, se retenir après une course, fonctionner en français et en anglais et ouvrir une identité visuelle. Les pistes ci-dessous ont été proposées par l'assistant. L'utilisateur a demandé une nouvelle exploration après Typulso et Frappiq; aucun nom n'est choisi.
+Le nom doit se dire facilement dans une classe, se retenir après une course, fonctionner en français et en anglais et ouvrir une identité visuelle. Les pistes ci-dessous ont été proposées par l'assistant. J’ai demandé une nouvelle exploration après Typulso et Frappiq; aucun nom n'est choisi.
 
 ### Pistes élargies
 
@@ -119,10 +116,10 @@ Recherches ponctuelles le 1er octobre 2026 : `"Clavolt"`, `"Typuls"`, `"Frappiq"
 - **Clavibe :** usage confirmé par [un créateur sur Newgrounds](https://www.newgrounds.com/art/view/clavibe/ready-set-go). À garder comme référence de sonorité plutôt que favori.
 - **Keymigo :** [pseudonyme Steam existant](https://steamcommunity.com/profiles/76561198433367511). L'usage ne suffit pas à conclure sur la disponibilité d'une marque.
 - **Clavolt :** usage cité dans [un profil professionnel public](https://ng.linkedin.com/in/akinsunmola-james-12aa96180). À approfondir avant de retenir ce nom.
-- **Rafrap :** acronyme rencontré dans [une publication de l'Institut royal supérieur de défense](https://www.defence-institute.be/wp-content/uploads/2020/04/ss-142.pdf). Association peu souhaitable pour ce produit.
+- **Rafrap :** acronyme rencontré dans une publication de l'Institut royal supérieur de défense. Association peu souhaitable pour ce produit.
 - **Rytapo, Typulso, Frappiq :** aucun produit de frappe évident identifié dans cette recherche limitée. Cela ne démontre ni unicité, ni disponibilité d'un domaine ou d'une marque. Les autres pistes restent à rechercher.
 
-**Étape de choix humain :** chaque membre de l'équipe ajoute ses idées, prononce les finalistes, justifie son choix et peut modifier le nom. Le journal doit conserver l'auteur réel de chaque contribution.
+**Étape personnelle de choix :** je compare les idées, prononce les finalistes et explique les raisons de mon choix. Je garde une attribution claire des propositions assistées et des éventuelles transformations que j’ai réalisées.
 
 ## 4. Exploration du logo
 
@@ -136,9 +133,9 @@ Recherches ponctuelles le 1er octobre 2026 : `"Clavolt"`, `"Typuls"`, `"Frappiq"
 
 **Piste recommandée pour exploration : A.** Le symbole est dessiné avec une géométrie SVG modifiable. L'aperçu emploie Typulso comme mot de travail pour comparer les proportions. Le symbole peut être associé aux autres noms depuis la planche interactive; le logo définitif sera adapté au nom retenu.
 
-Actifs de proposition : [symbole couleur](assets/logo-symbol.svg), [symbole monochrome](assets/logo-mono.svg), [signature sur fond clair](assets/logo-light.svg), [signature sur fond sombre](assets/logo-dark.svg).
+Actifs de proposition : symbole couleur, symbole monochrome, signature sur fond clair, signature sur fond sombre.
 
-**Provenance et exigence humaine.** La transcription demande que le nom et le logo viennent de l'équipe. Les esquisses présentes sont des propositions de l'assistant; elles ne constituent pas la preuve d'une conception humaine. Le choix seul ne transforme pas cette provenance. Pour satisfaire cette exigence, l'équipe doit réaliser et documenter ses propres idées et transformations, puis vérifier l'interprétation attendue auprès du client si nécessaire. Aucune validation ni croquis humain n'est inventé dans ce dossier.
+**Provenance et création individuelle.** Le cahier attend une démarche humaine pour le nom et le logo. Les esquisses présentes sont des propositions assistées; je ne les attribue pas à un dessin manuel personnel. Je présente mes choix et critiques, et je dois ajouter les pièces de mes éventuelles idées ou transformations originales pour en établir la provenance.
 
 ### Règles prévues pour une version retenue
 
@@ -150,7 +147,7 @@ Actifs de proposition : [symbole couleur](assets/logo-symbol.svg), [symbole mono
 
 ## 5. Moodboard : « touches en mouvement »
 
-La [planche originale](assets/moodboard.png) rassemble nos propres motifs plutôt que des captures de concurrents. Elle traduit les références et les slides en éléments directement utilisables.
+La planche rassemble des motifs créés pour mon projet avec l’assistance de l’IA plutôt que des captures de concurrents. Elle traduit les références et les slides en éléments directement utilisables.
 
 | Élément de la planche | Sens | Usage |
 |---|---|---|
@@ -188,7 +185,7 @@ Les couleurs des concurrents complètent la palette sans multiplier les couleurs
 
 ### Contrastes mesurés sur les aplats
 
-Les rapports précis sont consignés dans [le rapport de vérification](11-verification.md). La révision v0.3 renforce les petits textes et vise au moins **7:1** pour les paires de texte fonctionnel; les repères essentiels et les focus au moins **3:1** contre leur fond immédiat. Le [critère W3C de contraste renforcé](https://www.w3.org/WAI/WCAG22/Understanding/contrast-enhanced.html) précise ce seuil pour le texte courant. Le [contraste non textuel](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) concerne notamment les repères essentiels. Ces mesures ne remplacent pas une vérification de l'application finale (états, opacité, superposition et tailles réelles).
+Les rapports précis sont consignés dans le rapport de vérification. La révision v0.3 renforce les petits textes et vise au moins **7:1** pour les paires de texte fonctionnel; les repères essentiels et les focus au moins **3:1** contre leur fond immédiat. Le [critère W3C de contraste renforcé](https://www.w3.org/WAI/WCAG22/Understanding/contrast-enhanced.html) précise ce seuil pour le texte courant. Le [contraste non textuel](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html) concerne notamment les repères essentiels. Ces mesures ne remplacent pas une vérification de l'application finale (états, opacité, superposition et tailles réelles).
 
 La v0.3 donne aussi une plaque craie au symbole monochrome, emploie l’encre sur la carte lavande, fixe la couleur des placeholders et renforce les contours des champs. Les petits libellés de l’aperçu gagnent une taille de 12–13 px et un poids plus net. Les accents expressifs conservent leur rôle de surface et d’illustration.
 
@@ -249,7 +246,7 @@ La réponse client autorise des personnages et capacités, mais garde le besoin 
 
 La v0.4 explorait une protection brève et un allègement de fin de texte. La v0.5 illustre **Tempo** (soutien temporaire à la progression de jeu) et **Relais** (atténuation ponctuelle d’une pénalité), avec mesures brutes conservées. Ces effets restent des propositions à équilibrer. **Au moins deux bonus sont essentiels dans le cahier final** : leur inclusion n’est pas facultative; leurs formules et leur attribution restent à décider. Le classique garde un exercice comparable; l’arcade annonce ses règles au départ.
 
-## 11. Ce que nous décidons ensuite ensemble
+## 11. Mes prochaines décisions
 
 1. Choisir le territoire du nom et produire les contributions humaines attendues.
 2. Choisir ou redessiner le symbole; tester sa lecture en petit format.
@@ -257,7 +254,7 @@ La v0.4 explorait une protection brève et un allègement de fin de texte. La v0
 4. Affiner les durées, le classement et les capacités; conserver leur statut de proposition jusqu'à arbitrage.
 5. Intégrer cette direction dans le projet Next.js après ce cadrage.
 
-L’[atelier de marque v0.4](preview/atelier.html) permet de comparer les noms, les thèmes, le wireframe, le salon, la course et les résultats. Ses données sont simulées. Le dialogue d’invitation, les retours de copie, les états prêts, le tableau de bord, les pistes et le mode concentration rendent les propositions plus concrètes ; les [composants futurs](14-composants-interface.md) décrivent aussi leurs états chargement, indisponible, vide, erreur et hors ligne.
+L’atelier de marque v0.4 permet de comparer les noms, les thèmes, le wireframe, le salon, la course et les résultats. Ses données sont simulées. Le dialogue d’invitation, les retours de copie, les états prêts, le tableau de bord, les pistes et le mode concentration rendent les propositions plus concrètes ; les composants futurs décrivent aussi leurs états chargement, indisponible, vide, erreur et hors ligne.
 
 ## 12. Historique et provenance des révisions
 
@@ -267,8 +264,8 @@ L’[atelier de marque v0.4](preview/atelier.html) permet de comparer les noms, 
 | **v0.4** | 51 nouvelles références D–F ; surfaces plus calmes, contrôles cohérents, invitation et états affinés, frappe sans déplacement, résultats hiérarchisés | Évolution de la planche locale et spécification de la future application ; nom, logo et validation auprès du public restent ouverts |
 | **v0.5** | Même personnalité et même palette, déployées dans 20 écrans et 74 combinaisons d’états; contenus, création, accès, profil et heatmaps complétés depuis le PDF du 2 octobre | Conception navigable locale; aucun nouveau nom validé ni nouveau service réel revendiqué |
 
-Les [sources et décisions](09-sources-et-decisions.md), les deux registres de recherche et le [rapport de vérification](11-verification.md) conservent la distinction entre source, interprétation, aperçu réalisé et comportement futur à tester.
+Les sources et décisions, les deux registres de recherche et le rapport de vérification conservent la distinction entre source, interprétation, aperçu réalisé et comportement futur à tester.
 
 ## 13. Extension à chaque page
 
-Le [site de conception v0.5](preview/index.html) conserve le contraste et les formes retenus. Les couleurs vives situent les moments de jeu; les champs, textes à reproduire et tableaux gardent des surfaces calmes. Les [spécifications des pages](16-design-pages-et-etats.md) définissent la hiérarchie avant les détails et réutilisent les [composants](14-composants-interface.md). Le [rapport de vérification v0.5](17-verification-pages.md) contient les contrôles et captures. Le skill général et sa copie du projet restent conservés à leurs emplacements.
+Le site de conception v0.5 conserve le contraste et les formes retenus. Les couleurs vives situent les moments de jeu; les champs, textes à reproduire et tableaux gardent des surfaces calmes. Les spécifications des pages définissent la hiérarchie avant les détails et réutilisent les composants. Le rapport de vérification v0.5 contient les contrôles et captures. Le skill général et sa copie du projet restent conservés à leurs emplacements.

@@ -3,7 +3,6 @@
 > **Synthèse actualisée le 7 octobre 2026 · America/Toronto.**\
 > Version applicative des preuves : [4d23075557799c02acbb8253bd830409f8ebe446](https://github.com/Cedrickkouek/typulso/commit/4d23075557799c02acbb8253bd830409f8ebe446).
 
-[← Documentation](README.md) · [Architecture](18-implementation.md) · [Déploiement](19-deploiement.md) · [Exigences](02-matrice-exigences.md) · [Dossier CP1](08-plan-checkpoint.md)
 
 ## État vérifié au 7 octobre
 
@@ -14,11 +13,11 @@
 | GitHub Actions | [Vérifications Typulso · 37648917231](https://github.com/Cedrickkouek/typulso/actions/runs/37648917231), succès sur le commit 4d23075. Début 7 octobre 16:02:42 UTC, état final réussi à 16:05:38 UTC. | PostgreSQL isolé, services web/realtime lancés dans la CI; toutes les étapes réussies, dont migrations, format, lint, types, unités, builds, intégration et trois scénarios Playwright. |
 | Railway | Déploiements web et realtime réussis selon les statuts du commit; [site HTTPS](https://typulso-production.up.railway.app/) fonctionnel. | La recette en ligne vérifie les parcours explicitement décrits ci-dessous. |
 
-Les trois [scénarios navigateur CI](../e2e/parcours.spec.ts) couvrent navigation responsive (900, 390 et 320 px), langue FR→EN/thème; salon à deux contextes avec admission par code, état partagé, permissions, prêt et transfert d’hôte; pratique locale avec mesures et recommencement. Ils **ne s’exécutent pas contre Railway**.
+Les trois scénarios navigateur CI (`e2e/parcours.spec.ts`) couvrent navigation responsive (900, 390 et 320 px), langue FR→EN/thème; salon à deux contextes avec admission par code, état partagé, permissions, prêt et transfert d’hôte; pratique locale avec mesures et recommencement. Ils **ne s’exécutent pas contre Railway**.
 
 ### Production : compte et salon partagé
 
-La recette du 7 octobre réalise **14 vérifications HTTP/Socket.IO** avec un compte temporaire et une session invitée indépendante : HTTPS/healthcheck web avec base disponible; inscription; déconnexion puis reconnexion au même compte; profil relu; session invitée; salle créée par le compte; code de six caractères; admission invitée; arrivée reçue par l’hôte; durée 60→45 acceptée; nouvelle durée reçue par l’invité; commande du non-hôte refusée; prêt accepté; prêt reçu par l’hôte. Le [dossier CP1](08-plan-checkpoint.md) détaille ces assertions.
+La recette du 7 octobre réalise **14 vérifications HTTP/Socket.IO** avec un compte temporaire et une session invitée indépendante : HTTPS/healthcheck web avec base disponible; inscription; déconnexion puis reconnexion au même compte; profil relu; session invitée; salle créée par le compte; code de six caractères; admission invitée; arrivée reçue par l’hôte; durée 60→45 acceptée; nouvelle durée reçue par l’invité; commande du non-hôte refusée; prêt accepté; prêt reçu par l’hôte. Ces assertions portent sur les vrais endpoints et connexions de production, avec deux identités indépendantes.
 
 Cette preuve utilise les vrais services et données de production. Elle ne constitue pas une recette visuelle à deux navigateurs, une course complète ou un test de redémarrage. Après l’essai, la salle a été fermée, les sockets arrêtés et les sessions déconnectées. Un compte de vérification sans course reste dans la base; aucune identité ou secret de recette n’est publié.
 
@@ -30,11 +29,15 @@ Le favicon `/favicon.ico` a répondu HTTP 200, type `image/x-icon`, et ses octet
 
 Le contrôle du dépôt a été relancé pour cette consolidation : format, lint, types, **69 tests unitaires réussis, 11 entrées ignorées, 0 échec, 1 116 assertions**, et builds web/realtime réussis. PostgreSQL local n’était pas démarré pendant cette passe : deux requêtes du build ont signalé une connexion refusée sur `127.0.0.1:5432`, sans empêcher la compilation. Aucun test d’intégration n’a été relancé pour ces seuls changements documentaires; les preuves de la passe dédiée antérieure et de la CI restent distinctes.
 
-Les liens relatifs des Markdown suivis par Git ont été contrôlés : **577 références locales, aucune cible manquante**. Ce contrôle vérifie la présence des fichiers dans le dépôt; il ne valide pas les ancres internes ni l’accès aux URLs externes. Les documents d’architecture, schéma, phases et ADR ont été relus contre le code, puis les anciens plans ont été marqués avec leur date et leur portée.
+Avant l’adaptation des pièces pour ma remise individuelle, le contrôle documentaire avait vérifié **577 références locales, aucune cible manquante**. Ce résultat décrit la consolidation précédente, qui contenait encore des liens entre fichiers. Ce contrôle vérifie la présence des fichiers dans le dépôt; il ne valide pas les ancres internes ni l’accès aux URLs externes. Les documents d’architecture, schéma, phases et ADR ont été relus contre le code, puis les anciens plans ont été marqués avec leur date et leur portée.
+
+### Adaptation de ma remise individuelle · 7 octobre
+
+J’ai rédigé mes décisions à la première personne et remplacé les liens vers d’autres fichiers par des explications directement dans les pièces. Le contrôle de rédaction porte sur **34 documents** : aucun lien hypertexte vers un autre fichier, aucune voix collective d’auteur, et **20 illustrations intégrées présentes**. Je conserve les illustrations intégrées, les accès au site/dépôt/CI et les références publiques de recherche. Les pièces peuvent être lues séparément; cette révision ne modifie pas l’application et n’attribue pas les propositions de l’IA à une création manuelle personnelle.
 
 ### Limites actuelles
 
-La charge et la lisibilité à 30 participants, la latence mesurée, toutes les courses/reconnexions en production, les vrais retours GitHub/Discord, les sauvegardes/restaurations, l’équilibrage arcade et les essais avec les 12–17 ans restent non vérifiés dans ce bilan. Le dépôt est privé. Les choix et critiques humains sont consignés dans la [DA](03-direction-artistique.md); les créations originales de nom/logo de l’équipe restent à documenter avec leurs auteurs.
+La charge et la lisibilité à 30 participants, la latence mesurée, toutes les courses/reconnexions en production, les vrais retours GitHub/Discord, les sauvegardes/restaurations, l’équilibrage arcade et les essais avec les 12–17 ans restent non vérifiés dans ce bilan. Le dépôt est privé. Les choix et critiques humains sont consignés dans la DA; mes éventuelles créations originales de nom/logo restent à documenter; les esquisses assistées sont attribuées.
 
 ## Archive — première recette du 3 octobre 2026
 
@@ -42,7 +45,6 @@ Les sections qui suivent conservent l’historique des contrôles et itérations
 
 > **3 octobre 2026 · recette locale de la version 0.1**
 
-[← Documentation](README.md) · [Architecture](18-implementation.md) · [Déploiement](19-deploiement.md) · [Exigences et preuves](02-matrice-exigences.md)
 
 Ce rapport concerne l'application React/Next.js dans `/Users/admin/Documents/typulso`. Les rapports 11 et 17 restent les preuves historiques du prototype HTML. Le dépôt Git local est initialisé sur `main`, sans commit, remote ni publication GitHub. Aucun contrôle ci-dessous ne constitue une preuve de production.
 
@@ -72,9 +74,9 @@ Ce rapport concerne l'application React/Next.js dans `/Users/admin/Documents/typ
 
 ### Ce que l'intégration vérifie
 
-Les tests [HTTP/Socket.IO](../tests/integration.test.ts) utilisent deux identités et connexions indépendantes : inscription et invité, contrôle d'origine, salle/code, droits de modification, état partagé, idempotence, départ commun, saisie validée, résultat persisté, transfert d'hôte, invitation unique et révocation à la déconnexion.
+Les tests HTTP/Socket.IO (`tests/integration.test.ts`) utilisent deux identités et connexions indépendantes : inscription et invité, contrôle d'origine, salle/code, droits de modification, état partagé, idempotence, départ commun, saisie validée, résultat persisté, transfert d'hôte, invitation unique et révocation à la déconnexion.
 
-Les tests [PostgreSQL directs](../tests/backend.database.test.ts) vérifient les empreintes des sessions/tickets, le ticket à usage unique, l'interdiction de créer en invité, la création idempotente, l'admission pleine qui ne consomme pas l'invitation, la grâce de reconnexion et la consommation concurrente d'une invitation par un seul acteur.
+Les tests PostgreSQL directs (`tests/backend.database.test.ts`) vérifient les empreintes des sessions/tickets, le ticket à usage unique, l'interdiction de créer en invité, la création idempotente, l'admission pleine qui ne consomme pas l'invitation, la grâce de reconnexion et la consommation concurrente d'une invitation par un seul acteur.
 
 Le moteur couvre notamment Unicode, erreurs/corrections, progression bloquante, score, génération, contraintes, bots variables et capacités arcade. Ces contrôles ne démontrent pas l'équilibrage avec des adolescents ou la charge à 30.
 
@@ -107,7 +109,6 @@ Le contrôle de contraste a porté sur des groupes de texte visibles et des cham
 
 Le focus clavier de l’action principale a été observé : contour visible de 3 px. La dernière vérification à 320 px confirme une largeur de document de 320 px, une navigation de 288 × 104 px en deux lignes et quatre liens de 44 px de haut. Le compte de recette a été déconnecté; l’accueil est laissé ouvert.
 
-[Accueil clair](assets/app-v01/accueil.png) · [Accueil sombre](assets/app-v01/accueil-sombre.png) · [Écran de 320 px](assets/app-v01/mobile-320.png)
 
 Ces relevés ciblés soutiennent la lisibilité observée; ils ne constituent pas une certification d'accessibilité. Focus clavier, tableaux, mouvement réduit et noms accessibles sont présents dans l'implémentation et demandent aussi une recette avec les appareils et technologies d'assistance ciblés.
 
@@ -119,7 +120,7 @@ Ces relevés ciblés soutiennent la lisibilité observée; ils ne constituent pa
 - **Produit final :** charge/latence avec 30 personnes, essais avec les 12–17 ans, équilibrage arcade, conservation/suppression des données et ergonomie tactile.
 - **Marque :** Typulso reste un nom de travail; choix final et contribution humaine au nom/logo à documenter.
 
-Le [guide de déploiement](19-deploiement.md) décrit les étapes et les limites de la première topologie. Une configuration livrée n'est pas présentée comme un service cloud déjà déployé.
+Le guide de déploiement décrit les étapes et les limites de la première topologie. Une configuration livrée n'est pas présentée comme un service cloud déjà déployé.
 
 
 ## Ajustement de largeur · 4 octobre 2026
@@ -140,7 +141,6 @@ La demande concerne la présentation : utiliser davantage l'écran et agrandir l
 - Accueil examiné en clair et sombre; préférences en sombre à 320 px. Le focus clavier du lien principal conserve un contour bleu solide de **3 px**.
 - Formatage, lint, TypeScript, compilation Next.js et compilation temps réel contrôlés. Les **53 tests unitaires** réussissent, avec **1 044 assertions**; les tests d'intégration ne sont pas réexécutés pour cette modification CSS.
 
-[Accueil large clair](assets/app-v01/largeur-clair-1920.png) · [Accueil large sombre](assets/app-v01/largeur-sombre-1920.png) · [Accueil mobile](assets/app-v01/largeur-mobile-390.png)
 
 La liste des courses est également examinée à 1 920, 900, 390 et 320 px dans son **état d'indisponibilité**. Pendant cette recette, PostgreSQL configuré sur `127.0.0.1:5432` refuse la connexion : le catalogue ne se charge pas et le build signale cette indisponibilité pendant certains pré-rendus, tout en réussissant sa compilation. Aucune nouvelle preuve de fonctionnement des comptes, salles ou données n'est déduite de ces contrôles visuels. Les captures de connexion ne sont pas livrées, pour éviter de publier des valeurs mémorisées dans le navigateur.
 
@@ -151,7 +151,7 @@ L'en-tête utilise deux colonnes latérales symétriques autour d'une colonne de
 
 Mesures dans le navigateur à **1 920, 1 440, 1 280, 1 201, 1 200, 1 150, 900, 390 et 320 px** : écart entre le centre du menu et celui du viewport de **0 px**, aucune superposition avec le logo ou les commandes, aucune largeur de document supérieure au viewport. À 1 920 px, le centre est **960 px** en français comme en anglais. Le menu reste centré sur sa deuxième ligne aux formats intermédiaires et dans sa grille mobile.
 
-[Capture de la navigation centrée](assets/app-v01/navigation-centree.png).
+Capture de la navigation centrée.
 
 
 ### Composition de l'accueil · 4 octobre 2026
@@ -163,7 +163,7 @@ Première version du rééquilibrage : le texte et la carte partagent la largeur
 - Versions FR/EN et thèmes clair/sombre observés. La validation d'un code vide affiche son erreur dans la carte et conserve `aria-invalid`; le bouton Rejoindre garde son focus clavier visible et sa hauteur de **56 px** sur ordinateur.
 - Formatage, lint, TypeScript, les **53 tests unitaires** (**1 044 assertions**) et les compilations Next.js/temps réel réussissent. Les tests avec PostgreSQL ne sont pas réexécutés pour cette modification de présentation; la limite de connexion à la base décrite plus haut reste applicable.
 
-[Accueil rééquilibré](assets/app-v01/hero-equilibre.jpg) · [Thème sombre et focus clavier](assets/app-v01/hero-equilibre-sombre.jpg) · [Version mobile](assets/app-v01/hero-equilibre-mobile.jpg).
+Accueil rééquilibré · Thème sombre et focus clavier · Version mobile.
 
 
 ### Carte compacte et lettres sur mobile · 4 octobre 2026
@@ -175,7 +175,7 @@ La carte d'accueil est limitée à **640 px**, avec des marges intérieures de *
 - Largeur réelle de la carte : **640 px** à 1 920 et 1 440 px, **358 px** à 390 px et **288 px** à 320 px.
 - Formatage, lint, TypeScript, les **53 tests unitaires** (**1 044 assertions**) et les compilations Next.js/temps réel réussissent. Les tests avec PostgreSQL ne sont pas réexécutés pour cette modification CSS; la limite de connexion à la base décrite plus haut reste applicable.
 
-[Carte compacte sur ordinateur](assets/app-v01/carte-compacte.jpg) · [Lettres visibles sur mobile](assets/app-v01/carte-compacte-mobile.jpg).
+Carte compacte sur ordinateur · Lettres visibles sur mobile.
 
 
 ### Décalage de la carte et longueur du paragraphe · 4 octobre 2026
@@ -187,7 +187,7 @@ La carte est centrée dans sa colonne pour la déplacer vers la droite en utilis
 - Mesures dans le navigateur à **1 920, 1 440, 1 200, 900, 800, 540, 390 et 320 px** : largeur du document égale au viewport, navigation centrée et illustration des lettres visible. Mesures FR et sombre à **1 920, 900 et 390 px** : trois lignes pour le paragraphe et aucun débordement horizontal.
 - Formatage, lint, TypeScript, les **53 tests unitaires** (**1 044 assertions**) et les compilations Next.js/temps réel réussissent. Les tests avec PostgreSQL ne sont pas réexécutés pour cette modification CSS; la limite de connexion à la base décrite plus haut reste applicable.
 
-[Accueil avec texte limité et carte décalée](assets/app-v01/accueil-texte-limite.jpg).
+Accueil avec texte limité et carte décalée.
 
 
 ### Introduction centrée lorsque la carte passe en dessous · 4 octobre 2026
@@ -205,7 +205,7 @@ Les mesures en anglais couvrent **1 920, 801, 800, 600, 390 et 320 px**. À 801 
 
 Formatage, lint, TypeScript, les **53 tests unitaires** (**1 044 assertions**) et les compilations Next.js/temps réel réussissent. Les tests avec PostgreSQL ne sont pas réexécutés pour cette modification CSS; la limite de connexion à la base décrite plus haut reste applicable.
 
-[Introduction centrée sur mobile](assets/app-v01/introduction-centree-mobile.jpg).
+Introduction centrée sur mobile.
 
 
 ### Titres en gras · 4 octobre 2026
@@ -214,7 +214,7 @@ Les titres de page et de carte partagent la graisse **700** de Space Grotesk. Le
 
 Formatage, lint, TypeScript, **53 tests unitaires** (**1 044 assertions**) et compilations Next.js/temps réel réussissent. Les tests PostgreSQL restent hors de cette vérification CSS; la limite de connexion décrite plus haut demeure applicable.
 
-[Accueil avec titres en gras](assets/app-v01/titres-gras.jpg).
+Accueil avec titres en gras.
 
 
 ### Lettres plus expressives · 4 octobre 2026
@@ -223,7 +223,7 @@ Rebonds amplifiés, rotations et léger changement d’échelle, sur deux cycles
 
 Le réglage **Réduire les animations** est activé pour vérification : les deux animations passent à `none` et les lettres restent visibles. Le réglage initial est ensuite rétabli. Formatage, lint, TypeScript, **53 tests unitaires** (**1 044 assertions**) et compilations Next.js/temps réel réussissent; les vérifications PostgreSQL ne sont pas réexécutées pour cette modification CSS.
 
-[Capture d’une phase du rebond](assets/app-v01/lettres-expressives.jpg). La capture fixe documente la disposition; le mouvement s’observe dans l’aperçu local.
+Capture d’une phase du rebond. La capture fixe documente la disposition; le mouvement s’observe dans l’aperçu local.
 
 
 ### Écart régulier entre les lettres · 4 octobre 2026
@@ -232,16 +232,16 @@ Les positions des touches suivent un écart de base fixe de **72 px**, avec une 
 
 Mesures EN à **1 920, 1 440, 1 400, 1 399, 900, 800, 390 et 320 px** : écart calculé de **72 px** (écart d’arrondi inférieur à 0,01 px), touches séparées dans les phases observées, aucun débordement horizontal. Vérification FR et sombre à **1 400, 900 et 320 px** : aucun chevauchement avec les actions. Formatage, lint, TypeScript, **53 tests unitaires** (**1 044 assertions**) et compilations Next.js/temps réel réussissent après cette correction; les tests PostgreSQL restent hors de cette vérification CSS.
 
-[Espacement sur ordinateur](assets/app-v01/lettres-espace-regulier.jpg) · [Espacement sur mobile](assets/app-v01/lettres-espace-mobile.jpg).
+Espacement sur ordinateur · Espacement sur mobile.
 
 
 ### Couleurs initiales rétablies · 4 octobre 2026
 
-Les essais de texte blanc sur violet sont annulés à la demande de l’utilisateur. Les surfaces lavande retrouvent le texte encre `#171C2B` et leur fond initial `#BBA3FF` dans les deux thèmes. Les tokens et règles ajoutés pour les premiers plans blancs, ainsi que les adaptations d’avatars et de vignettes correspondantes, sont retirés. La direction artistique et les instructions du projet retrouvent la règle d’origine.
+Les essais de texte blanc sur violet sont annulés à ma demande. Les surfaces lavande retrouvent le texte encre `#171C2B` et leur fond initial `#BBA3FF` dans les deux thèmes. Les tokens et règles ajoutés pour les premiers plans blancs, ainsi que les adaptations d’avatars et de vignettes correspondantes, sont retirés. La direction artistique et les instructions du projet retrouvent la règle d’origine.
 
 Styles calculés confirmés sur l’accueil anglais à **1 920 px**, en clair et en sombre : lavande d’origine et textes sombres sur le titre, les instructions et le sticker. Le bouton citron reste identique. Aucun débordement horizontal relevé à **1 920, 900 et 390 px**. Les rapports d’essais de blanc sur violet sont retirés de ce document pour conserver la référence actuelle.
 
-[Capture de la palette initiale rétablie](assets/app-v01/couleurs-initiales-retablies.jpg).
+Capture de la palette initiale rétablie.
 
 
 ### Footer composé · 4 octobre 2026
@@ -253,11 +253,11 @@ Panneau arrondi avec identité Typulso, trois destinations illustrées et retour
 - Le lien « Comment jouer » ouvre la route `/aide`, dont le titre et le contenu sont observés. Les trois autres destinations utilisent les routes existantes `/touches`, `/preferences` et `/courses`; leur URL est vérifiée dans le composant. Ce passage ne constitue pas une preuve de fonctionnement de PostgreSQL.
 - `bun run check` réussit : formatage, lint, TypeScript, **53 tests** (**1 044 assertions**), builds Next.js et temps réel. **9 tests avec base sont ignorés**; les deux avertissements PostgreSQL local indisponible restent présents pendant le build, qui termine avec succès.
 
-[Footer clair](assets/app-v01/footer-clair.jpg) · [Footer sombre avec focus](assets/app-v01/footer-sombre.jpg) · [Liens sur mobile](assets/app-v01/footer-mobile.jpg).
+Footer clair · Footer sombre avec focus · Liens sur mobile.
 
 ### Footer et piste au centre · 4 octobre 2026
 
-Cette itération intègre les premières pistes de la [recherche ciblée](21-recherche-footer-et-jeu.md) : signature et groupes de liens du footer, bande de mesures compacte, frappe centrale, commandes arcade sous la saisie et lignes de joueurs stables. Le bilan personnel et les prochaines destinations précèdent désormais le podium. La palette initiale, les règles de course et l’autorité des résultats serveur sont conservées.
+Cette itération intègre les premières pistes de la recherche ciblée : signature et groupes de liens du footer, bande de mesures compacte, frappe centrale, commandes arcade sous la saisie et lignes de joueurs stables. Le bilan personnel et les prochaines destinations précèdent désormais le podium. La palette initiale, les règles de course et l’autorité des résultats serveur sont conservées.
 
 | Parcours local observé | Preuve de cette itération |
 |---|---|
@@ -271,15 +271,14 @@ La vérification finale `bun run check` réussit : formatage, lint, TypeScript, 
 
 La règle CSS du mode concentration qui masque le footer est conservée dans le code; son activation n’est pas exercée pendant cette recette. Cette itération n’ajoute pas de preuve visuelle de perte réseau, de reconnexion ou de parcours spectateur, ni de preuve de production. Aucun classement ou score fictif n’est injecté.
 
-Seules des captures neutres de footer et d’échauffement sont livrées, sans identités de recette : [footer clair](assets/app-v01/footer-refresh-clair.jpg), [footer sombre](assets/app-v01/footer-refresh-sombre.jpg), [footer mobile](assets/app-v01/footer-refresh-mobile.jpg) et [échauffement](assets/app-v01/jeu-refresh-clair.jpg).
-
+Seules des captures neutres de footer et d’échauffement sont livrées, sans identités de recette : footer clair, footer sombre, footer mobile et échauffement.
 
 
 ### Footer complet sur Practice · 4 octobre 2026
 
-Le choix de variante est corrigé à la demande de l’utilisateur : `/entrainement` affiche le même footer complet que les pages ordinaires, y compris pendant l’échauffement. La variante compacte reste réservée aux salles. Le rendu est observé en anglais sombre à **1 536 px**, puis à **900 px** et en anglais clair à **390 px**; aucune largeur du document supérieure au viewport sur les formats mesurés. `bun run check` réussit : formatage, lint, TypeScript, **53 tests unitaires** et compilations Next.js/temps réel. Les tests PostgreSQL ne sont pas relancés pour ce changement de sélection visuelle.
+Le choix de variante est corrigé à ma demande : `/entrainement` affiche le même footer complet que les pages ordinaires, y compris pendant l’échauffement. La variante compacte reste réservée aux salles. Le rendu est observé en anglais sombre à **1 536 px**, puis à **900 px** et en anglais clair à **390 px**; aucune largeur du document supérieure au viewport sur les formats mesurés. `bun run check` réussit : formatage, lint, TypeScript, **53 tests unitaires** et compilations Next.js/temps réel. Les tests PostgreSQL ne sont pas relancés pour ce changement de sélection visuelle.
 
-[Footer complet de Practice](assets/app-v01/practice-footer-complet.jpg).
+Footer complet de Practice.
 
 
 ### Dialogues centrés et espacés · 4 octobre 2026
@@ -312,7 +311,7 @@ La page `/touches` est observée en français sombre à **1 536 et 390 px**, et 
 
 `bun run check` réussit : formatage, lint, TypeScript, **53 tests unitaires**, **1 044 assertions**, builds Next.js et temps réel. Les **9 tests PostgreSQL sont ignorés** dans la commande unitaire; aucune intégration n’est relancée pour cette présentation.
 
-[Page clavier plus aérée](assets/app-v01/aide-aeree.png).
+Page clavier plus aérée.
 
 
 ### Contraste du profil et traduction du sticker · 6 octobre 2026
@@ -323,7 +322,7 @@ Le sticker de l’accueil est observé en français sombre à **1 280 px**. Le p
 
 La vérification finale `bun run check` réussit : formatage, lint, TypeScript, **53 tests unitaires**, **1 044 assertions**, compilations Next.js et temps réel. Les **9 tests PostgreSQL sont ignorés** dans cette commande.
 
-[Sticker français](assets/app-v01/sticker-fr.png) · [Contraste du bandeau isolé](assets/app-v01/profil-contraste-isole.png).
+Sticker français · Contraste du bandeau isolé.
 
 
 ### Vue clavier AZERTY / QWERTY
@@ -332,21 +331,21 @@ Vérification du composant React réel dans une route anonyme temporaire avec de
 
 Trois tests couvrent le regroupement pondéré des majuscules, les touches accentuées et chiffres AZERTY, la conservation des caractères hors disposition et les métriques vides. La vérification complète réussit : 56 tests, 1 051 assertions, 9 tests de base de données ignorés, formatage, lint, TypeScript et compilations.
 
-[Aperçu clavier avec données de démonstration](assets/app-v01/clavier-azerty.png).
+Aperçu clavier avec données de démonstration.
 
 
 ### Filtres des indicateurs
 
 Vérification sur le composant réel dans un aperçu temporaire anonyme avec des métriques fictives : sélection 5–14 %, correspondance de la touche regroupée, filtrage du tableau, second clic rétablissant les cinq lignes, activation de ≥15 % avec Entrée. Rendus clair/sombre, FR/EN et largeur du document limitée à 390 px sur mobile. Route temporaire supprimée et préférences rétablies. Un test vérifie les bornes de catégories, l’arrondi du taux affiché et la distinction des touches sans tentative.
 
-[Aperçu du filtre actif — données fictives](assets/app-v01/filtres-clavier.png).
+Aperçu du filtre actif — données fictives.
 
 
 ### Menus déroulants
 
 La page entraînement réelle est vérifiée en clair à 1 280 px. Les quatre menus ont un chevron à 18 px du bord et 56 px de padding droit. Le changement de langue du texte EN puis FR fonctionne. À 390 px, les menus mesurent 316 px et le document reste à 390 px. En thème sombre, le chevron utilise la couleur claire prévue. Préférences et viewport rétablis.
 
-[Aperçu des menus déroulants](assets/app-v01/menus-deroulants.png).
+Aperçu des menus déroulants.
 
 
 ### Liste d’options ouverte
@@ -355,40 +354,40 @@ Sur la page entraînement réelle, vérifications FR/EN et clair/sombre : ouvert
 
 Le composant suit le [modèle combobox à sélection du W3C](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/). Les noms accessibles et options sont observés dans l’arbre du navigateur; une validation avec lecteur d’écran n’est pas réalisée dans ce passage. Les autres pages utilisent le composant partagé, mais leurs parcours authentifiés ne sont pas rejoués. `bun run check` réussit : formatage, lint, TypeScript, tests existants et compilations web/temps réel.
 
-[Aperçu de la liste ouverte](assets/app-v01/menu-options.png).
+Aperçu de la liste ouverte.
 
 
 ### Hauteur des deux blocs d’aide
 
 La grille d’aide étire les deux cartes à une hauteur commune lorsqu’elles sont côte à côte, sans hauteur fixe. Sur `/touches`, mesures identiques de 623,47 px à 1 536 px en clair et à 1 200 px en sombre. À 390 px, les cartes sont empilées avec leurs hauteurs naturelles (697,47 px et 765,05 px), sans débordement horizontal. Préférences et viewport rétablis.
 
-[Aperçu des cartes alignées](assets/app-v01/aide-hauteurs.png).
+Aperçu des cartes alignées.
 
 
 ### Répartition des étapes dans le bloc d’aide
 
 Sur écran à deux colonnes, les quatre étapes sont réparties sur la hauteur disponible. À 1 536 px, les cartes conservent une hauteur identique de 623,47 px et la marge entre la dernière étape et le bas du bloc est ramenée à 33 px. À 390 px, la répartition redevient naturelle et le document reste à 390 px. Préférences et viewport rétablis.
 
-[Aperçu du contenu réparti](assets/app-v01/aide-repartie.png).
+Aperçu du contenu réparti.
 
 
 ### Suppression des bandes latérales
 
 Les accents verticaux décoratifs sont retirés des notices partagées, du guide de comparaison, du repère personnel de piste et des lignes personnelles des résultats. Le curseur de frappe reste fonctionnel. Les erreurs gardent un contour complet de leur couleur dédiée. Sur `/touches`, les bordures gauche et droite du guide sont identiques (1 px neutre) en clair à 1 536 px et en sombre à 390 px, sans débordement horizontal. Les écrans de course/résultats authentifiés ne sont pas rejoués dans ce passage. Préférences et viewport rétablis.
 
-[Aperçu sans bande verticale](assets/app-v01/sans-bande.png).
+Aperçu sans bande verticale.
 
 
 ### Organisation des statistiques du clavier
 
 L’entête associe le titre et un sous-titre court, avec le bouton de vue à droite. La barre de commandes répartit les filtres à gauche et le choix de disposition à droite sur grand écran. Les explications complètes sont repliées dans « Comment lire ce clavier ? ». Vérification du composant réel dans l’aperçu temporaire à données fictives : français clair à 1 536 px, filtre 5–14 %, tableau à une ligne correspondante, retour aux touches, réinitialisation, ouverture de l’aide. À 390 px, commandes empilées, document de 390 px. Route de démonstration supprimée et préférences rétablies.
 
-[Aperçu de la disposition équilibrée — données fictives](assets/app-v01/clavier-equilibre.png).
+Aperçu de la disposition équilibrée — données fictives.
 
 
-L’explication du clavier est maintenant affichée en permanence sous les touches; la ligne repliable est supprimée à la demande de l’utilisateur. Texte français observé sans interaction à 1 280 px dans l’aperçu anonyme du composant réel (données fictives), puis aperçu temporaire supprimé. `bun run check` réussit.
+L’explication du clavier est maintenant affichée en permanence sous les touches; la ligne repliable est supprimée à ma demande. Texte français observé sans interaction à 1 280 px dans l’aperçu anonyme du composant réel (données fictives), puis aperçu temporaire supprimé. `bun run check` réussit.
 
-[Aperçu de l’explication visible](assets/app-v01/explication-visible.png).
+Aperçu de l’explication visible.
 
 
 ### Profil : statistiques et résultats — 6 octobre 2026
@@ -444,7 +443,7 @@ Lors de la première passe, la base de test configurée sur 55432 était indispo
 
 Contrôles applicatifs : `bun run check` réussi (formatage, lint, TypeScript, **60 tests unitaires réussis**, compilation Next et serveur temps réel). Les tests d’intégration ignorés par la passe unitaire sont vérifiés dans la passe dédiée : huit tests réussis. Le lint final est sans avertissement.
 
-Le [dossier de sensations](22-sensations-et-competition.md), son registre et le laboratoire autonome sont enregistrés séparément. Vérification du laboratoire : aperçu sonore « Bouclier » sans erreur navigateur ; passage Classique masquant les capacités et désactivant le piège ; anglais clair à 390 px, document de 390 px ; français sombre à 1280 px, document de 1280 px ; animations réduites effectivement désactivées. L’écoute humaine, une session navigateur authentifiée complète et les nouvelles règles multijoueurs ne sont pas validées par cet aperçu.
+Le dossier de sensations, son registre et le laboratoire autonome sont enregistrés séparément. Vérification du laboratoire : aperçu sonore « Bouclier » sans erreur navigateur ; passage Classique masquant les capacités et désactivant le piège ; anglais clair à 390 px, document de 390 px ; français sombre à 1280 px, document de 1280 px ; animations réduites effectivement désactivées. L’écoute humaine, une session navigateur authentifiée complète et les nouvelles règles multijoueurs ne sont pas validées par cet aperçu.
 
 ![Laboratoire de sensations — données et règles proposées](assets/app-v01/atelier-sensations.png)
 
@@ -474,8 +473,6 @@ Dans les préférences, douze aperçus présents ; aperçu Bouclier confirmé pa
 
 ![Course arcade réelle — session invitée de vérification](assets/app-v01/arcade-partie-reelle.png)
 
-[Aperçu mobile](assets/app-v01/arcade-mobile.png) · [Réglages sonores](assets/app-v01/arcade-sons.png)
-
 
 ### Présentation des filtres · 7 octobre
 
@@ -488,8 +485,6 @@ Carte partagée catalogue/historique : champs compacts, libellés à icônes, ac
 
 À 1 878 px, centres mesurés de la carte et du groupe de filtres identiques : 939 px. Rendu clair à 1 280 px, sombre à 900 px et 390 px ; document mobile de 390 px. Bouton langue mobile mesuré à 44 px : icône et libellé contenus, marge de 4 px en haut et 5 px sous FR/EN. Changement FR/EN et clair/sombre fonctionnel ; préférences et viewport initiaux restaurés, onglet fermé. Aucun changement de comportement de filtrage. Contrôles complets applicatifs exécutés après les corrections CSS.
 
-[Aperçu du centrage](assets/app-v01/filtres-centres.png) · [Bouton langue sur mobile](assets/app-v01/langue-mobile.png)
-
 
 ### Présentation du terrain de jeu dans le salon · 7 octobre 2026
 
@@ -500,5 +495,3 @@ Recette locale sur une vraie salle de fixture avec hôte et session invitée : a
 Contrôles complets : `bun run check` réussi, formatage, lint, TypeScript, **69 tests unitaires réussis**, compilations Next.js et temps réel. Les onze tests dépendant de la base sont ignorés dans cette passe ; aucune donnée ou permission modifiée ne nécessite une nouvelle passe réseau.
 
 ![Aperçu du salon, français clair](assets/app-v01/salon-terrain-de-jeu.png)
-
-[Aperçu mobile sombre](assets/app-v01/salon-terrain-mobile.png)

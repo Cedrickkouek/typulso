@@ -14,6 +14,10 @@ Lire le [skill du projet](.agents/skills/typulso-development/SKILL.md) avant de 
 
 Ne pas présumer que les anciennes conventions Next.js restent valides. Lire les guides concernés dans `node_modules/next/dist/docs/` avant de changer une API du framework. `cookies()`, `params` et `searchParams` sont asynchrones. `cacheComponents` est activé : isoler les données de session et les accès runtime sous Suspense; ne jamais mettre les permissions en cache partagé.
 
+## Documents à remettre
+
+Le projet est individuel. Rédiger les décisions personnelles à la première personne (« je », « mon projet »), sans attribuer les travaux à une équipe. Chaque document doit pouvoir être remis et lu séparément : expliquer directement les informations nécessaires et ne pas créer de liens hypertextes vers d’autres fichiers/documentations du dépôt. Les liens vers le site déployé, le dépôt, la CI et les sources publiques en ligne peuvent être conservés. Garder les illustrations intégrées, les dates, la portée des preuves et une attribution exacte de l’assistance IA; ne jamais transformer une proposition assistée en création humaine déclarée.
+
 ## Contrôles
 
 Utiliser Bun et le lockfile existant. Avant une livraison : `bun run lint`, `bun run typecheck`, `bun run test`, `bun run build`, `bun run build:realtime`. Vérifier les modifications de données et de permissions contre PostgreSQL avec `bun run test:integration` lorsque les deux services sont lancés. Les assertions de production ne sont valables qu'après vérification de l'URL déployée.

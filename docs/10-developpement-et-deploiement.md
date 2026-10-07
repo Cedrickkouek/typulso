@@ -1,11 +1,10 @@
 # Développement, qualité et déploiement
 
-> **Lecture actuelle · 7 octobre 2026 :** ce document conserve la conception ou les observations à leur date. L’état du code et des choix implémentés figure dans [18](18-implementation.md); les procédures utilisables dans [19](19-deploiement.md); les preuves locales, CI et Railway dans [CP1](08-plan-checkpoint.md) et la synthèse de [20](20-verification-implementation.md). Une maquette ou un test prévu ne constitue pas une preuve de production.
+> **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
 > **Statut : plan d'exécution futur · 1er octobre 2026**  
 > Aucun scaffold applicatif, compte d'hébergement, dépôt GitHub ou site de production n'est créé par ce dossier de conception. Les commandes ci-dessous deviendront utilisables lorsque les scripts correspondants auront été ajoutés au projet.
 
-[← Documentation](README.md) · [Architecture](05-architecture.md) · [Matrice des exigences](02-matrice-exigences.md)
 
 ## 1. Première livraison attendue
 
@@ -107,7 +106,7 @@ Le choix prioritaire est une entrée TLS commune avec deux processus et PostgreS
 | Serveur fourni par l'établissement | Disponibilité publique, HTTPS, supervision, sauvegardes et droit d'installation. |
 | Web géré et temps réel séparé | Origines autorisées, région, tickets de connexion, quotas de chaque service et latence vers PostgreSQL. |
 
-Aucune offre gratuite n'est présumée suffisante. Les prix, quotas, mises en veille et exigences de carte bancaire seront vérifiés avant de retenir un fournisseur. Aucun coût ne sera engagé sans accord explicite. La [décision temps réel](adr/0001-temps-reel.md) reste indépendante d'une ancienne affirmation d'incompatibilité WebSocket chez un fournisseur.
+Aucune offre gratuite n'est présumée suffisante. Les prix, quotas, mises en veille et exigences de carte bancaire seront vérifiés avant de retenir un fournisseur. Aucun coût ne sera engagé sans accord explicite. La décision temps réel reste indépendante d'une ancienne affirmation d'incompatibilité WebSocket chez un fournisseur.
 
 ## 6. Procédure de mise en ligne à réaliser
 
