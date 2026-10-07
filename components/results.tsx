@@ -3,6 +3,12 @@
 import Link from "next/link";
 import { useId, useState } from "react";
 import { ArrowRight, ChartNoAxesCombined, Trophy } from "lucide-react";
+import {
+  heatLevel,
+  keyboardHeatmap,
+  type HeatLevel,
+  type KeyboardLayout,
+} from "@/lib/client/keyboard-heatmap";
 import type { KeyMetric, ResultSnapshot } from "@/types/game";
 import { useTranslation } from "./providers";
 import { Avatar } from "./ui";
@@ -10,25 +16,126 @@ import { Avatar } from "./ui";
 export function Heatmap({ metrics }: { metrics: KeyMetric[] }) {
   const { t } = useTranslation();
   const [table, setTable] = useState(false);
+  const [layout, setLayout] = useState<KeyboardLayout>("QWERTY");
+  const keyboard = keyboardHeatmap(metrics, layout);
+  const [filter, setFilter] = useState<HeatLevel | null>(null);
+  const matchesFilter = (attempts: number, errors: number) =>
+    filter === null || heatLevel(attempts, errors) === filter;
+  const filteredMetrics = metrics.filter((metric) => matchesFilter(metric.attempts, metric.errors));
+  const matchedKeys = [...keyboard.rows.flat(), ...keyboard.other].filter(
+    (key) => matchesFilter(key.attempts, key.errors) && key.attempts > 0,
+  ).length;
+  const filterOptions = [
+    { level: "none", label: "0 %", color: "var(--background)" },
+    { level: "1", label: "1–4 %", color: "var(--sky)" },
+    { level: "2", label: "5–14 %", color: "var(--lavender)" },
+    { level: "3", label: "≥15 %", color: "var(--coral)" },
+  ] as const;
+  const renderKey = (characters: string, attempts: number, errors: number) => {
+    const rate = attempts ? errors / attempts : null;
+    const label = characters === " " ? t("Espace", "Space") : characters;
+    const details = `${label} · ${attempts} ${t("frappes", "attempts")} · ${errors} ${t("erreurs", "errors")}`;
+    return (
+      <div
+        className="heat-key"
+        key={characters}
+        data-level={heatLevel(attempts, errors)}
+        data-filtered={!matchesFilter(attempts, errors) || undefined}
+        aria-hidden={!matchesFilter(attempts, errors) || undefined}
+        data-space={characters === " " || undefined}
+        title={details}
+        aria-label={details}
+      >
+        <span>{label}</span>
+        <small>{rate === null ? "—" : `${Math.round(rate * 100)} %`}</small>
+      </div>
+    );
+  };
   return (
-    <section>
-      <div className="section-heading">
-        <h2>{t("Les touches sous la loupe", "Your keys, up close")}</h2>
+    <section className="keyboard-statistics">
+      <div className="section-heading keyboard-statistics-heading">
+        <div>
+          <h2>{t("Les touches sous la loupe", "Your keys, up close")}</h2>
+          <p className="small">
+            {t("Explore ton taux d’erreur par touche.", "Explore your error rate by key.")}
+          </p>
+        </div>
         <button className="subtle" onClick={() => setTable((value) => !value)}>
           {table ? t("Vue touches", "Key view") : t("Vue tableau", "Table view")}
         </button>
       </div>
-      <p className="small">
-        {t(
-          "Le taux d’erreur est calculé par touche attendue. La couleur et le nombre donnent le même repère.",
-          "Error rate is calculated per expected key. Color and numbers provide the same information.",
+      <div className="keyboard-statistics-toolbar">
+        <div className="keyboard-filter-controls">
+          <p className="keyboard-control-label">{t("Filtrer les touches", "Filter keys")}</p>
+          <div
+            className="heat-legend heat-filters"
+            role="group"
+            aria-label={t("Filtrer par taux d’erreur", "Filter by error rate")}
+          >
+            {filterOptions.map((option) => (
+              <button
+                type="button"
+                key={option.level}
+                aria-pressed={filter === option.level}
+                onClick={() =>
+                  setFilter((current) => (current === option.level ? null : option.level))
+                }
+              >
+                <i
+                  aria-hidden="true"
+                  className="legend-color"
+                  style={{ background: option.color, borderColor: "var(--on-color)" }}
+                />
+                {option.label}
+              </button>
+            ))}
+            {filter !== null && (
+              <button type="button" onClick={() => setFilter(null)}>
+                {t("Tout afficher", "Show all")}
+              </button>
+            )}
+          </div>
+        </div>
+        {!table && (
+          <div className="keyboard-layout-controls">
+            <p className="keyboard-control-label">
+              {t("Disposition du clavier", "Keyboard layout")}
+            </p>
+            <div
+              className="keyboard-layout-picker"
+              role="group"
+              aria-label={t("Disposition du clavier", "Keyboard layout")}
+            >
+              {(["AZERTY", "QWERTY"] as const).map((value) => (
+                <button
+                  type="button"
+                  className="subtle"
+                  aria-pressed={layout === value}
+                  onClick={() => setLayout(value)}
+                  key={value}
+                >
+                  {value}
+                </button>
+              ))}
+            </div>
+          </div>
         )}
-      </p>
-      {metrics.length === 0 ? (
+      </div>
+      {filter !== null && (
+        <p className="small heat-filter-status" role="status">
+          {t("Touches correspondantes :", "Matching keys:")}{" "}
+          {table ? filteredMetrics.length : matchedKeys}.
+        </p>
+      )}
+      {table && filteredMetrics.length === 0 ? (
         <p className="small mt-4">
           {t(
-            "Aucune frappe enregistrée pour ce résultat.",
-            "No keystrokes were recorded for this result.",
+            filter === null
+              ? "Aucune frappe enregistrée pour ce résultat."
+              : "Aucune touche ne correspond à ce filtre.",
+            filter === null
+              ? "No keystrokes were recorded for this result."
+              : "No keys match this filter.",
           )}
         </p>
       ) : table ? (
@@ -44,7 +151,7 @@ export function Heatmap({ metrics }: { metrics: KeyMetric[] }) {
               </tr>
             </thead>
             <tbody>
-              {metrics.map((metric) => (
+              {filteredMetrics.map((metric) => (
                 <tr key={metric.key}>
                   <td>{metric.key === " " ? t("Espace", "Space") : metric.key}</td>
                   <td>{metric.attempts}</td>
@@ -59,46 +166,41 @@ export function Heatmap({ metrics }: { metrics: KeyMetric[] }) {
         </div>
       ) : (
         <>
-          <div className="heatmap-grid">
-            {metrics.map((metric) => {
-              const rate = metric.attempts ? metric.errors / metric.attempts : 0;
-              return (
-                <div
-                  className="heat-key"
-                  data-level={rate === 0 ? "none" : rate < 0.05 ? "1" : rate < 0.15 ? "2" : "3"}
-                  key={metric.key}
-                  title={`${metric.attempts} ${t("frappes", "attempts")} · ${metric.errors} ${t("erreurs", "errors")}`}
-                >
-                  <span>{metric.key === " " ? "␣" : metric.key}</span>
-                  <small>{Math.round(rate * 100)} %</small>
+          <div
+            className="keyboard-heatmap-scroll"
+            tabIndex={0}
+            role="region"
+            aria-label={t(
+              "Taux d’erreur sur le clavier, défilement horizontal possible",
+              "Keyboard error rates, horizontal scrolling available",
+            )}
+          >
+            <div className="keyboard-heatmap">
+              {keyboard.rows.map((row, index) => (
+                <div className="keyboard-heatmap-row" data-row={index} key={index}>
+                  {row.map((key) => renderKey(key.characters, key.attempts, key.errors))}
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
-          <div className="heat-legend">
-            <span>0 %</span>
-            <span>
-              <i
-                className="legend-color"
-                style={{ background: "var(--sky)", borderColor: "var(--on-color)" }}
-              />
-              1–4 %
-            </span>
-            <span>
-              <i
-                className="legend-color"
-                style={{ background: "var(--lavender)", borderColor: "var(--on-color)" }}
-              />
-              5–14 %
-            </span>
-            <span>
-              <i
-                className="legend-color"
-                style={{ background: "var(--coral)", borderColor: "var(--on-color)" }}
-              />
-              ≥15 %
-            </span>
+          <div className="keyboard-reading-guide">
+            <p className="small">
+              {t(
+                "AZERTY français et QWERTY américain. Majuscules et symboles d’une même touche sont regroupés. — : touche non utilisée. La couleur et le pourcentage indiquent le taux d’erreur. Clique à nouveau sur un filtre pour tout afficher.",
+                "French AZERTY and US QWERTY. Capitals and symbols on the same key are combined. —: unused key. Color and percentage show the error rate. Click the selected filter again to show all.",
+              )}
+            </p>
           </div>
+          {keyboard.other.length > 0 && (
+            <div className="keyboard-other">
+              <h3>{t("Autres caractères", "Other characters")}</h3>
+              <div className="heatmap-grid">
+                {keyboard.other.map((metric) =>
+                  renderKey(metric.key, metric.attempts, metric.errors),
+                )}
+              </div>
+            </div>
+          )}
         </>
       )}
     </section>

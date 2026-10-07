@@ -1,9 +1,21 @@
 "use client";
 
+import { Select } from "./select";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { LogOut } from "lucide-react";
+import {
+  ArrowUpRight,
+  Flag,
+  Gauge,
+  History,
+  LogOut,
+  Medal,
+  Target,
+  Trophy,
+  Zap,
+} from "lucide-react";
 import type { ProfileData, StoredResult, RoomSnapshot } from "@/types/game";
 import { api, useApi } from "@/lib/client/api";
 import { disconnectRealtime } from "@/lib/client/realtime";
@@ -130,48 +142,26 @@ export function ProfilePage({ history = false }: { history?: boolean }) {
           {t("Historique", "History")}
         </Link>
       </nav>
-      {!history && (
-        <div className="metric-grid">
-          {[
-            [data.stats.races, t("Courses", "Races")],
-            [data.stats.wins, t("Victoires", "Wins")],
-            [Math.round(data.stats.averageWpm), t("MPM moyens", "Average WPM")],
-            [
-              `${Math.round(data.stats.averageAccuracy)} %`,
-              t("Précision moyenne", "Average accuracy"),
-            ],
-            [Math.round(data.stats.bestWpm), t("Meilleur MPM", "Best WPM")],
-            [data.stats.averageRank.toFixed(1), t("Rang moyen", "Average rank")],
-          ].map(([value, label]) => (
-            <div className="box metric-box" key={label}>
-              <Metric value={data.stats.races ? value : "—"} label={String(label)} />
-            </div>
-          ))}
-        </div>
-      )}
+      {!history && <ProfileMetrics stats={data.stats} />}
       {history && (
         <div className="filter-bar">
           <Field id="history-mode" label={t("Mode", "Mode")}>
-            <select
-              id="history-mode"
-              value={mode}
-              onChange={(event) => setMode(event.target.value)}
-            >
+            <Select id="history-mode" value={mode} onValueChange={(value) => setMode(value)}>
               <option value="all">{t("Tous", "All")}</option>
               <option value="classic">{t("Classique", "Classic")}</option>
               <option value="arcade">Arcade</option>
-            </select>
+            </Select>
           </Field>
           <Field id="history-language" label={t("Langue du texte", "Text language")}>
-            <select
+            <Select
               id="history-language"
               value={language}
-              onChange={(event) => setLanguage(event.target.value)}
+              onValueChange={(value) => setLanguage(value)}
             >
               <option value="all">{t("Toutes", "All")}</option>
               <option value="fr">{t("Français", "French")}</option>
               <option value="en">{t("Anglais", "English")}</option>
-            </select>
+            </Select>
           </Field>
         </div>
       )}
@@ -201,43 +191,121 @@ export function ProfilePage({ history = false }: { history?: boolean }) {
     </>
   );
 }
-function ResultTable({ results }: { results: StoredResult[] }) {
+export function ProfileMetrics({ stats }: { stats: ProfileData["stats"] }) {
+  const { t } = useTranslation();
+  return (
+    <div className="metric-grid profile-metric-grid">
+      {[
+        { value: stats.races, label: t("Courses", "Races"), icon: Flag, tone: "sky" },
+        { value: stats.wins, label: t("Victoires", "Wins"), icon: Trophy, tone: "lime" },
+        {
+          value: Math.round(stats.averageWpm),
+          label: t("MPM moyens", "Average WPM"),
+          icon: Gauge,
+          tone: "lavender",
+        },
+        {
+          value: `${Math.round(stats.averageAccuracy)} %`,
+          label: t("Précision moyenne", "Average accuracy"),
+          icon: Target,
+          tone: "pink",
+        },
+        {
+          value: Math.round(stats.bestWpm),
+          label: t("Meilleur MPM", "Best WPM"),
+          icon: Zap,
+          tone: "lime",
+        },
+        {
+          value: stats.averageRank.toFixed(1),
+          label: t("Rang moyen", "Average rank"),
+          icon: Medal,
+          tone: "sky",
+        },
+      ].map(({ value, label, icon: Icon, tone }) => (
+        <div className="box metric-box profile-stat-card" key={label} data-tone={tone}>
+          <span className="profile-stat-icon" aria-hidden="true">
+            <Icon size={23} strokeWidth={2} />
+          </span>
+          <Metric value={stats.races ? value : "—"} label={label} />
+        </div>
+      ))}
+    </div>
+  );
+}
+export function ResultTable({ results }: { results: StoredResult[] }) {
   const { t, locale } = useTranslation();
   return (
-    <div className="score-table-wrap">
-      <table className="score-table">
-        <caption>{t("Tes résultats enregistrés", "Your saved results")}</caption>
+    <div className="score-table-wrap saved-results-wrap">
+      <table className="score-table saved-results-table">
+        <caption>
+          <span className="saved-results-heading">
+            <History size={22} aria-hidden="true" />
+            {t("Tes résultats enregistrés", "Your saved results")}
+          </span>
+          <span className="saved-results-count">
+            {results.length}{" "}
+            {t(
+              results.length === 1 ? "course" : "courses",
+              results.length === 1 ? "race" : "races",
+            )}
+          </span>
+        </caption>
         <thead>
           <tr>
-            <th>Date</th>
-            <th>{t("Course", "Race")}</th>
-            <th>Mode</th>
-            <th>{t("Texte", "Text")}</th>
-            <th>{t("MPM", "WPM")}</th>
-            <th>{t("Précision", "Accuracy")}</th>
-            <th>{t("Rang", "Rank")}</th>
-            <th>{t("Détails", "Details")}</th>
+            <th scope="col">Date</th>
+            <th scope="col">{t("Course", "Race")}</th>
+            <th scope="col">{t("Vitesse", "Speed")}</th>
+            <th scope="col">{t("Précision", "Accuracy")}</th>
+            <th scope="col">{t("Rang", "Rank")}</th>
+            <th scope="col">{t("Détails", "Details")}</th>
           </tr>
         </thead>
         <tbody>
           {results.map((result) => (
             <tr key={result.id}>
               <td>
-                {new Date(result.createdAt).toLocaleDateString(locale === "fr" ? "fr-CA" : "en-CA")}
+                <time dateTime={result.createdAt}>
+                  {new Date(result.createdAt).toLocaleDateString(
+                    locale === "fr" ? "fr-CA" : "en-CA",
+                    { day: "numeric", month: "short", year: "numeric" },
+                  )}
+                </time>
               </td>
-              <td>{result.roomName}</td>
-              <td>{result.gameMode === "arcade" ? "Arcade" : t("Classique", "Classic")}</td>
-              <td>{result.language.toUpperCase()}</td>
-              <td>{Math.round(result.wpm)}</td>
-              <td>{Math.round(result.accuracy)} %</td>
-              <td>{result.rank}</td>
+              <th scope="row" className="saved-results-course">
+                <span className="saved-results-name">{result.roomName}</span>
+                <span className="saved-results-tags">
+                  <span>{result.gameMode === "arcade" ? "Arcade" : t("Classique", "Classic")}</span>
+                  <span>{result.language.toUpperCase()}</span>
+                </span>
+              </th>
+              <td>
+                <span className="saved-results-speed">{Math.round(result.wpm)}</span>
+                <span className="saved-results-unit">{t("MPM", "WPM")}</span>
+              </td>
+              <td>
+                <strong className="saved-results-accuracy">{Math.round(result.accuracy)} %</strong>
+                <span className="saved-results-meter" aria-hidden="true">
+                  <span style={{ width: `${Math.max(0, Math.min(100, result.accuracy))}%` }} />
+                </span>
+              </td>
+              <td>
+                <span
+                  className="saved-results-rank"
+                  data-podium={result.rank <= 3 ? result.rank : undefined}
+                >
+                  {result.rank === 1 && <Trophy size={16} aria-hidden="true" />}
+                  <span>#{result.rank}</span>
+                </span>
+              </td>
               <td>
                 <Link
-                  className="ghost"
+                  className="saved-results-link"
                   href={`/resultats/${result.id}`}
                   aria-label={`${t("Résultats de", "Results for")} ${result.roomName}`}
                 >
                   {t("Voir", "View")}
+                  <ArrowUpRight size={18} aria-hidden="true" />
                 </Link>
               </td>
             </tr>

@@ -1,4 +1,6 @@
 "use client";
+
+import { Select } from "./select";
 import { useState } from "react";
 import type { RoomSettings } from "@/types/game";
 import { api } from "@/lib/client/api";
@@ -54,74 +56,67 @@ export function RoomConfiguration({
       </Field>
       <div className="field-row">
         <Field id="edit-visibility" label={t("Accès", "Access")}>
-          <select
+          <Select
             id="edit-visibility"
             value={settings.visibility}
-            onChange={(event) =>
-              set("visibility", event.target.value as RoomSettings["visibility"])
-            }
+            onValueChange={(value) => set("visibility", value as RoomSettings["visibility"])}
           >
             <option value="public">{t("Public", "Public")}</option>
             <option value="code">{t("Par code", "By code")}</option>
             <option value="private">{t("Privé", "Private")}</option>
-          </select>
+          </Select>
         </Field>
         <Field id="edit-language" label={t("Langue du texte", "Text language")}>
-          <select
+          <Select
             id="edit-language"
             value={settings.language}
-            onChange={(event) => set("language", event.target.value as RoomSettings["language"])}
+            onValueChange={(value) => set("language", value as RoomSettings["language"])}
           >
             <option value="fr">Français</option>
             <option value="en">English</option>
-          </select>
+          </Select>
         </Field>
       </div>
       <div className="field-row">
         <Field id="edit-mode" label={t("Mode", "Mode")}>
-          <select
+          <Select
             id="edit-mode"
             value={settings.gameMode}
-            onChange={(event) => set("gameMode", event.target.value as RoomSettings["gameMode"])}
+            onValueChange={(value) => set("gameMode", value as RoomSettings["gameMode"])}
           >
             <option value="classic">{t("Classique", "Classic")}</option>
             <option value="arcade">Arcade</option>
-          </select>
+          </Select>
         </Field>
         <Field id="edit-errors" label={t("Erreurs", "Errors")}>
-          <select
+          <Select
             id="edit-errors"
             value={settings.errorMode}
-            onChange={(event) => set("errorMode", event.target.value as RoomSettings["errorMode"])}
+            onValueChange={(value) => set("errorMode", value as RoomSettings["errorMode"])}
           >
             <option value="free">{t("Libre", "Free")}</option>
             <option value="blocking">{t("Bloquantes", "Blocking")}</option>
-          </select>
+          </Select>
         </Field>
       </div>
       <div className="field-row">
         <Field id="edit-content" label={t("Contenu", "Content")}>
-          <select
+          <Select
             id="edit-content"
             value={settings.contentMode}
-            onChange={(event) =>
-              set("contentMode", event.target.value as RoomSettings["contentMode"])
-            }
+            onValueChange={(value) => set("contentMode", value as RoomSettings["contentMode"])}
           >
             <option value="text">{t("Texte", "Text")}</option>
             <option value="words">{t("Mots", "Words")}</option>
             <option value="custom">{t("Personnalisé", "Custom")}</option>
-          </select>
+          </Select>
         </Field>
         <Field id="edit-duration" label={t("Durée maximale (secondes)", "Time limit (seconds)")}>
-          <select
+          <Select
             id="edit-duration"
             value={settings.durationSeconds ?? "none"}
-            onChange={(event) =>
-              set(
-                "durationSeconds",
-                event.target.value === "none" ? null : Number(event.target.value),
-              )
+            onValueChange={(value) =>
+              set("durationSeconds", value === "none" ? null : Number(value))
             }
           >
             <option value="none">{t("Fin du texte", "Text completion")}</option>
@@ -130,7 +125,7 @@ export function RoomConfiguration({
                 {value}
               </option>
             ))}
-          </select>
+          </Select>
         </Field>
       </div>
       {settings.contentMode === "custom" ? (
@@ -156,15 +151,15 @@ export function RoomConfiguration({
             />
           </Field>
           <Field id="edit-topic" label={t("Thématique", "Topic")}>
-            <select
+            <Select
               id="edit-topic"
               value={settings.topic}
-              onChange={(event) => set("topic", event.target.value as RoomSettings["topic"])}
+              onValueChange={(value) => set("topic", value as RoomSettings["topic"])}
             >
               <option value="everyday">{t("Quotidien", "Everyday")}</option>
               <option value="science">Science</option>
               <option value="gaming">{t("Jeu vidéo", "Gaming")}</option>
-            </select>
+            </Select>
           </Field>
         </div>
       )}
@@ -180,15 +175,15 @@ export function RoomConfiguration({
           />
         </Field>
         <Field id="edit-level" label={t("Niveau", "Level")}>
-          <select
+          <Select
             id="edit-level"
             value={settings.botLevel}
-            onChange={(event) => set("botLevel", event.target.value as RoomSettings["botLevel"])}
+            onValueChange={(value) => set("botLevel", value as RoomSettings["botLevel"])}
           >
             <option value="easy">{t("Débutant", "Easy")}</option>
             <option value="medium">{t("Intermédiaire", "Medium")}</option>
             <option value="hard">{t("Rapide", "Hard")}</option>
-          </select>
+          </Select>
         </Field>
       </div>
       <Field id="edit-excluded" label={t("Caractères exclus", "Excluded characters")}>

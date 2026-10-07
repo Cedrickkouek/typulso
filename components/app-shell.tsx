@@ -25,7 +25,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </a>
       <header className="site-header">
         <Link className="brand" href="/" aria-label={t("Typulso — accueil", "Typulso — home")}>
-          <Image src="/logo.svg" width={36} height={36} alt="" unoptimized />
+          <Image src="/logo.svg" width={64} height={64} alt="" unoptimized />
           typulso<span className="visually-hidden">{t("Accueil", "Home")}</span>
         </Link>
         <nav className="site-nav" aria-label={t("Navigation principale", "Main navigation")}>

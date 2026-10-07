@@ -1,5 +1,7 @@
 "use client";
 
+import { Select } from "./select";
+
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -582,11 +584,7 @@ export function RoomPage({ id }: { id: string }) {
         </p>
         {host && (
           <Field id="successor" label={t("Prochain hôte", "Next host")}>
-            <select
-              id="successor"
-              value={successor}
-              onChange={(event) => setSuccessor(event.target.value)}
-            >
+            <Select id="successor" value={successor} onValueChange={(value) => setSuccessor(value)}>
               <option value="">{t("Participant le plus ancien", "Oldest participant")}</option>
               {room.players
                 .filter(
@@ -601,7 +599,7 @@ export function RoomPage({ id }: { id: string }) {
                     {player.username}
                   </option>
                 ))}
-            </select>
+            </Select>
           </Field>
         )}
         <div className="actions">

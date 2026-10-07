@@ -1,9 +1,12 @@
 "use client";
 
+import { Select } from "./select";
+
 import Link from "next/link";
 import { updatePreferences } from "@/lib/client/preferences";
 import { useTranslation } from "./providers";
-import { Field, Heading, Notice } from "./ui";
+import { Field, Heading } from "./ui";
+import { ArrowRight, CheckCheck, Eye, Gauge, Sparkles, Type, WifiOff } from "lucide-react";
 
 export function PreferencesPage() {
   const preferences = useTranslation();
@@ -23,28 +26,24 @@ export function PreferencesPage() {
           <h2>{t("Lecture & apparence", "Reading & appearance")}</h2>
           <div className="field-row mt-5">
             <Field id="pref-language" label={t("Langue de l’interface", "Interface language")}>
-              <select
+              <Select
                 id="pref-language"
                 value={preferences.locale}
-                onChange={(event) =>
-                  updatePreferences({ locale: event.target.value as "fr" | "en" })
-                }
+                onValueChange={(value) => updatePreferences({ locale: value as "fr" | "en" })}
               >
                 <option value="fr">Français</option>
                 <option value="en">English</option>
-              </select>
+              </Select>
             </Field>
             <Field id="pref-theme" label={t("Thème", "Theme")}>
-              <select
+              <Select
                 id="pref-theme"
                 value={preferences.theme}
-                onChange={(event) =>
-                  updatePreferences({ theme: event.target.value as "light" | "dark" })
-                }
+                onValueChange={(value) => updatePreferences({ theme: value as "light" | "dark" })}
               >
                 <option value="light">{t("Clair", "Light")}</option>
                 <option value="dark">{t("Sombre", "Dark")}</option>
-              </select>
+              </Select>
             </Field>
           </div>
           <h2 className="mt-6">{t("Mouvement & retours", "Motion & feedback")}</h2>
@@ -109,8 +108,104 @@ export function PreferencesPage() {
 }
 export function HelpPage({ keyboard = false }: { keyboard?: boolean }) {
   const { t } = useTranslation();
+  const steps = keyboard
+    ? [
+        {
+          keys: ["Tab", t("Maj + Tab", "Shift + Tab")],
+          title: t("Se déplacer", "Move between controls"),
+          description: t(
+            "Passe au contrôle suivant, ou reviens au précédent avec Maj + Tab.",
+            "Move to the next control, or back with Shift + Tab.",
+          ),
+        },
+        {
+          keys: [t("Entrée", "Enter"), t("Espace", "Space")],
+          title: t("Activer", "Activate"),
+          description: t(
+            "Entrée ouvre un lien. Entrée ou Espace active un bouton.",
+            "Enter opens a link. Enter or Space activates a button.",
+          ),
+        },
+        {
+          keys: [t("Échap", "Esc")],
+          title: t("Fermer une fenêtre", "Close a dialog"),
+          description: t(
+            "Ferme la confirmation et retrouve le focus sur le bouton d’origine.",
+            "Close the confirmation and return focus to the original button.",
+          ),
+        },
+        {
+          keys: ["Tab"],
+          title: t("Aller au contenu", "Skip to content"),
+          description: t(
+            "Le premier lien de la page mène directement au contenu.",
+            "The first link on the page takes you straight to the content.",
+          ),
+        },
+      ]
+    : [
+        {
+          title: t("Rejoins ton groupe", "Join your group"),
+          description: t(
+            "Choisis une salle publique, entre un code ou ouvre ton invitation privée.",
+            "Choose a public room, enter a code or open your private invitation.",
+          ),
+        },
+        {
+          title: t("Choisis ton identité", "Choose your identity"),
+          description: t(
+            "Un compte peut préparer une salle. Un invité peut participer.",
+            "An account can prepare a room. A guest can participate.",
+          ),
+        },
+        {
+          title: t("Prépare ton départ", "Get ready"),
+          description: t(
+            "Lis les règles du salon, puis indique que tu es prêt.",
+            "Read the lobby rules, then mark yourself ready.",
+          ),
+        },
+        {
+          title: t("Pars avec les autres", "Start together"),
+          description: t("L’hôte lance le départ commun.", "The host starts everyone together."),
+        },
+      ];
+  const typingTips = [
+    {
+      icon: CheckCheck,
+      title: t("Des erreurs bien repérées", "Clear error cues"),
+      description: t(
+        "Les lettres restent à leur place. Les erreurs sont soulignées : la couleur n’est jamais le seul repère.",
+        "Letters stay in place. Mistakes are underlined: color is never the only cue.",
+      ),
+    },
+    {
+      icon: Type,
+      title: t("Une frappe personnelle", "Your own typing"),
+      description: t(
+        "Le collage est désactivé. Les accents et caractères composés sont validés à la fin de leur saisie.",
+        "Paste is disabled. Accents and composed characters are validated when their input is complete.",
+      ),
+    },
+    {
+      icon: WifiOff,
+      title: t("Une pause si tu perds la connexion", "A pause if you lose connection"),
+      description: t(
+        "La frappe se suspend. Reconnecte-toi pour retrouver la saisie confirmée par le serveur.",
+        "Typing pauses. Reconnect to restore the input confirmed by the server.",
+      ),
+    },
+    {
+      icon: Eye,
+      title: t("Une place pour observer", "A place to watch"),
+      description: t(
+        "Les spectateurs n’ont pas de champ de frappe. Si tu arrives pendant une course, tu la regardes.",
+        "Spectators have no typing field. If you arrive during a race, you watch it.",
+      ),
+    },
+  ];
   return (
-    <>
+    <div className="help-page">
       <Heading
         title={
           keyboard
@@ -126,113 +221,96 @@ export function HelpPage({ keyboard = false }: { keyboard?: boolean }) {
               )
         }
       />
-      <div className="equal-grid">
-        <section className="box">
+      <div className="help-grid">
+        <section className="box help-panel">
           <h2>
             {keyboard
               ? t("Naviguer sans souris", "Navigate without a mouse")
               : t("Avant la course", "Before the race")}
           </h2>
-          {keyboard ? (
-            <ol className="list-decimal space-y-4 pl-5">
-              <li>
-                {t(
-                  "Tab passe au contrôle suivant ; Maj + Tab revient au précédent.",
-                  "Tab moves to the next control; Shift + Tab moves to the previous one.",
+          <ol className="help-steps">
+            {steps.map((step, index) => (
+              <li key={step.title}>
+                {"keys" in step ? (
+                  <div className="help-keys">
+                    {step.keys.map((key) => (
+                      <kbd key={key}>{key}</kbd>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="help-step-number" aria-hidden="true">
+                    {index + 1}
+                  </span>
                 )}
+                <div>
+                  <h3>{step.title}</h3>
+                  <p>{step.description}</p>
+                </div>
               </li>
-              <li>
-                {t(
-                  "Entrée active un lien. Entrée ou Espace active un bouton.",
-                  "Enter activates a link. Enter or Space activates a button.",
-                )}
-              </li>
-              <li>
-                {t(
-                  "Échap ferme une fenêtre de confirmation et rend le focus au bouton d’origine.",
-                  "Escape closes a confirmation window and restores focus to its original button.",
-                )}
-              </li>
-              <li>
-                {t(
-                  "Le premier lien permet d’aller directement au contenu.",
-                  "The first link lets you skip straight to the content.",
-                )}
-              </li>
-            </ol>
-          ) : (
-            <ol className="list-decimal space-y-4 pl-5">
-              <li>
-                {t(
-                  "Rejoins une salle publique, entre un code ou accepte ton invitation privée.",
-                  "Join a public room, enter a code or accept your private invitation.",
-                )}
-              </li>
-              <li>
-                {t(
-                  "Un compte peut préparer une salle. Un invité peut participer.",
-                  "An account can prepare a room. A guest can participate.",
-                )}
-              </li>
-              <li>
-                {t(
-                  "Lis les règles du salon, puis indique que tu es prêt.",
-                  "Read the lobby rules, then mark yourself ready.",
-                )}
-              </li>
-              <li>{t("L’hôte lance le départ commun.", "The host starts everyone together.")}</li>
-            </ol>
-          )}
+            ))}
+          </ol>
         </section>
-        <section className="box">
+        <section className="box help-panel">
           <h2>
             {keyboard
               ? t("Pendant la frappe", "While typing")
               : t("Pendant & après", "During & after")}
           </h2>
-          <p>
-            {t(
-              "Les lettres correctes et les erreurs restent à la même place. Les erreurs sont soulignées ; la couleur seule n’est jamais le repère.",
-              "Correct letters and mistakes stay in the same place. Mistakes are underlined; color is never the only cue.",
-            )}
-          </p>
-          <p>
-            {t(
-              "Le collage est désactivé pour l’exercice. La composition d’accents et de caractères est validée quand la saisie est terminée.",
-              "Paste is disabled for the exercise. Accent and character composition is validated when input is complete.",
-            )}
-          </p>
-          <p>
-            {t(
-              "Si la connexion s’interrompt, la frappe se suspend. Reconnecte-toi pour retrouver la valeur confirmée par le serveur.",
-              "If your connection is interrupted, typing pauses. Reconnect to restore the value confirmed by the server.",
-            )}
-          </p>
-          <p>
-            {t(
-              "Les spectateurs observent sans champ de frappe. Les nouvelles arrivées pendant une course sont spectatrices.",
-              "Spectators watch without a typing field. New arrivals during a race become spectators.",
-            )}
-          </p>
-          <Link className="subtle" href="/preferences">
+          <ul className="help-tips">
+            {typingTips.map(({ icon: Icon, title, description }) => (
+              <li key={title}>
+                <span className="help-tip-icon" aria-hidden="true">
+                  <Icon size={20} />
+                </span>
+                <div>
+                  <h3>{title}</h3>
+                  <p>{description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <Link className="ghost help-preferences" href="/preferences">
             {t("Régler mes préférences", "Adjust my preferences")}
+            <ArrowRight size={18} />
           </Link>
         </section>
       </div>
-      <Notice>
-        {t(
-          "En classique, lis ta vitesse et ta précision. En arcade, le score inclut les capacités. Compare des courses de mêmes règles et langue.",
-          "In classic mode, read your speed and accuracy. In arcade, the score includes abilities. Compare races with matching rules and language.",
-        )}
-      </Notice>
-      <div className="actions mt-5">
+      <aside className="help-score-guide" aria-label={t("Comparer les courses", "Comparing races")}>
+        <div className="help-score-heading">
+          <h2>{t("Compare ce qui se ressemble.", "Compare like with like.")}</h2>
+          <p>
+            {t(
+              "Garde les mêmes règles et la même langue pour comparer tes courses.",
+              "Use the same rules and language when comparing races.",
+            )}
+          </p>
+        </div>
+        <div className="help-score-modes">
+          <div>
+            <Gauge size={22} aria-hidden="true" />
+            <div>
+              <h3>{t("Classique", "Classic")}</h3>
+              <p>{t("Lis ta vitesse et ta précision.", "Read your speed and accuracy.")}</p>
+            </div>
+          </div>
+          <div>
+            <Sparkles size={22} aria-hidden="true" />
+            <div>
+              <h3>{t("Arcade", "Arcade")}</h3>
+              <p>{t("Le score inclut les capacités.", "The score includes abilities.")}</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+      <div className="actions help-actions">
         <Link className="primary" href="/rejoindre">
           {t("Rejoindre une course", "Join a race")}
+          <ArrowRight size={18} />
         </Link>
         <Link className="subtle" href="/entrainement">
           {t("M’entraîner", "Practice")}
         </Link>
       </div>
-    </>
+    </div>
   );
 }

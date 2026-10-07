@@ -1,5 +1,7 @@
 "use client";
 
+import { Select } from "./select";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
@@ -79,26 +81,26 @@ export function PracticePage() {
             </p>
             <div className="field-row mt-5">
               <Field id="practice-language" label={t("Langue du texte", "Text language")}>
-                <select
+                <Select
                   id="practice-language"
                   value={language}
-                  onChange={(event) => setLanguage(event.target.value as "fr" | "en")}
+                  onValueChange={(value) => setLanguage(value as "fr" | "en")}
                 >
                   <option value="fr">{t("Français", "French")}</option>
                   <option value="en">{t("Anglais", "English")}</option>
-                </select>
+                </Select>
               </Field>
               <Field id="practice-errors" label={t("Erreurs", "Errors")}>
-                <select
+                <Select
                   id="practice-errors"
                   value={blocking ? "blocking" : "free"}
-                  onChange={(event) => setBlocking(event.target.value === "blocking")}
+                  onValueChange={(value) => setBlocking(value === "blocking")}
                 >
                   <option value="free">{t("Frappe libre", "Free typing")}</option>
                   <option value="blocking">
                     {t("Correction obligatoire", "Correction required")}
                   </option>
-                </select>
+                </Select>
               </Field>
             </div>
             <button className="primary" onClick={() => setStarted(true)}>
@@ -116,28 +118,28 @@ export function PracticePage() {
             </p>
             <div className="field-row mt-5">
               <Field id="practice-bots" label={t("Adversaires", "Opponents")}>
-                <select
+                <Select
                   id="practice-bots"
                   value={bots}
-                  onChange={(event) => setBots(Number(event.target.value))}
+                  onValueChange={(value) => setBots(Number(value))}
                 >
                   {[1, 2, 3, 5].map((value) => (
                     <option value={value} key={value}>
                       {value}
                     </option>
                   ))}
-                </select>
+                </Select>
               </Field>
               <Field id="practice-level" label={t("Niveau", "Level")}>
-                <select
+                <Select
                   id="practice-level"
                   value={level}
-                  onChange={(event) => setLevel(event.target.value as "easy" | "medium" | "hard")}
+                  onValueChange={(value) => setLevel(value as "easy" | "medium" | "hard")}
                 >
                   <option value="easy">{t("Débutant", "Easy")}</option>
                   <option value="medium">{t("Intermédiaire", "Medium")}</option>
                   <option value="hard">{t("Rapide", "Hard")}</option>
-                </select>
+                </Select>
               </Field>
             </div>
             {error && <ErrorNotice message={error} />}

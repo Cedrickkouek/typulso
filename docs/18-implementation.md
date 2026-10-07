@@ -144,3 +144,36 @@ Les versions ont été vérifiées dans le registre npm, puis verrouillées. Les
 - Arcade : 100 d'énergie et au moins cinq points de retard, un usage par course. Boost et bouclier ne changent pas la vitesse/précision brute; avantage de score cumulé plafonné à six points.
 
 Ces choix sont des décisions d'implémentation, pas une validation d'équilibrage avec les adolescents.
+
+
+## Identité et lisibilité · ajustement du 6 octobre
+
+La marque de l’en-tête utilise un nom de 36 à 48 px et un symbole de 48 à 64 px selon l’écran. Sur les petits écrans, la marque est centrée sur sa propre ligne; les commandes suivent, puis la navigation en deux colonnes sous 540 px. Le logo conserve son SVG et ses proportions.
+
+Les anciens textes de 10 à 15 px des styles de l’application partagent désormais deux tailles relatives : `--text-label` de 0,9375 rem et `--text-support` de 1 rem. Les aides de formulaire et les paragraphes `.small` utilisent 1 rem avec une hauteur de ligne de 1,6. Les repères « Ensemble, en direct » et « Ton talent, ton rythme » utilisent 18 px, une graisse 500, le texte principal du thème et des icônes de 20 px. La même échelle s’applique aux styles du footer, de la course et du bilan. Les couleurs des surfaces sont conservées.
+
+
+## Aide plus aérée · ajustement du 6 octobre
+
+Les pages `/touches` et `/aide` utilisent des listes de consignes avec titres courts, touches `kbd` pour les raccourcis et icônes décoratives pour les repères de frappe. Les textes sont reformulés sans changer les règles du jeu. Les cartes gardent leur hauteur naturelle et leurs groupes sont espacés de 24 px. La comparaison des modes occupe un `aside` distinct, séparé de la grille par 36 px, ou 28 px sous 540 px. La grille passe à une colonne sous 1 100 px; les raccourcis et modes s’empilent sur mobile.
+
+
+## Contraste du profil et sticker traduit · 6 octobre
+
+Le libellé « Ton espace » du bandeau rose utilise `--on-color`, comme son texte secondaire, pour conserver une couleur encre dans les deux thèmes. Le fond rose reste identique. Le sticker du composant partagé `KeyScene` suit la langue d’interface : « À TOI DE JOUER » en français et « PRESS PLAY » en anglais, sur l’accueil et la connexion.
+
+
+### Clavier des statistiques
+
+Le composant partagé du profil et des résultats propose une vue clavier AZERTY français ou QWERTY américain, ainsi que la table détaillée existante. Les variantes d’une touche regroupent les tentatives et erreurs avant le calcul du pourcentage. Les caractères hors disposition restent affichés séparément. Une touche inutilisée affiche « — ». Sur mobile, le défilement reste contenu dans le clavier. Le choix concerne uniquement la visualisation, sans modifier la saisie ou les préférences système.
+
+
+Les quatre catégories de taux d’erreur servent de filtres exclusifs dans les deux vues. Un second clic sur la catégorie active ou « Tout afficher » réinitialise le filtre. Les touches exclues sont estompées et retirées de l’arbre accessible, en conservant la géométrie du clavier; le tableau ne montre que les lignes correspondantes. Les catégories suivent le pourcentage arrondi affiché, et les touches sans tentative ne font pas partie du filtre « 0 % ».
+
+
+Les menus déroulants natifs des champs partagent un chevron adapté au thème, à 18 px du bord droit, avec 56 px de réserve côté texte. Angles de 16 px, ombre légère, survol et focus visibles. La sélection native conserve son comportement clavier et mobile; le mode de couleurs forcées rétablit la flèche système.
+
+
+### Listes d’options personnalisées
+
+Le composant `Select` partagé remplace désormais les sélecteurs natifs dans les pages de l’application. La liste utilise la couche supérieure du navigateur (Popover API), un fond adapté au thème, des options d’au moins 44 px, une coche et un accent pour la valeur choisie. Le bouton conserve son label, un chevron espacé et les attributs combobox/listbox. Flèches, Début/Fin, Entrée/Espace, Tab, Échap et recherche par caractères sont pris en charge. La liste se place au-dessus si l’espace manque en dessous; un clic extérieur la ferme. Les règles de données et leurs validations restent inchangées. Cette implémentation remplace le comportement natif décrit dans la note précédente.

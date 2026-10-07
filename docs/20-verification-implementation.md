@@ -255,3 +255,104 @@ La remise à zéro des marges de Tailwind plaçait les dialogues au bord du view
 | 844 × 390 px | Règles · clair | Largeur 540 px, marges verticales d’environ 25,3 px; défilement interne sans débordement horizontal. |
 
 Échap ferme les dialogues et rend le focus au bouton qui les ouvre. `bun run check` réussit : formatage, lint, TypeScript, **53 tests unitaires** (**1 044 assertions**) et compilations Next.js/temps réel. Les **9 tests PostgreSQL sont ignorés dans la commande unitaire**; ils ne sont pas relancés pour cette correction CSS. Le compte local de recette est déconnecté et l’aperçu revient à l’entraînement après les vérifications.
+
+
+### Marque agrandie et textes lisibles · 6 octobre 2026
+
+Les tailles calculées sur l’accueil français clair à 1 920 px confirment le nom à **48 px**, le symbole à **64 px** et les repères à **18 px**. À 320 px, le nom reste à **36 px**, les repères à **18 px** et la navigation occupe une grille de deux colonnes. Aucun débordement horizontal du document n’est mesuré sur l’accueil aux formats 1 920, 1 280, 900, 390 et 320 px observés pendant l’itération, en clair ou sombre selon la capture. Les contrôles finaux de 320 et 1 280 px portent sur la dernière version.
+
+L’échauffement ouvert, les préférences et la connexion sont également examinés à **390 px**, sans débordement horizontal mesuré. Les textes visibles de l’échauffement n’ont aucune taille calculée inférieure à 15 px. Les styles partagés de course et de bilan sont adaptés; cette recette ne rejoue pas une course multijoueur ni des résultats authentifiés. Les préférences de langue et de thème utilisées pour la recette sont rétablies à la fin.
+
+`bun run check` réussit après les derniers changements : formatage, lint, TypeScript, **53 tests unitaires** (**1 044 assertions**) et compilations Next.js/temps réel. Les **9 tests PostgreSQL sont ignorés** dans la commande unitaire; l’intégration n’est pas relancée pour cette modification visuelle.
+
+
+### Aide aérée et comparaison détachée · 6 octobre 2026
+
+La page `/touches` est observée en français sombre à **1 536 et 390 px**, et en français clair à **900 et 320 px**. Aucun débordement horizontal du document n’est mesuré. L’écart entre la grille et la bande de comparaison est de **36 px** sur ordinateur et tablette, **28 px** sur mobile. `/aide`, qui partage cette présentation, est vérifiée à **320 px**, sans débordement mesuré. Tab depuis le lien de préférences atteint « Rejoindre une course » avec un contour de focus de **3 px**. Les préférences de recette et le viewport sont rétablis après vérification.
+
+`bun run check` réussit : formatage, lint, TypeScript, **53 tests unitaires**, **1 044 assertions**, builds Next.js et temps réel. Les **9 tests PostgreSQL sont ignorés** dans la commande unitaire; aucune intégration n’est relancée pour cette présentation.
+
+[Page clavier plus aérée](assets/app-v01/aide-aeree.png).
+
+
+### Contraste du profil et traduction du sticker · 6 octobre 2026
+
+Le contraste du bandeau est vérifié dans un aperçu anonyme isolé qui charge la feuille de styles réelle de l’application : texte calculé `rgb(23, 28, 43)` sur fond `rgb(255, 143, 206)` en thème sombre, sans débordement à 1 280 px. La connexion au compte local de recette a été refusée par la vérification automatique faute d’autorisation explicite d’utilisation des identifiants; aucun profil authentifié n’est validé dans ce passage. Le fichier temporaire de présentation est supprimé après la capture.
+
+Le sticker de l’accueil est observé en français sombre à **1 280 px**. Le passage FR → EN confirme les textes « À TOI DE JOUER » et « PRESS PLAY ». À **390 px**, la version française n’ajoute aucun débordement horizontal du document. Le composant est partagé avec la connexion, dont le rendu n’est pas rejoué. Les préférences et le viewport sont rétablis.
+
+La vérification finale `bun run check` réussit : formatage, lint, TypeScript, **53 tests unitaires**, **1 044 assertions**, compilations Next.js et temps réel. Les **9 tests PostgreSQL sont ignorés** dans cette commande.
+
+[Sticker français](assets/app-v01/sticker-fr.png) · [Contraste du bandeau isolé](assets/app-v01/profil-contraste-isole.png).
+
+
+### Vue clavier AZERTY / QWERTY
+
+Vérification du composant React réel dans une route anonyme temporaire avec des données fictives clairement indiquées, supprimée ensuite : sélection AZERTY/QWERTY, passage à la table conservant les cinq métriques originales, français/anglais et rendu sombre à 1 280 px. À 390 px, largeur du document égale au viewport (390 px), défilement contenu dans le clavier. Aucun profil authentifié ni résultat réel n’est simulé.
+
+Trois tests couvrent le regroupement pondéré des majuscules, les touches accentuées et chiffres AZERTY, la conservation des caractères hors disposition et les métriques vides. La vérification complète réussit : 56 tests, 1 051 assertions, 9 tests de base de données ignorés, formatage, lint, TypeScript et compilations.
+
+[Aperçu clavier avec données de démonstration](assets/app-v01/clavier-azerty.png).
+
+
+### Filtres des indicateurs
+
+Vérification sur le composant réel dans un aperçu temporaire anonyme avec des métriques fictives : sélection 5–14 %, correspondance de la touche regroupée, filtrage du tableau, second clic rétablissant les cinq lignes, activation de ≥15 % avec Entrée. Rendus clair/sombre, FR/EN et largeur du document limitée à 390 px sur mobile. Route temporaire supprimée et préférences rétablies. Un test vérifie les bornes de catégories, l’arrondi du taux affiché et la distinction des touches sans tentative.
+
+[Aperçu du filtre actif — données fictives](assets/app-v01/filtres-clavier.png).
+
+
+### Menus déroulants
+
+La page entraînement réelle est vérifiée en clair à 1 280 px. Les quatre menus ont un chevron à 18 px du bord et 56 px de padding droit. Le changement de langue du texte EN puis FR fonctionne. À 390 px, les menus mesurent 316 px et le document reste à 390 px. En thème sombre, le chevron utilise la couleur claire prévue. Préférences et viewport rétablis.
+
+[Aperçu des menus déroulants](assets/app-v01/menus-deroulants.png).
+
+
+### Liste d’options ouverte
+
+Sur la page entraînement réelle, vérifications FR/EN et clair/sombre : ouverture de la liste personnalisée, coche de la valeur sélectionnée, clic sur une option, navigation avec flèches et Fin, confirmation Entrée, annulation Échap conservant la valeur, recherche « c » puis confirmation Tab donnant « Correction obligatoire ». À 390 px, la liste ouverte reste entre x=37 et x=353, dans le viewport; aucune largeur supplémentaire du document. Valeurs de pratique, préférences et viewport rétablis.
+
+Le composant suit le [modèle combobox à sélection du W3C](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/). Les noms accessibles et options sont observés dans l’arbre du navigateur; une validation avec lecteur d’écran n’est pas réalisée dans ce passage. Les autres pages utilisent le composant partagé, mais leurs parcours authentifiés ne sont pas rejoués. `bun run check` réussit : formatage, lint, TypeScript, tests existants et compilations web/temps réel.
+
+[Aperçu de la liste ouverte](assets/app-v01/menu-options.png).
+
+
+### Hauteur des deux blocs d’aide
+
+La grille d’aide étire les deux cartes à une hauteur commune lorsqu’elles sont côte à côte, sans hauteur fixe. Sur `/touches`, mesures identiques de 623,47 px à 1 536 px en clair et à 1 200 px en sombre. À 390 px, les cartes sont empilées avec leurs hauteurs naturelles (697,47 px et 765,05 px), sans débordement horizontal. Préférences et viewport rétablis.
+
+[Aperçu des cartes alignées](assets/app-v01/aide-hauteurs.png).
+
+
+### Répartition des étapes dans le bloc d’aide
+
+Sur écran à deux colonnes, les quatre étapes sont réparties sur la hauteur disponible. À 1 536 px, les cartes conservent une hauteur identique de 623,47 px et la marge entre la dernière étape et le bas du bloc est ramenée à 33 px. À 390 px, la répartition redevient naturelle et le document reste à 390 px. Préférences et viewport rétablis.
+
+[Aperçu du contenu réparti](assets/app-v01/aide-repartie.png).
+
+
+### Suppression des bandes latérales
+
+Les accents verticaux décoratifs sont retirés des notices partagées, du guide de comparaison, du repère personnel de piste et des lignes personnelles des résultats. Le curseur de frappe reste fonctionnel. Les erreurs gardent un contour complet de leur couleur dédiée. Sur `/touches`, les bordures gauche et droite du guide sont identiques (1 px neutre) en clair à 1 536 px et en sombre à 390 px, sans débordement horizontal. Les écrans de course/résultats authentifiés ne sont pas rejoués dans ce passage. Préférences et viewport rétablis.
+
+[Aperçu sans bande verticale](assets/app-v01/sans-bande.png).
+
+
+### Organisation des statistiques du clavier
+
+L’entête associe le titre et un sous-titre court, avec le bouton de vue à droite. La barre de commandes répartit les filtres à gauche et le choix de disposition à droite sur grand écran. Les explications complètes sont repliées dans « Comment lire ce clavier ? ». Vérification du composant réel dans l’aperçu temporaire à données fictives : français clair à 1 536 px, filtre 5–14 %, tableau à une ligne correspondante, retour aux touches, réinitialisation, ouverture de l’aide. À 390 px, commandes empilées, document de 390 px. Route de démonstration supprimée et préférences rétablies.
+
+[Aperçu de la disposition équilibrée — données fictives](assets/app-v01/clavier-equilibre.png).
+
+
+L’explication du clavier est maintenant affichée en permanence sous les touches; la ligne repliable est supprimée à la demande de l’utilisateur. Texte français observé sans interaction à 1 280 px dans l’aperçu anonyme du composant réel (données fictives), puis aperçu temporaire supprimé. `bun run check` réussit.
+
+[Aperçu de l’explication visible](assets/app-v01/explication-visible.png).
+
+
+### Profil : statistiques et résultats — 6 octobre 2026
+
+Les six statistiques utilisent une grille centrée (six colonnes à 1536 px, trois à 1200 px, deux à 390 px), avec icônes et accents de la palette existante. Le tableau regroupe mode et langue sous le nom de course et met en valeur vitesse, précision et rang. Les données et liens restent ceux du profil.
+
+Vérification visuelle des composants réels via une route temporaire anonyme, avec des données explicitement fictives ; route supprimée après inspection. Aucun accès à un profil authentifié. À 390 px, aucun débordement de la page : le tableau défile dans son conteneur. Cartes lisibles en thème sombre. Capture de démonstration : `assets/app-v01/profil-resultats.png`.

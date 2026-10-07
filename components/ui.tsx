@@ -102,7 +102,9 @@ export function Field({
 }) {
   return (
     <div className="field">
-      <label htmlFor={id}>{label}</label>
+      <label id={`${id}-label`} htmlFor={id}>
+        {label}
+      </label>
       {children}
       {note && (
         <span id={`${id}-note`} className="field-note">
@@ -121,11 +123,12 @@ export function Metric({ value, label }: { value: React.ReactNode; label: string
   );
 }
 export function KeyScene() {
+  const { t } = useTranslation();
   return (
     <div className="key-scene" aria-hidden="true">
       <div className="scene-key key-a">a</div>
       <div className="scene-key key-z">z</div>
-      <span className="scene-sticker">PRESS PLAY</span>
+      <span className="scene-sticker">{t("À TOI DE JOUER", "PRESS PLAY")}</span>
       <span className="scene-spark">✳</span>
     </div>
   );

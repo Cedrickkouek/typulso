@@ -1,5 +1,7 @@
 "use client";
 
+import { Select } from "./select";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -62,22 +64,22 @@ export function CoursesPage() {
       />
       <div className="filter-bar">
         <Field id="language-filter" label={t("Langue du texte", "Text language")}>
-          <select
+          <Select
             id="language-filter"
             value={language}
-            onChange={(event) => setLanguage(event.target.value)}
+            onValueChange={(value) => setLanguage(value)}
           >
             <option value="all">{t("Toutes", "All")}</option>
             <option value="fr">{t("Français", "French")}</option>
             <option value="en">{t("Anglais", "English")}</option>
-          </select>
+          </Select>
         </Field>
         <Field id="mode-filter" label={t("Mode", "Mode")}>
-          <select id="mode-filter" value={mode} onChange={(event) => setMode(event.target.value)}>
+          <Select id="mode-filter" value={mode} onValueChange={(value) => setMode(value)}>
             <option value="all">{t("Tous", "All")}</option>
             <option value="classic">{t("Classique", "Classic")}</option>
             <option value="arcade">Arcade</option>
-          </select>
+          </Select>
         </Field>
         <button className="subtle" onClick={() => void join()} disabled={busy}>
           <Shuffle size={17} />
@@ -278,29 +280,27 @@ export function CreatePage() {
             </h2>
             <div className="field-row">
               <Field id="content-language" label={t("Langue du texte", "Text language")}>
-                <select
+                <Select
                   id="content-language"
                   value={settings.language}
-                  onChange={(event) =>
-                    set("language", event.target.value as RoomSettings["language"])
-                  }
+                  onValueChange={(value) => set("language", value as RoomSettings["language"])}
                 >
                   <option value="fr">{t("Français", "French")}</option>
                   <option value="en">{t("Anglais", "English")}</option>
-                </select>
+                </Select>
               </Field>
               <Field id="content-mode" label={t("Contenu", "Content")}>
-                <select
+                <Select
                   id="content-mode"
                   value={settings.contentMode}
-                  onChange={(event) =>
-                    set("contentMode", event.target.value as RoomSettings["contentMode"])
+                  onValueChange={(value) =>
+                    set("contentMode", value as RoomSettings["contentMode"])
                   }
                 >
                   <option value="text">{t("Texte", "Text")}</option>
                   <option value="words">{t("Liste de mots", "Word list")}</option>
                   <option value="custom">{t("Texte personnalisé", "Custom text")}</option>
-                </select>
+                </Select>
               </Field>
             </div>
             {settings.contentMode === "custom" ? (
@@ -334,28 +334,25 @@ export function CreatePage() {
                   />
                 </Field>
                 <Field id="topic" label={t("Thématique", "Topic")}>
-                  <select
+                  <Select
                     id="topic"
                     value={settings.topic}
-                    onChange={(event) => set("topic", event.target.value as RoomSettings["topic"])}
+                    onValueChange={(value) => set("topic", value as RoomSettings["topic"])}
                   >
                     <option value="everyday">{t("Quotidien", "Everyday")}</option>
                     <option value="science">Science</option>
                     <option value="gaming">{t("Jeu vidéo", "Gaming")}</option>
-                  </select>
+                  </Select>
                 </Field>
               </div>
             )}
             <div className="field-row">
               <Field id="duration" label={t("Durée maximale", "Time limit")}>
-                <select
+                <Select
                   id="duration"
                   value={settings.durationSeconds ?? "none"}
-                  onChange={(event) =>
-                    set(
-                      "durationSeconds",
-                      event.target.value === "none" ? null : Number(event.target.value),
-                    )
+                  onValueChange={(value) =>
+                    set("durationSeconds", value === "none" ? null : Number(value))
                   }
                 >
                   <option value="none">
@@ -366,15 +363,13 @@ export function CreatePage() {
                       {value} s
                     </option>
                   ))}
-                </select>
+                </Select>
               </Field>
               <Field id="errors" label={t("Gestion des erreurs", "Error handling")}>
-                <select
+                <Select
                   id="errors"
                   value={settings.errorMode}
-                  onChange={(event) =>
-                    set("errorMode", event.target.value as RoomSettings["errorMode"])
-                  }
+                  onValueChange={(value) => set("errorMode", value as RoomSettings["errorMode"])}
                 >
                   <option value="free">
                     {t("Libre — erreur pénalisée", "Free — mistakes penalized")}
@@ -382,7 +377,7 @@ export function CreatePage() {
                   <option value="blocking">
                     {t("Bloquante — corriger pour avancer", "Blocking — correct to continue")}
                   </option>
-                </select>
+                </Select>
               </Field>
             </div>
           </section>
@@ -392,16 +387,14 @@ export function CreatePage() {
               {t("Le jeu", "The game")}
             </h2>
             <Field id="game-mode" label={t("Mode de course", "Race mode")}>
-              <select
+              <Select
                 id="game-mode"
                 value={settings.gameMode}
-                onChange={(event) =>
-                  set("gameMode", event.target.value as RoomSettings["gameMode"])
-                }
+                onValueChange={(value) => set("gameMode", value as RoomSettings["gameMode"])}
               >
                 <option value="classic">{t("Classique", "Classic")}</option>
                 <option value="arcade">Arcade</option>
-              </select>
+              </Select>
             </Field>
             {settings.gameMode === "arcade" && (
               <Notice>
@@ -413,30 +406,28 @@ export function CreatePage() {
             )}
             <div className="field-row">
               <Field id="bots" label={t("Adversaires automatisés", "Automated opponents")}>
-                <select
+                <Select
                   id="bots"
                   value={settings.botCount}
-                  onChange={(event) => set("botCount", Number(event.target.value))}
+                  onValueChange={(value) => set("botCount", Number(value))}
                 >
                   {[0, 1, 2, 3, 5].map((value) => (
                     <option value={value} key={value}>
                       {value}
                     </option>
                   ))}
-                </select>
+                </Select>
               </Field>
               <Field id="bot-level" label={t("Niveau des adversaires", "Opponent level")}>
-                <select
+                <Select
                   id="bot-level"
                   value={settings.botLevel}
-                  onChange={(event) =>
-                    set("botLevel", event.target.value as RoomSettings["botLevel"])
-                  }
+                  onValueChange={(value) => set("botLevel", value as RoomSettings["botLevel"])}
                 >
                   <option value="easy">{t("Débutant", "Easy")}</option>
                   <option value="medium">{t("Intermédiaire", "Medium")}</option>
                   <option value="hard">{t("Rapide", "Hard")}</option>
-                </select>
+                </Select>
               </Field>
             </div>
             <details className="accordion">
