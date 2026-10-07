@@ -1,5 +1,9 @@
 # Installer, déployer et exploiter Typulso
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > **Actualisé le 7 octobre 2026 · production Railway observée.**\
 > Échéance initialement annoncée : 5 octobre, avant 23 h 55 à Toronto; cette recette ne prouve pas une remise à cette date.
 
@@ -19,7 +23,7 @@ Les 14 vérifications de production couvrent santé HTTPS/PostgreSQL, inscriptio
 
 L’origine web observée est `https://typulso-production.up.railway.app`. `APP_URL` doit correspondre exactement à l’adresse officielle utilisée; une autre origine provoque le refus de connexion. Si PostgreSQL signale `relation "rate_limits" does not exist`, vérifier que l’application vise la bonne base et que les migrations ont été appliquées à cette base. Ajouter `DATABASE_URL` ne crée pas les tables à lui seul. Ne pas réinitialiser une base contenant des données pour résoudre ce problème.
 
-La restauration des sauvegardes, la charge à 30 personnes, les coûts et les vrais retours OAuth ne sont pas attestés par cette recette. Le guide conserve les opérations nécessaires pour les vérifier.
+La restauration des sauvegardes, la charge à 30 personnes, les coûts et l’ajout ultérieur d’OAuth ne sont pas attestés par cette recette. Le guide conserve les opérations nécessaires pour les vérifier.
 
 ## Installation
 
@@ -47,13 +51,13 @@ Pour les tests d'intégration locaux, copier cette configuration dans `.env.test
 | `APP_URL` | Web + temps réel | Origine exacte autorisée, sans slash final; HTTPS en production. |
 | `NEXT_PUBLIC_REALTIME_URL` | Build web + temps d'exécution web | URL publique du service de course, HTTPS en production. Doit être fixée **avant** `next build`. |
 | `REALTIME_PORT` | Temps réel | Port d'écoute du processus persistant. |
-| `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` | Web | Application OAuth GitHub; absence = méthode désactivée. |
-| `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` | Web | Application OAuth Discord; absence = méthode désactivée. |
+| `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` | Web | Préparation de l’évolution OAuth GitHub; hors du périmètre d’authentification actuellement livré. |
+| `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` | Web | Préparation de l’évolution OAuth Discord; hors du périmètre d’authentification actuellement livré. |
 | `TRUST_PROXY` | Web | Activer uniquement derrière un proxy contrôlé qui remplace les en-têtes d'adresse. |
 
 Les secrets sont injectés par l'hébergeur ou un fichier local ignoré. Aucun secret réel n'est nécessaire pour lire la documentation et construire l'interface. Les mots de passe locaux sont hachés avec Argon2id, sans récupération par courriel.
 
-Pour OAuth, créer les applications avec les retours exacts :
+Pour l’évolution OAuth prévue ultérieurement, créer les applications avec les retours exacts :
 
 ```text
 https://<domaine-app>/api/auth/oauth/github/callback
@@ -145,7 +149,7 @@ PORT=3001
 
 Utiliser la connexion privée PostgreSQL du projet; ne pas reprendre la connexion `127.0.0.1` de développement. Garder `NEXT_PUBLIC_REALTIME_URL` publique : le navigateur des joueurs doit pouvoir l'atteindre. Cette valeur est intégrée au build web; après une modification, reconstruire l'image web, un simple redémarrage ne suffit pas.
 
-Les identifiants OAuth sont facultatifs. Garder `TRUST_PROXY` désactivé tant que le traitement des en-têtes d'adresse par le proxy n'a pas été vérifié.
+Les identifiants OAuth ne sont pas nécessaires à la version actuelle par pseudonyme/mot de passe; ils seront configurés pour l’évolution ultérieure. Garder `TRUST_PROXY` désactivé tant que le traitement des en-têtes d'adresse par le proxy n'a pas été vérifié.
 
 ### 3. Déployer et vérifier
 

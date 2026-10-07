@@ -1,5 +1,9 @@
 # Design des pages et des états
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
 > **Spécification de conception · 2 octobre 2026 · v0.5 proposée**  
@@ -101,11 +105,11 @@ Le format du code sera celui décidé par le domaine. Normaliser les caractères
 
 **But :** choisir une identité sans perdre la salle visée. **Exigences :** AUTH-01 à AUTH-04 et ROLE-01.
 
-La page conserve le contexte « Pour rejoindre Le sprint des mots » ou « Pour créer ta salle ». Discord et GitHub sont les deux actions visibles en premier, avec leur nom. Le compte local et l’invité restent deux chemins secondaires distincts; aucun choix n’est présenté comme obligatoire pour simplement participer.
+La page conserve le contexte « Pour rejoindre Le sprint des mots » ou « Pour créer ta salle ». La version actuelle propose la connexion par pseudonyme et mot de passe, ainsi qu’un accès invité distinct pour participer. Les actions OAuth Discord et GitHub sont prévues pour une évolution ultérieure; les états de fournisseur ci-dessous décrivent cette évolution.
 
 | Écran / panneau | Hiérarchie et contenu réel |
 |---|---|
-| Choix d’accès | Titre **Entre dans le groupe**; **Continuer avec Discord**, **Continuer avec GitHub**; séparation « Ou »; **Compte local**; **Continuer en invité** |
+| Choix d’accès | Actuel : **Compte local** par pseudonyme/mot de passe et **Continuer en invité**. Évolution OAuth prévue : **Continuer avec Discord** et **Continuer avec GitHub**. |
 | Connexion locale | Titre **Retrouve ton compte**; Nom d’utilisateur, Mot de passe, **Se connecter**; contrôle nommé Afficher/Masquer le mot de passe; lien **Créer un compte local** |
 | Inscription locale | Titre **Crée ton compte local**; Nom d’utilisateur, Mot de passe et confirmation proposée; règles de saisie visibles; **Créer le compte** |
 | Invité | Titre **Une place, sans compte**; Pseudonyme, aide « Tu peux rejoindre et jouer. Créer une salle demande un compte. »; **Continuer** |
@@ -114,7 +118,7 @@ Avant l’inscription locale, afficher : **« Ce compte n’utilise pas de courr
 
 Pour l’invité : « Tes résultats restent disponibles pendant ta session active. » La durée exacte n’étant pas décidée, la page ne promet ni conservation au lendemain ni transfert automatique de ces résultats vers un futur compte.
 
-**États.** Redirection fournisseur : « Ouverture de Discord… » ou « Ouverture de GitHub… »; annulation : retour au choix avec la destination conservée. Connexion locale refusée : « Nom d’utilisateur ou mot de passe incorrect. » Inscription : erreur précise pour un nom indisponible ou une confirmation différente. Session expirée : « Reconnecte-toi pour continuer. » Préserver le pseudonyme et la destination, mais ne pas réinjecter des secrets dans une URL. Une invitation privée en attente ne doit pas être consommée pendant cette étape.
+**États OAuth prévus pour la suite.** Redirection fournisseur : « Ouverture de Discord… » ou « Ouverture de GitHub… »; annulation : retour au choix avec la destination conservée. Connexion locale refusée : « Nom d’utilisateur ou mot de passe incorrect. » Inscription : erreur précise pour un nom indisponible ou une confirmation différente. Session expirée : « Reconnecte-toi pour continuer. » Préserver le pseudonyme et la destination, mais ne pas réinjecter des secrets dans une URL. Une invitation privée en attente ne doit pas être consommée pendant cette étape.
 
 **Mobile, clavier, thèmes.** Formulaire unique, champs pleine largeur, commandes Afficher et Continuer toujours visibles. Autoriser le collage et le gestionnaire de mots de passe ici : CONF-10 concerne le champ de frappe compétitive. À l’envoi invalide, diriger le focus vers la synthèse d’erreurs ou le premier champ concerné; associer les aides et erreurs aux champs. Les marques des fournisseurs ne remplacent pas leurs libellés.
 

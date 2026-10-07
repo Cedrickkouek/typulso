@@ -1,5 +1,9 @@
 # Cahier des charges — plateforme de courses de frappe
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > **Web V · 420-5U3-SO**  
 > Version consolidée du 2 octobre 2026 · Référentiel produit proposé  
 > Public principal : jeunes de 12 à 17 ans · Langues : français et anglais

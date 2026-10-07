@@ -1,5 +1,7 @@
 # Direction artistique
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
 > **Démarche et direction artistique · actualisées le 7 octobre 2026**\
 > Public : 12–17 ans · Identité utilisée : Typulso · Attribution originale humaine à compléter
 

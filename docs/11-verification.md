@@ -1,5 +1,9 @@
 # Vérification du dossier et de l’aperçu
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
 > **1er octobre 2026 · America/Toronto · proposition v0.4**  

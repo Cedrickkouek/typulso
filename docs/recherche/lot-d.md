@@ -1,5 +1,7 @@
 # Recherche d'inspiration — lot D
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
 > **17 nouveaux sites distincts · applications sociales, créatives et personnelles**  
 > Consultation publique : **1er octobre 2026 · America/Toronto**  
 > Preuve : pages officielles ouvertes et texte lu; **aucune capture ni interaction de produit dans ce lot**

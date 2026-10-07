@@ -1,5 +1,9 @@
 # Vérification de l’application — synthèse et historique
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > **Synthèse actualisée le 7 octobre 2026 · America/Toronto.**\
 > Version applicative des preuves : [4d23075557799c02acbb8253bd830409f8ebe446](https://github.com/Cedrickkouek/typulso/commit/4d23075557799c02acbb8253bd830409f8ebe446).
 
@@ -37,7 +41,7 @@ J’ai rédigé mes décisions à la première personne et remplacé les liens v
 
 ### Limites actuelles
 
-La charge et la lisibilité à 30 participants, la latence mesurée, toutes les courses/reconnexions en production, les vrais retours GitHub/Discord, les sauvegardes/restaurations, l’équilibrage arcade et les essais avec les 12–17 ans restent non vérifiés dans ce bilan. Le dépôt est privé. Les choix et critiques humains sont consignés dans la DA; mes éventuelles créations originales de nom/logo restent à documenter; les esquisses assistées sont attribuées.
+La charge et la lisibilité à 30 participants, la latence mesurée, toutes les courses/reconnexions en production, l’ajout ultérieur des connexions OAuth GitHub/Discord, les sauvegardes/restaurations, l’équilibrage arcade et les essais avec les 12–17 ans restent non vérifiés dans ce bilan. Le dépôt est privé. Les choix et critiques humains sont consignés dans la DA; mes éventuelles créations originales de nom/logo restent à documenter; les esquisses assistées sont attribuées.
 
 ## Archive — première recette du 3 octobre 2026
 
@@ -116,7 +120,7 @@ Ces relevés ciblés soutiennent la lisibilité observée; ils ne constituent pa
 
 - **Lundi :** URL HTTPS valide, WSS, base durable, migrations, sauvegardes, deux navigateurs sur le site public, création/rejoindre par code, droits et reconnexion.
 - **GitHub :** dépôt, commit, revue des sources à partager, clonage neuf, CI verte et deux liens réels de remise.
-- **OAuth :** applications GitHub/Discord, secrets serveur et retours externes effectivement testés.
+- **OAuth — évolution prévue :** ajouter et configurer GitHub/Discord par la suite, puis tester leurs vrais retours. L’authentification actuellement livrée utilise le pseudonyme et le mot de passe.
 - **Produit final :** charge/latence avec 30 personnes, essais avec les 12–17 ans, équilibrage arcade, conservation/suppression des données et ergonomie tactile.
 - **Marque :** Typulso reste un nom de travail; choix final et contribution humaine au nom/logo à documenter.
 

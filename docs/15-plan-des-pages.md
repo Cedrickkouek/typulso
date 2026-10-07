@@ -1,5 +1,9 @@
 # Plan complet des pages et des états
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
 > **2 octobre 2026 · Direction artistique v0.4 conservée**  
@@ -96,7 +100,7 @@ La navigation n'offre pas librement « Salon / Course / Résultats » comme des 
 
 ### PG-01 — Accueil et partie rapide
 
-**Entrée :** visite directe, retour d'une salle ou déconnexion du compte. **Action principale :** rejoindre par code; actions voisines : partie rapide et création pour compte. Les accès Discord/GitHub restent mis en évidence dans le parcours d'identité. **Sortie :** admission → PG-08; besoin d'identité → PG-04/05 avec la destination conservée; créer → PG-07; découvrir une salle publique → PG-02.
+**Entrée :** visite directe, retour d'une salle ou déconnexion du compte. **Action principale :** rejoindre par code; actions voisines : partie rapide et création pour compte. La connexion actuelle utilise le pseudonyme et le mot de passe; les accès OAuth Discord/GitHub sont réservés à une évolution ultérieure. **Sortie :** admission → PG-08; besoin d'identité → PG-04/05 avec la destination conservée; créer → PG-07; découvrir une salle publique → PG-02.
 
 **États :** visiteur, compte, invité actif; recherche de course en cours, salle trouvée, aucune disponible, service indisponible. Pour un compte autorisé, le repli de la partie rapide crée une salle si aucune n'est prête. Pour l'invité, proposer connexion/inscription ou retour aux salles : aucune création automatique. Ce repli invité reprend la proposition de UX 04, pas une réponse client nouvelle. Ne pas afficher de faux nombre de joueurs en ligne. Sources : ROOM-02/03, CLIENT-02.
 
@@ -114,9 +118,9 @@ La navigation n'offre pas librement « Salon / Course / Résultats » comme des 
 
 ### PG-04 — Choisir son accès / connexion
 
-**Entrée :** compte déconnecté, admission en attente ou tentative de création par invité. **Actions :** Discord, GitHub, local secondaire; continuer en invité pour rejoindre; connexion locale avec nom/mot de passe; annuler. **Sortie :** vers la destination autorisée conservée. Une entrée invitée ne poursuit jamais vers PG-07.
+**Entrée :** compte déconnecté, admission en attente ou tentative de création par invité. **Actions actuelles :** connexion par pseudonyme/mot de passe; continuer en invité pour rejoindre; annuler. **Évolution prévue :** options OAuth Discord et GitHub. **Sortie :** vers la destination autorisée conservée. Une entrée invitée ne poursuit jamais vers PG-07.
 
-**États :** méthode disponible/indisponible, redirection fournisseur, consentement refusé, callback en attente/échoué, local incorrect, session expirée, compte déjà connecté. Dans un aperçu local, une action OAuth indique clairement qu'elle est simulée; elle ne promet pas une connexion réelle. Pas de champ courriel, pas de lien « mot de passe oublié » proposant une récupération inexistante. Liaison de fournisseurs multiples : P2, pas un passage obligé. Sources : AUTH-01 à AUTH-04, CLIENT-02.
+**États actuels :** identifiants incorrects, session expirée, compte déjà connecté. **États prévus avec OAuth :** fournisseur indisponible, redirection, consentement refusé et callback en attente/échoué. Dans un aperçu local, une action OAuth indique clairement qu'elle est simulée; elle ne promet pas une connexion réelle. Pas de champ courriel, pas de lien « mot de passe oublié » proposant une récupération inexistante. Liaison de fournisseurs multiples : P2, pas un passage obligé. Sources : AUTH-01 à AUTH-04, CLIENT-02.
 
 ### PG-05 — Inscription locale / pseudo invité
 
@@ -240,7 +244,7 @@ Ces états complètent les pages; ils ne nécessitent pas tous une route supplé
 | **ET-03** | Réponse d'action en attente puis confirmée/refusée | Retour près du contrôle; conserver la saisie; empêcher les doubles actions | ROOM-04, ROLE-02 |
 | **ET-04** | Code vide, invalide, inconnu ou salle complète | Corriger; aucune recherche privée par code | ROOM-01, CLIENT-03/04 |
 | **ET-05** | Lien privé valide, expiré, consommé, révoqué ou invalide | Accepter uniquement si admissible; obtenir un nouveau lien; retour | ROOM-01, CLIENT-04/08 |
-| **ET-06** | Connexion fournisseur refusée/indisponible ou session expirée | Autre accès disponible, sans contourner les permissions | AUTH-01/02/04 |
+| **ET-06** | Session expirée actuellement; refus/indisponibilité de fournisseur dans l’évolution OAuth | Autre accès disponible, sans contourner les permissions | AUTH-01/02/04 |
 | **ET-07** | Invité tente créer, y compris repli de partie rapide | Connexion/inscription ou retour; aucune création | CLIENT-02, ROOM-03 |
 | **ET-08** | Fenêtre invitation du salon | Copier avec résultat réel; générer/révoquer lien selon type et confirmation serveur | ROOM-01, CLIENT-03/04/08 |
 | **ET-09** | Configuration invalide ou devenue immuable | Corriger avant départ; après départ afficher règles figées | CONF-01/05, RACE-01 |
@@ -271,7 +275,7 @@ Cette table vérifie la **présence dans le plan**, pas leur réalisation. Les e
 
 | Groupe / IDs | Vues et états de couverture | Contrôle de conception |
 |---|---|---|
-| **AUTH-01, AUTH-02** | PG-04, ET-06 | Quatre accès; Discord/GitHub mis en évidence, local secondaire |
+| **AUTH-01, AUTH-02** | PG-04, ET-06 | Actuel : pseudonyme/mot de passe et accès invité. Évolution prévue : OAuth Discord/GitHub et mise en avant de ces options |
 | **AUTH-03** | PG-04/05 | Identifiants locaux; aucun courriel/récupération |
 | **AUTH-04** | PG-05/12/13, ET-24 | Pseudo et session; pas de création |
 | **ROLE-01, ROLE-02** | PG-07/08, ET-14/15/16 | Même capacité des comptes; droits temporaires hôte, spectateur et exclusion |

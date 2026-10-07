@@ -1,5 +1,9 @@
 # Développement, qualité et déploiement
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
 > **Statut : plan d'exécution futur · 1er octobre 2026**  
@@ -64,8 +68,8 @@ Ces commandes décrivent les scripts attendus; elles ne sont pas exécutables da
 | `APP_ORIGIN` | URL autorisée de l'interface et des retours d'authentification. |
 | `REALTIME_PORT` | Port interne du service persistant. |
 | `NEXT_PUBLIC_REALTIME_URL` | URL publique du transport, jamais un secret. |
-| `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` | Adaptateur OAuth GitHub côté serveur. |
-| `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` | Adaptateur OAuth Discord côté serveur. |
+| `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` | Préparation de l’évolution OAuth GitHub, prévue après la version actuelle par pseudonyme/mot de passe. |
+| `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` | Préparation de l’évolution OAuth Discord, prévue après la version actuelle par pseudonyme/mot de passe. |
 | Variables de la bibliothèque d'authentification | À fixer après choix de l'outil; secrets côté serveur. |
 
 Un `.env.example` décrira les champs avec des valeurs factices; les fichiers de secrets seront ignorés par Git. Les paramètres préfixés `NEXT_PUBLIC_` peuvent être présents dans le code envoyé au navigateur et ne doivent contenir aucune information sensible. En hébergement propre, Next.js recommande un proxy inverse devant le serveur. [Guide d'hébergement Next.js](https://nextjs.org/docs/app/guides/self-hosting).
@@ -111,7 +115,7 @@ Aucune offre gratuite n'est présumée suffisante. Les prix, quotas, mises en ve
 ## 6. Procédure de mise en ligne à réaliser
 
 1. Retenir les versions et services après validation de leurs limites; consigner la décision.
-2. Configurer les secrets dans l'environnement de déploiement et des URLs de retour OAuth exactes.
+2. Configurer les variables nécessaires à la version actuelle par pseudonyme/mot de passe. Les secrets et URLs de retour OAuth seront configurés lors de l’évolution ultérieure.
 3. Sauvegarder PostgreSQL avant une évolution de schéma; appliquer des migrations compatibles avec le code à déployer.
 4. Déployer le service temps réel puis le web, avec un protocole compatible. Éviter un déploiement pendant une course : la politique initiale annule les courses actives après redémarrage.
 5. Vérifier HTTPS, santé des services, connexion, persistance du compte et accès à une salle par code.

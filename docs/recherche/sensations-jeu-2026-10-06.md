@@ -1,5 +1,7 @@
 # Registre — sensations et compétition
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
 > Visites du 6 octobre 2026 · America/Toronto  
 > Collecte ciblée sur les mécaniques d’une direction artistique déjà établie.
 

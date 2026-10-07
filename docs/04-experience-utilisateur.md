@@ -1,5 +1,9 @@
 # Expérience utilisateur
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
 > **Structure proposée · v0.5 · 2 octobre 2026**  
@@ -48,7 +52,7 @@ Sur petit écran, le texte occupe toute la largeur et le classement vient ensuit
 
 L'entrée propose d'abord un champ de code et une action explicite. Une invitation privée ouvre son propre parcours sans demander un code. Les liens et codes incorrects affichent un message près du champ. Un lien expiré ou consommé donne une issue claire : demander une nouvelle invitation à l'hôte, sans consommer à nouveau un jeton.
 
-Discord et GitHub sont les accès mis en évidence. Le compte local reste secondaire. « Continuer en invité » indique les capacités et la durée de conservation de la session. Pour créer une salle, un invité est conduit vers la connexion avant de saisir toute une configuration.
+Dans la version actuelle, la connexion au compte utilise le pseudonyme et le mot de passe. Discord et GitHub correspondent aux options OAuth prévues pour la suite; leur mise en avant appartient à cette évolution. « Continuer en invité » indique les capacités et la durée de conservation de la session. Pour créer une salle, un invité est conduit vers la connexion avant de saisir toute une configuration.
 
 L'action « Course rapide » rejoint une salle publique en attente. Si aucune n'est disponible, un compte peut créer une salle; un invité reçoit une invitation à se connecter. Cette restriction résout le conflit entre création automatique et interdiction de création par les invités.
 

@@ -1,5 +1,7 @@
 # ADR 0002 · App Router à la racine et service temps réel séparé
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
 - **Date :** 3 octobre 2026
 - **Statut :** retenu et utilisé dans l’application actuelle; confirmé par la revue documentaire du 7 octobre 2026
 

@@ -1,5 +1,7 @@
 # Lot F — composants soignés et systèmes d’interface
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
 > Recherche complémentaire du **1er octobre 2026** · **17 nouvelles identités de sites effectivement ouvertes** · React, Next.js, Tailwind CSS et qualité des composants · aucune dépendance choisie ou installée.
 
 Ce lot étudie le soin apporté aux états, à la composition et aux interactions. Il complète les inspirations de marque et de jeu : une personnalité colorée, vibrante, amusante et ludique peut s’appuyer sur des contrôles précis et prévisibles.

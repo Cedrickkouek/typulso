@@ -1,5 +1,7 @@
 # Lot E — jeux, participation et apprentissage
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
 > **17 nouveaux sites distincts · 1er octobre 2026 · America/Toronto**  
 > Direction recherchée : **colorée, vibrante, amusante et ludique**  
 > Corpus complémentaire aux 51 sites du registre initial

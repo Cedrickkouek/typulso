@@ -1,5 +1,7 @@
 # Recherche d'inspiration — premier corpus de 51 sites
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
 > **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
 > **Direction demandée : colorée, vibrante, amusante et ludique**  

@@ -1,5 +1,9 @@
 # Matrice des exigences
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > Référentiel : cahier consolidé · Version du 2 octobre 2026\
 > **Actualisation du 7 octobre 2026 : registre de réalisation relié au commit applicatif 4d23075, à la CI distante réussie et aux contrôles Railway.**
 
@@ -29,8 +33,8 @@ Les tableaux de cadrage et leurs méthodes prévues restent historiques. Le **re
 
 | ID | Besoin traçable | Portée | État du cadrage | Méthode de validation prévue |
 |---|---|---|---|---|
-| AUTH-01 | Discord, GitHub, local et invité | CP1 partiel → final | Cadré; couverture exacte CP1 à préciser | Parcours réussi pour chaque méthode; sessions isolées; fournisseur indisponible traité. À CP1, démontrer au moins une vraie authentification. |
-| AUTH-02 | Fournisseurs mis en évidence | CP1 interface → final | Cadré | Revue des écrans FR/EN et clavier : Discord/GitHub visibles; local accessible comme choix secondaire. |
+| AUTH-01 | Exigence finale : Discord, GitHub, local et invité | CP1 partiel → final | Actuel : pseudonyme/mot de passe et accès invité; OAuth prévu pour la suite | Parcours réussi pour chaque méthode; sessions isolées; fournisseur indisponible traité. À CP1, démontrer au moins une vraie authentification. |
+| AUTH-02 | Mise en avant des fournisseurs dans l’évolution OAuth | Évolution ultérieure | Actuel : connexion par pseudonyme/mot de passe | Revue des écrans FR/EN et clavier : Discord/GitHub visibles; local accessible comme choix secondaire. |
 | AUTH-03 | Local sans courriel ni récupération | Final; CP1 si local retenu | Cadré | Créer un compte, se reconnecter, refuser un mauvais mot de passe; contrôle du hachage et des contraintes; aucune promesse de récupération. |
 | AUTH-04 | Invité pseudonyme/session, participation seule | CP1 salon → final | Cadré + CLIENT-02 | Rejoindre avec un pseudonyme; consulter ses résultats de session; tenter de créer via interface et API et constater le refus. |
 | ROLE-01 | Comptes enseignants/étudiants créateurs | CP1 | Confirmé par CLIENT-01 | Deux comptes sans rôle scolaire créent chacun une salle; permissions limitées à leur rôle dans la salle. |
@@ -164,7 +168,7 @@ Dans le tableau, **local/CI** et **production** désignent des preuves distincte
 
 | Exigence(s) | Réalisation et référence | Preuve obtenue | Limite restante |
 |---|---|---|---|
-| AUTH-01, AUTH-02 | Comptes/invités (`lib/server/auth.ts`), OAuth (`lib/server/oauth.ts`), écrans (`components/entry-pages.tsx`) | Local/CI : sessions et méthodes disponibles; production : inscription locale, déconnexion/reconnexion au même compte, profil relu et session invitée. | Vrais retours GitHub/Discord non vérifiés. |
+| AUTH-01, AUTH-02 | Comptes/invités (`lib/server/auth.ts`), OAuth (`lib/server/oauth.ts`), écrans (`components/entry-pages.tsx`) | Local/CI : comptes par pseudonyme/mot de passe et sessions; production : inscription locale, déconnexion/reconnexion au même compte, profil relu et accès invité. | OAuth GitHub/Discord prévu pour une évolution ultérieure; éléments préparatoires présents, aucune connexion externe actuellement livrée. |
 | AUTH-03, AUTH-04 | Auth (`lib/server/auth.ts`), tests PostgreSQL (`tests/backend.database.test.ts`) | Local/CI : hachage, révocation, tickets et refus de création en invité. Production : compte persistant entre deux sessions. | Récupération de mot de passe absente; rétention et suppression des invités à préciser. |
 | ROLE-01, ROLE-02 | Commandes (`lib/server/rooms.ts`), salon (`components/room-page.tsx`) | Autorité temporaire d’hôte; permissions locales/CI. Production : commande de configuration refusée au non-hôte. | Recette humaine complète des exclusions/rôles en production non exécutée. |
 | ROOM-01 | Admission (`lib/server/rooms.ts`), intégration (`tests/integration.test.ts`) | Local/CI : accès, invitation individuelle et consommation concurrente. Production : création et admission par code réel. | Accès privé/public et QR éventuel non validés dans cette recette de production; QR facultatif absent. |

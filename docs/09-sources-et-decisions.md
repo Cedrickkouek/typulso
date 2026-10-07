@@ -1,5 +1,9 @@
 # Sources, décisions et points ouverts
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > Registre initial du 1er octobre 2026 · actualisation du 7 octobre · America/Toronto\
 > Objectif : distinguer exigence source, réponse confirmée, proposition et preuve de réalisation.
 

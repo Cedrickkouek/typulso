@@ -1,5 +1,9 @@
 # Typulso
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 **Un clavier. Toute une arène.**
 
 Je développe **Typulso**, un projet individuel de courses de frappe pour jouer ensemble et progresser. J’ai retenu une direction colorée, vibrante et ludique, avec une identité de clavier/pulsation. Je présente mes choix, les retours qui ont guidé les itérations et le rôle de l’assistance de l’IA dans ma démarche.
@@ -30,7 +34,7 @@ bun run dev
 
 Ouvrir [l'application locale](http://127.0.0.1:3000). Le service de course écoute sur le port 3001. Avec PostgreSQL déjà installé, remplacer `DATABASE_URL` dans `.env.local` et créer une base vide dédiée avant les migrations. Ne pas pointer les tests sur une base de production.
 
-Les clés GitHub et Discord sont facultatives pour le démarrage local; les boutons correspondants n'activent une connexion que si leurs fournisseurs sont configurés. Le compte local utilise un pseudonyme et un mot de passe, sans courriel ni récupération.
+L’authentification actuellement livrée se limite au **pseudonyme et au mot de passe**, sans courriel ni récupération. Les options **OAuth GitHub et Discord sont prévues pour une évolution ultérieure**. Le code préparatoire et les variables de fournisseurs peuvent déjà exister; ils ne font pas partie du périmètre fonctionnel actuel.
 
 ## Organisation
 
@@ -64,4 +68,4 @@ GitHub Actions a exécuté avec succès les contrôles, les migrations, l’int�
 
 ## Checkpoint 1 · état du 7 octobre 2026
 
-Les six critères et leurs preuves sont reliés aux documents et au commit applicatif vérifié. L’échéance annoncée était le 5 octobre; ce dossier actualisé ne constitue pas une preuve de remise à cette date. Je distingue mes décisions personnelles des propositions réalisées avec l’IA; mes éventuels croquis originaux restent à ajouter si je souhaite les présenter. Le test de charge à 30 personnes, les vrais retours OAuth et la restauration des sauvegardes ne sont pas déclarés vérifiés.
+Les six critères et leurs preuves sont reliés aux documents et au commit applicatif vérifié. L’échéance annoncée était le 5 octobre; ce dossier actualisé ne constitue pas une preuve de remise à cette date. Je distingue mes décisions personnelles des propositions réalisées avec l’IA; mes éventuels croquis originaux restent à ajouter si je souhaite les présenter. Le test de charge à 30 personnes, l’ajout ultérieur d’OAuth et la restauration des sauvegardes ne sont pas déclarés vérifiés.

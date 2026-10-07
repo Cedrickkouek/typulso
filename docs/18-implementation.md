@@ -1,5 +1,9 @@
 # Architecture de l'implémentation
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > **Structure applicative · actualisée le 7 octobre 2026 · commit applicatif vérifié 4d23075**
 
 
@@ -85,7 +89,7 @@ erDiagram
     ACTORS ||--o{ COMMAND_RECEIPTS : "idempotence"
 ```
 
-Les acteurs invités et bots n'ont pas de compte `users`. `oauth_states` protège le retour OAuth; `rate_limits` conserve les fenêtres de débit; `schema_migrations` trace les migrations appliquées. Les identifiants sont UUID; les contraintes et clés étrangères sont dans la migration initiale (`db/migrations/0001_initial.sql`). La clé composite différée de l'hôte garantit son appartenance à la salle dans la transaction de création.
+Les acteurs invités et bots n'ont pas de compte `users`. `oauth_states` prépare la protection des retours OAuth pour l’évolution ultérieure; `rate_limits` conserve les fenêtres de débit; `schema_migrations` trace les migrations appliquées. Les identifiants sont UUID; les contraintes et clés étrangères sont dans la migration initiale (`db/migrations/0001_initial.sql`). La clé composite différée de l'hôte garantit son appartenance à la salle dans la transaction de création.
 
 ```mermaid
 stateDiagram-v2
@@ -106,7 +110,7 @@ Les transitions relèvent du serveur, jamais d'une minuterie React. Les instanta
 
 ## Identité, permissions et transport
 
-Une identité de jeu est un acteur stable lié à un compte, ou un acteur invité lié à sa session. Une session opaque est stockée par empreinte dans PostgreSQL; le navigateur reçoit un cookie HttpOnly. Les mots de passe sont hachés avec Argon2id. L'identifiant GitHub/Discord reste distinct du pseudonyme : aucune fusion implicite de comptes.
+Une identité de jeu est un acteur stable lié à un compte, ou un acteur invité lié à sa session. Une session opaque est stockée par empreinte dans PostgreSQL; le navigateur reçoit un cookie HttpOnly. L’authentification actuelle des comptes utilise uniquement le pseudonyme et le mot de passe; les mots de passe sont hachés avec Argon2id. Les connexions OAuth GitHub/Discord sont prévues pour la suite. Leur code préparatoire conserve une identité externe distincte du pseudonyme, sans fusion implicite de comptes.
 
 Le navigateur demande un ticket de connexion court et à usage unique via HTTP, puis l'utilise dans la connexion Socket.IO. À chaque commande, le serveur relit l'identité et les droits. L'invité peut participer; il ne peut pas créer une salle. Le rôle d'hôte reste temporaire et transférable.
 
@@ -133,7 +137,7 @@ Un retour après déconnexion récupère l'état courant; la frappe classée ne 
 | Capacité | Limite serveur de 30 membres; la capacité sous charge doit être mesurée avant de l'affirmer. |
 | Reconnexion | Grâce de 60 secondes; reprise par instantané. |
 | Mode arcade | Pulsation/bouclier/virgule piégée, un choix de rattrapage; métriques éducatives conservées. Équilibrage à tester avec le public. |
-| Authentification externe | Routes GitHub/Discord présentes, activation dépendant de vraies applications OAuth et secrets serveur. |
+| Authentification actuelle / évolution | Pseudonyme et mot de passe dans la version livrée. OAuth GitHub/Discord prévu pour la suite; routes préparatoires présentes, sans connexion externe déclarée opérationnelle. |
 | Exécution | Bun pour installation, développement et tests; Node.js 24 pour les deux services de production. |
 
 Les versions ont été vérifiées dans le registre npm, puis verrouillées. Les conventions s'appuient sur les [docs Next.js](https://nextjs.org/docs/app/getting-started), [versions React](https://react.dev/versions), [installation Tailwind](https://tailwindcss.com/docs/installation/framework-guides/nextjs) et [docs PostgreSQL](https://www.postgresql.org/docs/current/). TypeScript 6.0.2 reste dans la plage officiellement acceptée par le parseur ESLint installé; passer à 7 maintenant créerait une incompatibilité de pairs.

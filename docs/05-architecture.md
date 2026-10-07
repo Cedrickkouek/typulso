@@ -1,5 +1,9 @@
 # Architecture du projet
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > **Implémentation actuelle · actualisée le 7 octobre 2026 · version applicative vérifiée 4d23075.**
 
 
@@ -23,7 +27,7 @@ flowchart LR
 | `components/` | Interface, frappe native, clavier statistique, salon, pistes, résultats et préférences. | Présentation et interactions; aucune autorité sur le score ou le rôle d’hôte. |
 | `lib/client/` | Session, préférences, sons et connexion temps réel. | Aucun accès à PostgreSQL ou secret serveur. |
 | `lib/domain/` | Frappe, génération de textes, classement, bots et capacités arcade. | Fonctions testables, indépendantes du réseau; temps transmis explicitement. |
-| `lib/server/` | Authentification, OAuth, limites de débit, permissions et transactions des salles. | Identité issue de la session, jamais d’un pseudonyme transmis librement. |
+| `lib/server/` | Authentification par pseudonyme/mot de passe, préparation OAuth pour la suite, limites de débit, permissions et transactions des salles. | Identité issue de la session, jamais d’un pseudonyme transmis librement. |
 | `server/index.ts` | Socket.IO, tickets, connexions, commandes, diffusion et progression de l’horloge. | Processus persistant distinct du serveur web. |
 | `db/` et `scripts/migrate.ts` | Schéma Drizzle, accès PostgreSQL et migrations SQL suivies. | Serveur uniquement; migrations exécutées avant l’usage de la base. |
 | `types/game.ts` | Contrat partagé des commandes, états publics, résultats et profil. | Changement à répercuter sur tous les consommateurs. |
@@ -31,7 +35,11 @@ flowchart LR
 
 ## Authentification et admission
 
-Un compte local associe pseudonyme et mot de passe haché; GitHub/Discord disposent de routes OAuth, opérationnelles seulement si les fournisseurs sont configurés. Un invité possède un acteur et une session, sans compte durable. Une session web émet un ticket temps réel à usage unique; Socket.IO le consomme pour retrouver l’acteur. Compte, session, acteur et hôte de salle sont donc distincts.
+**Pour la version actuelle, j’ai limité l’authentification des comptes au pseudonyme et au mot de passe.** Le serveur vérifie le mot de passe haché et crée une session; aucun courriel ni mécanisme de récupération n’est utilisé.
+
+**Les options OAuth GitHub et Discord seront ajoutées par la suite.** Des routes et tables préparatoires existent déjà dans le code, mais ces connexions externes ne font pas partie des fonctionnalités actuellement livrées. Leur activation et leurs retours devront être configurés et vérifiés lors de cette évolution.
+
+Le mode invité reste un accès distinct pour rejoindre une salle : un invité possède un acteur et une session, sans compte durable. Une session web émet un ticket temps réel à usage unique; Socket.IO le consomme pour retrouver l’acteur. Compte, session, acteur et hôte de salle sont donc distincts.
 
 L’invité peut rejoindre une salle mais ne peut pas en créer. Le serveur applique à chaque commande l’origine, la session, la structure, la limite de débit, l’admission, l’état et les permissions. Les routes web gèrent comptes et consultation; le service temps réel arbitre création, admission et course. Voir authentification (`lib/server/auth.ts`), tickets et sessions (`lib/server/auth.ts`) et salles (`lib/server/rooms.ts`).
 
@@ -55,4 +63,4 @@ Au redémarrage du service, les courses en compte à rebours ou en cours sont in
 
 ## Preuves et limites
 
-La CI a réussi format, lint, types, tests, compilations, intégration et trois scénarios navigateur. Sur Railway, un compte et un invité ont partagé code, arrivée, réglage de durée et état prêt; la configuration par le non-hôte a été refusée. Les images web et realtime sont distinctes; les migrations précèdent leur utilisation de PostgreSQL. La limite de 30 membres est configurée; **la capacité et la latence à 30 personnes ne sont pas mesurées**. Les objectifs de latence historiques ne sont pas des résultats acquis. La restauration PostgreSQL, les vrais retours OAuth et les essais avec le public restent à vérifier.
+La CI a réussi format, lint, types, tests, compilations, intégration et trois scénarios navigateur. Sur Railway, un compte et un invité ont partagé code, arrivée, réglage de durée et état prêt; la configuration par le non-hôte a été refusée. Les images web et realtime sont distinctes; les migrations précèdent leur utilisation de PostgreSQL. La limite de 30 membres est configurée; **la capacité et la latence à 30 personnes ne sont pas mesurées**. Les objectifs de latence historiques ne sont pas des résultats acquis. La restauration PostgreSQL, l’ajout ultérieur d’OAuth et les essais avec le public restent à vérifier.

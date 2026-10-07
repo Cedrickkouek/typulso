@@ -18,6 +18,8 @@ Ne pas présumer que les anciennes conventions Next.js restent valides. Lire les
 
 Le projet est individuel. Rédiger les décisions personnelles à la première personne (« je », « mon projet »), sans attribuer les travaux à une équipe. Chaque document doit pouvoir être remis et lu séparément : expliquer directement les informations nécessaires et ne pas créer de liens hypertextes vers d’autres fichiers/documentations du dépôt. Les liens vers le site déployé, le dépôt, la CI et les sources publiques en ligne peuvent être conservés. Garder les illustrations intégrées, les dates, la portée des preuves et une attribution exacte de l’assistance IA; ne jamais transformer une proposition assistée en création humaine déclarée.
 
+Pour les pièces de remise, ajouter sous le titre « Auteur : YANN CEDRICK KOUEKAM TELEWOU ». Le périmètre actuel de connexion des comptes est pseudonyme et mot de passe; présenter OAuth GitHub/Discord comme une évolution prévue pour la suite, même si routes, variables ou tables préparatoires existent déjà. L’accès invité est distinct d’un compte authentifié.
+
 ## Contrôles
 
 Utiliser Bun et le lockfile existant. Avant une livraison : `bun run lint`, `bun run typecheck`, `bun run test`, `bun run build`, `bun run build:realtime`. Vérifier les modifications de données et de permissions contre PostgreSQL avec `bun run test:integration` lorsque les deux services sont lancés. Les assertions de production ne sont valables qu'après vérification de l'URL déployée.

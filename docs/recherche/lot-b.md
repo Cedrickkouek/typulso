@@ -1,5 +1,7 @@
 # Recherche d'inspiration — lot B
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
 > **Consultation : 1er octobre 2026 · 17 sites ou familles de sites distinctes exploitables**  
 > Recherche sur leurs pages publiques officielles; aucune connexion, création de compte, prise de contact ou transaction.  
 > Critères : apprentissage ludique, personnages, communauté, entrée dans l'activité, progression et expériences créatives interactives.

@@ -1,5 +1,7 @@
 # Une course qui donne envie d’une revanche
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
 
 > **Recherche du 6 octobre · intégration du 7 octobre 2026**  
 > **Mon choix : un mélange, avec les modes classique et arcade.**\

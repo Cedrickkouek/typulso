@@ -1,5 +1,7 @@
 # Registre · footer et page de jeu
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
 
 > **4 octobre 2026 · personnalité : colorée, vibrante, amusante, ludique**  
 > 79 candidats ouverts ; 54 références exploitables ; 25 exclus de la sélection.  

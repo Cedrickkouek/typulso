@@ -1,5 +1,7 @@
 # Deuxième exploration — du style au soin des composants
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
 > **Portée :** je conserve ici mes recherches, propositions ou observations à leur date. Ces éléments expliquent ma démarche de conception; une maquette ou un test prévu ne constitue pas une preuve de fonctionnement en production.
 
 > **1er octobre 2026 · America/Toronto · proposition v0.4**  

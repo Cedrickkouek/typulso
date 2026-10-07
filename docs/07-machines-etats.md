@@ -1,5 +1,7 @@
 # Machines à états de l’application
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
 > **Implémentation actuelle · 7 octobre 2026 · version applicative vérifiée 4d23075.**
 
 

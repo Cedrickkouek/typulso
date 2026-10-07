@@ -1,5 +1,7 @@
 # ADR 0001 — service Socket.IO dédié et serveur autoritaire
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
 > **Statut : retenu et implémenté · actualisé le 7 octobre 2026.**\
 > Décision initiale : 1er octobre. Structure effective : racine App Router selon l’ADR 0002.\
 > Version applicative des preuves : 4d23075.

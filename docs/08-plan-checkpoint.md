@@ -1,5 +1,9 @@
 # Checkpoint 1 — dossier et preuves vérifiées
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > **État actualisé le 7 octobre 2026 · America/Toronto.**\
 > Échéance annoncée dans la source : lundi 5 octobre 2026, avant 23 h 55.\
 > Cette actualisation ne prouve pas une remise effectuée à cette échéance.
@@ -26,7 +30,7 @@ Le commit ci-dessus fixe la version applicative des preuves. La consolidation do
 | Cahier des charges | 20 | Je cadre une application de courses de frappe pour les 12–17 ans : comptes et invités, admission par code, règles communes, temps réel, statistiques et accessibilité. Le référentiel compte 49 exigences produit, 10 hypothèses et 8 précisions client. | Une documentation complète n’est pas une validation de toutes les exigences finales. |
 | Démarche créative et direction artistique : nom, logo, moodboard, palette, typographies | 20 | J’utilise Typulso et un signe clavier/pulsation. Mon moodboard associe touches et mouvement; ma palette utilise citron, rose, lavande, bleu ciel et corail. Space Grotesk sert à l’interface, IBM Plex Mono à la frappe. Mes choix et l’aide de l’IA sont distingués. | **Attribution partielle :** les esquisses assistées ne prouvent pas une création originale humaine. Mes éventuels croquis originaux restent à joindre; les esquisses assistées sont attribuées. |
 | Architecture : modèle de données, machine à états, ADR temps réel | 20 | J’utilise deux processus Node.js, Next.js et Socket.IO, et une base PostgreSQL commune. Les entités principales sont comptes, acteurs, sessions, salles, membres, courses et résultats. Les phases sont salon, compte à rebours, course, résultats, fermeture et interruption; le serveur arbitre les transitions. | Charge à 30 personnes et reprise d’une course après panne non validées; l’implémentation interrompt la course après redémarrage. |
-| Déploiement fonctionnel : HTTPS, authentification, base de données | 20 | HTTPS et healthcheck avec PostgreSQL disponible; inscription, déconnexion, reconnexion et relecture du profil réussies sur Railway. | Authentification locale vérifiée; vrais retours GitHub/Discord et restauration de sauvegarde non contrôlés. |
+| Déploiement fonctionnel : HTTPS, authentification, base de données | 20 | HTTPS et healthcheck avec PostgreSQL disponible; inscription, déconnexion, reconnexion et relecture du profil réussies sur Railway. | Authentification actuelle par pseudonyme/mot de passe vérifiée. OAuth GitHub/Discord prévu ultérieurement; restauration de sauvegarde non contrôlée. |
 | Salle créée et rejointe par code, mise à jour en temps réel | 10 | Deux sessions indépendantes HTTP/Socket.IO sur Railway : création, code, admission invitée, arrivée propagée, modification de durée propagée, refus du non-hôte, état prêt propagé. | Cette recette utilise le protocole réel; elle ne constitue pas une recette visuelle de deux navigateurs en production. |
 | CI, langue et thème, qualité initiale du code, matrice | 10 | CI distante réussie : format, lint, types, unités, builds, intégration et navigateur. Les trois scénarios Playwright couvrent FR/EN, thème, responsive, salon à deux contextes et pratique. Je distingue exigences réalisées, preuves obtenues et validations encore ouvertes. | Tests navigateur exécutés dans l’environnement isolé de CI, pas sur Railway. Accès GitHub nécessaire pour consulter la preuve. |
 | **Total de la grille** | **100** | Les pièces correspondent aux six critères. | **Aucune note ni conformité totale n’est revendiquée.** |
@@ -72,6 +76,6 @@ Ce parcours est un guide de démonstration, distinct des preuves déjà exécut�
 
 - Joindre mes éventuels croquis ou transformations originales du nom/logo, avec leur date. Je distingue déjà mes choix personnels de l’assistance de l’IA.
 - Vérifier l’accès de l’évaluateur au dépôt privé et à ses exécutions CI. La visibilité du dépôt n’a pas été modifiée.
-- Ne pas confondre les exigences finales encore à valider (charge, OAuth réel, sauvegarde, équilibre arcade, essais utilisateurs) avec les preuves obtenues pour ce checkpoint.
+- Ne pas confondre les exigences finales encore à valider (charge, sauvegarde, équilibre arcade et essais utilisateurs; l’ajout d’OAuth est prévu pour la suite) avec les preuves obtenues pour ce checkpoint.
 
 Je prépare ce dossier pour ma remise; il ne constitue pas une preuve de dépôt sur la plateforme scolaire.

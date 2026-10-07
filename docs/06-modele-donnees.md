@@ -1,5 +1,9 @@
 # Modèle de données PostgreSQL
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > **Schéma actuel · 7 octobre 2026 · version applicative vérifiée 4d23075.**
 
 
@@ -32,10 +36,10 @@ Les cardinalités représentent les références relationnelles. Le rôle d’h�
 |---|---|---|
 | `users` | `id` UUID | `username`, `username_key` unique, `password_hash` nullable, date de création. Identité durable du compte. |
 | `actors` | `id`; `user_id` unique nullable vers `users` | Pseudonyme et `kind` : `account`, `guest`, `bot`. Compte si et seulement si `user_id` est présent. |
-| `auth_identities` | PK `(provider, subject)`; `user_id` | Identité externe associée à un compte. Le mot de passe local reste dans `users`. |
+| `auth_identities` | PK `(provider, subject)`; `user_id` | Table préparatoire pour les identités OAuth prévues ultérieurement. Le compte actuellement livré utilise le pseudonyme et le mot de passe stocké sous forme hachée dans `users`. |
 | `sessions` | `id`; `actor_id`; `token_hash` unique | Expiration, dernière activité, révocation et création. L’empreinte du jeton est stockée, pas son secret en clair. |
 | `realtime_tickets` | `token_hash`; `session_id` | Expiration et consommation du ticket Socket.IO à usage unique. |
-| `oauth_states` | `state_hash` | Fournisseur, vérificateur PKCE, empreinte de liaison et expiration du parcours OAuth. |
+| `oauth_states` | `state_hash` | Préparation de l’évolution OAuth : fournisseur, vérificateur PKCE, empreinte de liaison et expiration. Ne représente pas une connexion externe actuellement livrée. |
 | `rooms` | `id`; `creator_user_id`; `host_actor_id`; `code` unique | Visibilité `public`, `code` ou `private`, phase, version positive, `state` JSONB et expiration. Salle privée si et seulement si le code est nul. |
 | `room_members` | PK `(room_id, actor_id)` | Rôle `participant`/`spectator`, statut persisté `active`/`left`/`kicked`, date d’admission. |
 | `invitations` | `token_hash`; `room_id`; `consumed_by` nullable | Expiration, révocation, consommation. `consumed_at` et `consumed_by` sont présents ensemble. |

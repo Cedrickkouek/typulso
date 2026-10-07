@@ -1,5 +1,9 @@
 # Typulso — présentation de mon projet
 
+**Auteur : YANN CEDRICK KOUEKAM TELEWOU**
+
+> **Authentification actuelle :** j’ai limité la connexion aux comptes au **pseudonyme et au mot de passe**. Les options **OAuth GitHub/Discord sont prévues pour la suite**; le code préparatoire ne constitue pas une connexion externe livrée. L’accès invité reste distinct de l’authentification d’un compte.
+
 > **Projet individuel · Web V · état du 7 octobre 2026.**
 
 Je développe **Typulso**, une application de courses de frappe destinée principalement aux 12–17 ans. Mon objectif est de rendre la pratique du clavier amusante et compétitive, tout en montrant les progrès réels en vitesse et en précision.
@@ -8,7 +12,7 @@ Je développe **Typulso**, une application de courses de frappe destinée princi
 
 ## Ce que propose l’application
 
-- Connexion par compte local et entrée comme invité; les routes GitHub/Discord sont présentes mais leurs vrais retours restent à vérifier.
+- Authentification actuelle par **pseudonyme et mot de passe**; accès invité distinct pour rejoindre. Les options **OAuth GitHub/Discord sont prévues pour la suite**, avec des éléments de code préparatoire.
 - Création de salles par un compte, admission par code ou invitation, présence et réglages partagés en temps réel.
 - Texte commun, départ serveur, progression et classement; classique pour les mesures de frappe, arcade avec Pulsation, Bouclier et Virgule piégée.
 - Entraînement, résultats réels, historique, statistiques et clavier d’erreurs AZERTY/QWERTY avec filtres.
@@ -32,7 +36,7 @@ Le commit applicatif vérifié est `4d23075557799c02acbb8253bd830409f8ebe446`. L
 
 Sur Railway, 14 vérifications HTTP/Socket.IO ont confirmé HTTPS, PostgreSQL disponible, inscription puis reconnexion au même compte, profil relu, invité indépendant, création/admission par code, arrivée partagée, modification de durée partagée, refus du non-hôte et état prêt partagé. Cet essai utilise les vrais services; il ne représente pas une recette visuelle exhaustive ni toutes les courses arcade en production.
 
-Le dépôt reste privé : mon évaluateur doit disposer de l’accès nécessaire. Les tests de charge à 30 personnes, la latence mesurée, les vraies connexions OAuth, la restauration des sauvegardes et les essais avec les 12–17 ans restent à vérifier.
+Le dépôt reste privé : mon évaluateur doit disposer de l’accès nécessaire. Les tests de charge à 30 personnes, la latence mesurée, l’ajout ultérieur des connexions OAuth, la restauration des sauvegardes et les essais avec les 12–17 ans restent à vérifier.
 
 ## Présentation des pièces de remise
 
