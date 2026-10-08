@@ -198,6 +198,46 @@ export function AuthGate({
   const { t } = useTranslation();
   const titleId = useId();
   const next = encodeURIComponent(destination);
+  if (account)
+    return (
+      <section className="box account-access" aria-labelledby={titleId}>
+        <div className="account-access-heading">
+          <span className="account-access-mark" aria-hidden="true">
+            <UsersRound size={29} />
+          </span>
+          <div>
+            <p className="eyebrow">{t("Créer une salle", "Create a room")}</p>
+            <h1 id={titleId}>
+              {t("Un compte pour préparer ta course", "An account to prepare your race")}
+            </h1>
+          </div>
+        </div>
+        <p className="account-access-description">
+          {t(
+            "Connecte-toi ou crée un compte pour configurer ta salle et lancer la course.",
+            "Sign in or create an account to set up your room and start the race.",
+          )}
+        </p>
+        <div className="actions account-access-actions">
+          <Link className="primary" href={`/connexion?next=${next}`}>
+            <LogIn size={18} aria-hidden="true" />
+            {t("Se connecter", "Sign in")}
+          </Link>
+          <Link className="subtle" href={`/inscription?next=${next}`}>
+            <UserRoundPlus size={18} aria-hidden="true" />
+            {t("Créer un compte", "Create an account")}
+          </Link>
+          {children}
+        </div>
+        <div className="account-access-footer">
+          <p>{t("Tu veux simplement participer ?", "Just looking to join a race?")}</p>
+          <Link className="ghost" href="/courses">
+            {t("Voir les courses", "Find a race")}
+            <ArrowRight size={17} aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
+    );
   if (progress)
     return (
       <section className="box profile-access" aria-labelledby={titleId}>
@@ -275,32 +315,19 @@ export function AuthGate({
     );
   return (
     <Empty
-      title={
-        account
-          ? t("Un compte pour préparer ta course", "An account to prepare your race")
-          : t("Choisis ton identité", "Choose your identity")
-      }
-      description={
-        account
-          ? t(
-              "Connecte-toi pour créer des salles et retrouver ta progression.",
-              "Sign in to create rooms and keep your progress.",
-            )
-          : t(
-              "Un pseudo suffit pour participer. Ton compte conserve tes résultats.",
-              "A nickname is enough to join. Your account saves your results.",
-            )
-      }
+      title={t("Choisis ton identité", "Choose your identity")}
+      description={t(
+        "Un pseudo suffit pour participer. Ton compte conserve tes résultats.",
+        "A nickname is enough to join. Your account saves your results.",
+      )}
     >
-      <Link className="primary" href={`/connexion?next=${encodeURIComponent(destination)}`}>
+      <Link className="primary" href={`/connexion?next=${next}`}>
         {t("Se connecter", "Sign in")}
         <ArrowRight size={16} />
       </Link>
-      {!account && (
-        <Link className="subtle" href={`/invite?next=${encodeURIComponent(destination)}`}>
-          {t("Continuer comme invité", "Continue as guest")}
-        </Link>
-      )}
+      <Link className="subtle" href={`/invite?next=${next}`}>
+        {t("Continuer comme invité", "Continue as guest")}
+      </Link>
       {children}
     </Empty>
   );

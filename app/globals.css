@@ -5295,3 +5295,92 @@ body {
     height: 38px;
   }
 }
+
+/* Account entry for creating a room: keep the panel close to its content. */
+.account-access {
+  width: 100%;
+  max-width: 820px;
+  margin: 24px auto;
+  padding: clamp(24px, 3.5vw, 40px);
+}
+.account-access-heading {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.account-access-heading > div {
+  min-width: 0;
+}
+.account-access-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 58px;
+  height: 58px;
+  color: var(--on-color);
+  background: var(--lavender);
+  border: 1px solid var(--on-color);
+  border-radius: 16px;
+  box-shadow: 3px 4px 0 var(--on-color);
+  transform: rotate(-5deg);
+}
+.account-access-heading .eyebrow {
+  margin: 0 0 10px;
+}
+.account-access h1 {
+  font-size: clamp(28px, 2.6vw, 36px);
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin: 0;
+}
+.account-access .account-access-description {
+  color: var(--muted);
+  margin: 20px 0 0;
+}
+.account-access-actions {
+  gap: 12px;
+  margin-top: 24px;
+}
+.account-access-actions > a {
+  flex: 1 1 200px;
+  min-width: 0;
+  padding: 14px;
+  text-align: center;
+}
+.account-access-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--divider);
+}
+.account-access-footer p {
+  color: var(--muted);
+  font-size: var(--text-label);
+  margin: 0;
+}
+.account-access-footer .ghost {
+  padding-inline: 12px;
+}
+@media (max-width: 540px) {
+  .account-access {
+    margin-block: 12px;
+    padding: 24px;
+  }
+  .account-access-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .account-access-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .account-access-footer .ghost {
+    padding-left: 0;
+  }
+}

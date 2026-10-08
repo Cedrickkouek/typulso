@@ -512,3 +512,14 @@ Contrôles complets applicatifs : formatage, lint, TypeScript, 69 tests unitaire
 ![Profil déconnecté, français sombre](assets/app-v01/profil-deconnecte.jpg)
 
 ![Choix de connexion, champs vides](assets/app-v01/auth-actions.jpg)
+
+
+### Carte d’accès à la création d’une salle · 8 octobre 2026
+
+Je constate sur le site de production que l’ancienne carte occupe 1 228,8 px à un viewport de 1 280 px. La recette de correction porte sur la vraie page locale sans session : français clair et anglais sombre à 1 280 px, français clair à 900 px, français puis anglais sombre à 390 px. La nouvelle carte mesure 820 px sur ordinateur/tablette, 358 px sur mobile; le document ne dépasse pas le viewport. Les deux boutons mesurent 308 × 52,4 px sur mobile et s’empilent sans couper leur libellé. Le focus clavier sur Créer un compte possède un contour visible de 3 px; Entrée ouvre l’inscription. Connexion et inscription conservent chacune `next=/salles/nouvelle`. Aucun formulaire d’authentification n’est envoyé.
+
+Les styles généraux de paragraphe imposaient une marge à la description; la règle de cette carte est précisée pour garder un espace de 20 px sous l’en-tête. Après le test des liens et le retour navigateur, l’aperçu local est actualisé avant la capture et les derniers changements de thème/langue. Les préférences initiales anglais/sombre et le viewport sont rétablis; l’onglet local temporaire est fermé.
+
+Contrôles applicatifs : formatage, lint, TypeScript, 69 tests unitaires réussis, 0 échec, 1 116 assertions, compilations web et temps réel. Les onze entrées dépendant de PostgreSQL restent ignorées dans cette passe; aucune donnée ou permission modifiée ne nécessite une nouvelle passe réseau. La base locale était indisponible au prérendu, mais les compilations ont terminé avec succès. La recette locale distingue le rendu corrigé de la vérification du prochain déploiement Railway.
+
+![Accès à la création d’une salle, français clair](assets/app-v01/creation-acces-compte.jpg)

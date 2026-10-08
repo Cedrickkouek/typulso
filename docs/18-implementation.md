@@ -217,3 +217,10 @@ Sur grand écran, les filtres occupent désormais la colonne centrale d’une gr
 Je remplace l’état vide générique du profil déconnecté par une carte dédiée, centrée et limitée à 1 180 px. Sur ordinateur, les informations sur le suivi de progression et les choix d’identité occupent deux colonnes. À 800 px et moins, elles s’empilent. Les actions Se connecter et Créer un compte se répartissent sur une ou deux lignes selon la place disponible, sans couper leur libellé. Le profil et l’historique conservent chacun leur destination après identification. Aucune statistique fictive n’est affichée.
 
 Sur les formulaires de connexion et d’inscription, les alternatives deviennent des boutons de navigation avec icône, titre, explication courte et flèche. Le formulaire invité reprend ce composant pour le retour à la connexion. La carte du formulaire reste limitée à 480 px dans la disposition à deux colonnes; sur mobile, elle utilise la largeur disponible. Les couleurs suivent le thème, le focus reste visible et les textes sont traduits en français et en anglais. L’authentification par pseudo et mot de passe, l’accès invité et les permissions restent inchangés.
+
+
+## Accès à la création d’une salle · 8 octobre 2026
+
+Je remplace la carte générique de demande de connexion de `/salles/nouvelle` par une carte dédiée, centrée et limitée à 820 px. L’icône, le titre et l’explication forment une hiérarchie alignée; les actions Se connecter et Créer un compte partagent la largeur disponible. Sous 540 px, l’en-tête s’empile; les boutons passent naturellement sur deux lignes lorsque leur largeur minimale ne tient plus dans la carte. Le bas propose Voir les courses pour simplement rejoindre une partie. Les textes sont traduits en français/anglais et les couleurs suivent le thème.
+
+Les deux liens d’identification conservent `next=/salles/nouvelle`. La condition existante qui réserve la création aux comptes reste inchangée : je modifie la présentation de l’accès, sans élargir les permissions des invités ni modifier le formulaire de création authentifié. Les autres usages de la carte générique et le profil déconnecté gardent leur présentation.
