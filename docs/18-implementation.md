@@ -210,3 +210,10 @@ Sur grand écran, les filtres occupent désormais la colonne centrale d’une gr
 ## Favicon du site · 7 octobre
 
 `app/favicon.ico` reprend exactement `public/logo.svg`, avec trois images de 16, 32 et 48 px. La convention de métadonnées Next.js déclare automatiquement cette icône dans toutes les pages avec une URL versionnée. Vérification de la version compilée : accueil, profil et salle contiennent le lien ; `/favicon.ico` répond en HTTP 200, type `image/x-icon`, avec les trois tailles et le même contenu que le fichier source. `bun run check` réussit (formatage, lint, TypeScript, 69 tests unitaires, compilations web et temps réel).
+
+
+## Profil déconnecté et choix d’identité · 7 octobre 2026
+
+Je remplace l’état vide générique du profil déconnecté par une carte dédiée, centrée et limitée à 1 180 px. Sur ordinateur, les informations sur le suivi de progression et les choix d’identité occupent deux colonnes. À 800 px et moins, elles s’empilent. Les actions Se connecter et Créer un compte se répartissent sur une ou deux lignes selon la place disponible, sans couper leur libellé. Le profil et l’historique conservent chacun leur destination après identification. Aucune statistique fictive n’est affichée.
+
+Sur les formulaires de connexion et d’inscription, les alternatives deviennent des boutons de navigation avec icône, titre, explication courte et flèche. Le formulaire invité reprend ce composant pour le retour à la connexion. La carte du formulaire reste limitée à 480 px dans la disposition à deux colonnes; sur mobile, elle utilise la largeur disponible. Les couleurs suivent le thème, le focus reste visible et les textes sont traduits en français et en anglais. L’authentification par pseudo et mot de passe, l’accès invité et les permissions restent inchangés.

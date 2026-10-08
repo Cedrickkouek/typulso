@@ -2,7 +2,20 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef } from "react";
-import { ArrowRight, RefreshCw, X } from "lucide-react";
+import {
+  ArrowRight,
+  ChartNoAxesCombined,
+  Gauge,
+  History,
+  Keyboard,
+  LogIn,
+  RefreshCw,
+  UserRound,
+  UserRoundPlus,
+  UsersRound,
+  X,
+  type LucideIcon,
+} from "lucide-react";
 import { useTranslation } from "./providers";
 import { errorMessage } from "@/lib/i18n/errors";
 
@@ -145,16 +158,121 @@ export function Avatar({ name, index = 0 }: { name: string; index?: number }) {
     </span>
   );
 }
+export function AuthChoiceLink({
+  href,
+  title,
+  description,
+  icon: Icon,
+  tone = "sky",
+}: {
+  href: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  tone?: "sky" | "lavender";
+}) {
+  return (
+    <Link className="auth-choice" href={href}>
+      <span className={`auth-choice-icon ${tone}`} aria-hidden="true">
+        <Icon size={21} />
+      </span>
+      <span className="auth-choice-copy">
+        <strong>{title}</strong>
+        <span>{description}</span>
+      </span>
+      <ArrowRight className="auth-choice-arrow" size={18} aria-hidden="true" />
+    </Link>
+  );
+}
 export function AuthGate({
   account = false,
   destination = "/",
+  progress = false,
   children,
 }: {
   account?: boolean;
   destination?: string;
+  progress?: boolean;
   children?: React.ReactNode;
 }) {
   const { t } = useTranslation();
+  const titleId = useId();
+  const next = encodeURIComponent(destination);
+  if (progress)
+    return (
+      <section className="box profile-access" aria-labelledby={titleId}>
+        <div className="profile-access-intro">
+          <span className="profile-access-mark" aria-hidden="true">
+            <ChartNoAxesCombined size={29} />
+          </span>
+          <p className="eyebrow">{t("Mon progrès", "Your progress")}</p>
+          <h1 id={titleId}>
+            {t(
+              "Retrouve tes courses et suis tes progrès.",
+              "Your races. Your progress. Your space.",
+            )}
+          </h1>
+          <p className="profile-access-description">
+            {t(
+              "Chaque course te donne de nouveaux repères pour trouver ton rythme.",
+              "Every race gives you new insights to find your rhythm.",
+            )}
+          </p>
+          <ul className="profile-access-benefits">
+            <li>
+              <History size={17} aria-hidden="true" />
+              {t("Tes courses enregistrées", "Your saved races")}
+            </li>
+            <li>
+              <Gauge size={17} aria-hidden="true" />
+              {t("Ta vitesse et ta précision", "Your speed and accuracy")}
+            </li>
+            <li>
+              <Keyboard size={17} aria-hidden="true" />
+              {t("Tes touches à travailler", "Your keys to practise")}
+            </li>
+          </ul>
+        </div>
+        <div className="profile-access-options">
+          <div className="profile-access-account">
+            <div className="profile-access-option-heading">
+              <span className="auth-choice-icon sky" aria-hidden="true">
+                <UserRound size={22} />
+              </span>
+              <div>
+                <h2>{t("Un compte pour progresser", "An account for your progress")}</h2>
+                <p>
+                  {t(
+                    "Garde tes prochains résultats et retrouve-les à chaque connexion.",
+                    "Keep your future results and find them whenever you sign in.",
+                  )}
+                </p>
+              </div>
+            </div>
+            <div className="profile-access-actions">
+              <Link className="primary" href={`/connexion?next=${next}`}>
+                <LogIn size={18} aria-hidden="true" />
+                {t("Se connecter", "Sign in")}
+              </Link>
+              <Link className="subtle" href={`/inscription?next=${next}`}>
+                <UserRoundPlus size={18} aria-hidden="true" />
+                {t("Créer un compte", "Create an account")}
+              </Link>
+            </div>
+          </div>
+          <AuthChoiceLink
+            href={`/invite?next=${next}`}
+            icon={UsersRound}
+            tone="lavender"
+            title={t("Jouer comme invité", "Play as a guest")}
+            description={t(
+              "Un pseudo suffit. Tes résultats restent liés à cette session.",
+              "A nickname is enough. Your results stay with this session.",
+            )}
+          />
+        </div>
+      </section>
+    );
   return (
     <Empty
       title={

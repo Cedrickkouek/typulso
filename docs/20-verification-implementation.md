@@ -499,3 +499,16 @@ Recette locale sur une vraie salle de fixture avec hôte et session invitée : a
 Contrôles complets : `bun run check` réussi, formatage, lint, TypeScript, **69 tests unitaires réussis**, compilations Next.js et temps réel. Les onze tests dépendant de la base sont ignorés dans cette passe ; aucune donnée ou permission modifiée ne nécessite une nouvelle passe réseau.
 
 ![Aperçu du salon, français clair](assets/app-v01/salon-terrain-de-jeu.png)
+
+
+### Profil déconnecté et actions des formulaires · 7 octobre 2026
+
+Je vérifie la vraie interface locale sans envoyer de formulaire d’authentification : profil en français/anglais et clair/sombre à 1 440 px, français clair à 900 px et français sombre à 390 px. La carte est limitée à 1 180 px sur ordinateur et mesure 358 px sur mobile. Le document ne dépasse pas le viewport. À 900 px, les deux boutons se placent l’un sous l’autre, mesurent 338,75 × 48,4 px et gardent leur libellé sur une ligne. À 390 px, ils mesurent 274 × 48,4 px.
+
+La connexion est inspectée en français clair/sombre sur ordinateur, anglais sombre et français clair à 390 px; l’inscription, en anglais sombre à 900 px et en français sombre à 390 px. Les alternatives sont des surfaces cliquables complètes, mesurées à 312 × 94,8 px sur mobile. Une navigation par Tab confirme le focus visible de 3 px sur Participer comme invité. Les liens profil → connexion → inscription → invité → connexion, puis profil → inscription → connexion, conservent `next=/profil`. Les trois liens de l’historique déconnecté conservent `next=/historique`. Les captures des formulaires utilisent des champs vides; aucun compte n’est créé et aucune session existante n’est ouverte. Les préférences initiales anglais/sombre et le viewport sont rétablis; l’onglet temporaire est fermé.
+
+Contrôles complets applicatifs : formatage, lint, TypeScript, 69 tests unitaires réussis, 0 échec, 1 116 assertions, compilations web et temps réel. Les onze entrées dépendant de PostgreSQL restent ignorées dans cette passe. Aucune donnée ou permission modifiée ne nécessite une nouvelle passe réseau. PostgreSQL local était indisponible lors du prérendu; la compilation a néanmoins terminé avec succès. Cette recette locale ne prouve pas à elle seule le déploiement Railway.
+
+![Profil déconnecté, français sombre](assets/app-v01/profil-deconnecte.jpg)
+
+![Choix de connexion, champs vides](assets/app-v01/auth-actions.jpg)

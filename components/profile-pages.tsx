@@ -46,7 +46,8 @@ export function ProfilePage({ history = false }: { history?: boolean }) {
     }
   }
   if (loading) return <Loading />;
-  if (!session?.user) return <AuthGate destination={history ? "/historique" : "/profil"} />;
+  if (!session?.user)
+    return <AuthGate progress destination={history ? "/historique" : "/profil"} />;
   if (profile.loading) return <Loading />;
   if (profile.error) return <ErrorNotice message={profile.error} retry={profile.retry} />;
   if (!profile.data)

@@ -3,12 +3,21 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { ArrowRight, CodeXml, Users, Zap, Keyboard } from "lucide-react";
+import {
+  ArrowRight,
+  CodeXml,
+  LogIn,
+  UserRoundPlus,
+  Users,
+  UsersRound,
+  Zap,
+  Keyboard,
+} from "lucide-react";
 import { useSession, useTranslation } from "./providers";
 import { errorMessage } from "@/lib/i18n/errors";
 import { api, safeDestination } from "@/lib/client/api";
 import { command, disconnectRealtime } from "@/lib/client/realtime";
-import { AuthGate, ErrorNotice, Field, Heading, KeyScene, Loading } from "./ui";
+import { AuthChoiceLink, AuthGate, ErrorNotice, Field, Heading, KeyScene, Loading } from "./ui";
 
 function JoinForm({ colorful = false }: { colorful?: boolean }) {
   const { t, locale } = useTranslation();
@@ -280,7 +289,7 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "guest" }) {
         </p>
         <KeyScene />
       </section>
-      <form className="box" onSubmit={submit}>
+      <form className="box auth-card" onSubmit={submit}>
         <h2>
           {guest
             ? t("Participer comme invité", "Join as a guest")
@@ -366,29 +375,43 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "guest" }) {
                 : t("Se connecter", "Sign in")}
           <ArrowRight size={17} />
         </button>
-        <p className="small mt-5">
-          {!guest && (
-            <Link href={`/invite?next=${encodeURIComponent(destination)}`}>
-              {t("Participer comme invité", "Continue as guest")}
-            </Link>
-          )}
-          {guest && (
-            <Link href={`/connexion?next=${encodeURIComponent(destination)}`}>
-              {t("J’ai déjà un compte", "I have an account")}
-            </Link>
-          )}
-        </p>
-        {!guest && (
-          <p className="small mt-3">
-            <Link
-              href={`/${register ? "connexion" : "inscription"}?next=${encodeURIComponent(destination)}`}
-            >
-              {register
+        <nav
+          className="auth-alternatives"
+          aria-label={t("Autres façons de participer", "Other ways to join")}
+        >
+          <AuthChoiceLink
+            href={`/${register || guest ? "connexion" : "inscription"}?next=${encodeURIComponent(destination)}`}
+            icon={register || guest ? LogIn : UserRoundPlus}
+            title={
+              register || guest
                 ? t("J’ai déjà un compte", "I have an account")
-                : t("Créer un compte local", "Create a local account")}
-            </Link>
-          </p>
-        )}
+                : t("Créer un compte", "Create an account")
+            }
+            description={
+              register || guest
+                ? t(
+                    "Retrouve tes courses et tes résultats enregistrés.",
+                    "Find your saved races and results.",
+                  )
+                : t(
+                    "Conserve tes courses et suis tes progrès.",
+                    "Save your races and follow your progress.",
+                  )
+            }
+          />
+          {!guest && (
+            <AuthChoiceLink
+              href={`/invite?next=${encodeURIComponent(destination)}`}
+              icon={UsersRound}
+              tone="lavender"
+              title={t("Participer comme invité", "Continue as guest")}
+              description={t(
+                "Entre dans la course avec un pseudo, sans compte.",
+                "Join a race with a nickname, without an account.",
+              )}
+            />
+          )}
+        </nav>
       </form>
     </div>
   );
