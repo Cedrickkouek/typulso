@@ -114,6 +114,64 @@ suite("PostgreSQL + HTTP + Socket.IO avec sessions indépendantes", () => {
   });
   afterAll(() => sockets.forEach((socket) => socket.disconnect()));
 
+  test("Zod refuse les corps HTTP et commandes invalides avant une modification", async () => {
+    for (const [path, body, code] of [
+      ["/api/auth/register", { username: "ValidName", password: "short" }, "invalid_password"],
+      [
+        "/api/auth/register",
+        { username: "ValidName", password: "strong-test-password", role: "admin" },
+        "invalid_json",
+      ],
+      ["/api/auth/login", { username: "ValidName", password: 12345678901 }, "invalid_password"],
+      ["/api/auth/guest", { username: "Visitor", role: "host" }, "invalid_json"],
+      ["/api/auth/login", [], "invalid_json"],
+    ] as const) {
+      const response = await request(path, body);
+      expect(response.status).toBe(400);
+      expect(await response.json()).toEqual({ error: code });
+    }
+    const preview = await request(
+      "/api/content/preview",
+      { settings: { length: "50" } },
+      host.cookie,
+    );
+    expect(preview.status).toBe(400);
+    expect(await preview.json()).toEqual({ error: "invalid_settings" });
+    expect(await command(host, "ready", { ready: "true" }, crypto.randomUUID())).toEqual({
+      ok: false,
+      error: "invalid_command",
+    });
+    expect(await command(host, "configure", { botCount: "2" }, crypto.randomUUID())).toEqual({
+      ok: false,
+      error: "invalid_settings",
+    });
+  });
+
+  test("Suspense livre le profil dans le HTML serveur sans partager les identités", async () => {
+    const [owner, visitor, anonymous] = await Promise.all([
+      request("/profil", undefined, host.cookie),
+      request("/profil", undefined, guest.cookie),
+      request("/profil"),
+    ]);
+    const [ownerHtml, visitorHtml, anonymousHtml] = await Promise.all([
+      owner.text(),
+      visitor.text(),
+      anonymous.text(),
+    ]);
+    expect(owner.status).toBe(200);
+    expect(visitor.status).toBe(200);
+    expect(anonymous.status).toBe(200);
+    expect(ownerHtml).toContain(host.user.username);
+    expect(visitorHtml).toContain(guest.user.username);
+    expect(ownerHtml).not.toContain(guest.user.username);
+    expect(visitorHtml).not.toContain(host.user.username);
+    expect(anonymousHtml).not.toContain(host.user.username);
+    expect(anonymousHtml).not.toContain(guest.user.username);
+    expect(ownerHtml).toContain("Ton espace");
+    expect(visitorHtml).toContain("Ton espace");
+    expect(ownerHtml).toContain('aria-busy="true"');
+  });
+
   test("permissions, code, événement partagé et commande idempotente", async () => {
     const wrongOrigin = await request(
       "/api/realtime-ticket",

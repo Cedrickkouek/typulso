@@ -5,6 +5,10 @@ export interface SessionUser {
   username: string;
   kind: "account" | "guest";
 }
+export interface SessionData {
+  user: SessionUser | null;
+  oauth: { github: boolean; discord: boolean };
+}
 export interface RoomSettings {
   name: string;
   visibility: "public" | "code" | "private";

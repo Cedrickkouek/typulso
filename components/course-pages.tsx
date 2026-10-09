@@ -8,17 +8,18 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ArrowRight, Eye, Plus, Shuffle, Users } from "lucide-react";
 import { useSession, useTranslation } from "./providers";
-import { api, useApi } from "@/lib/client/api";
+import { api, useApi, type ApiSeed } from "@/lib/client/api";
+import { DomainError, validateSettings } from "@/lib/domain/settings";
 import { command } from "@/lib/client/realtime";
 import { defaultSettings } from "@/lib/client/settings";
 import type { RoomSettings, RoomSummary } from "@/types/game";
 import { AuthGate, Empty, ErrorNotice, Field, Heading, Loading, Notice } from "./ui";
 
-export function CoursesPage() {
+export function CoursesPage({ initial }: { initial?: ApiSeed<{ rooms: RoomSummary[] }> }) {
   const { t } = useTranslation();
   const { session } = useSession();
   const router = useRouter();
-  const listing = useApi<{ rooms: RoomSummary[] }>("/api/rooms");
+  const listing = useApi<{ rooms: RoomSummary[] }>("/api/rooms", initial);
   const [language, setLanguage] = useState("all");
   const [mode, setMode] = useState("all");
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +43,7 @@ export function CoursesPage() {
         : await command("quick", {});
       router.push(`/salles/${response.data.room.id}`);
     } catch (error) {
-      setError((error as Error).message);
+      setError(error instanceof DomainError ? error.code.toLowerCase() : (error as Error).message);
     } finally {
       setBusy(false);
     }
@@ -156,7 +157,7 @@ export function CoursesPage() {
 
 export function CreatePage() {
   const { t } = useTranslation();
-  const { session, loading, error: sessionError } = useSession();
+  const { session, error: sessionError } = useSession();
   const router = useRouter();
   const [settings, setSettings] = useState<RoomSettings>(defaultSettings);
   const [preview, setPreview] = useState("");
@@ -171,12 +172,13 @@ export function CreatePage() {
     setPreviewBusy(true);
     setError(null);
     try {
+      const validated = validateSettings(settings);
       const data = await api<{ text: string; settings: RoomSettings }>("/api/content/preview", {
-        settings,
+        settings: validated,
       });
       setPreview(data.text);
     } catch (error) {
-      setError((error as Error).message);
+      setError(error instanceof DomainError ? error.code.toLowerCase() : (error as Error).message);
     } finally {
       setPreviewBusy(false);
     }
@@ -186,16 +188,16 @@ export function CreatePage() {
     setBusy(true);
     setError(null);
     try {
-      await api("/api/content/preview", { settings });
-      const response = await command("create", settings as unknown as Record<string, unknown>);
+      const validated = validateSettings(settings);
+      await api("/api/content/preview", { settings: validated });
+      const response = await command("create", validated as unknown as Record<string, unknown>);
       router.push(`/salles/${response.data.room.id}`);
     } catch (error) {
-      setError((error as Error).message);
+      setError(error instanceof DomainError ? error.code.toLowerCase() : (error as Error).message);
     } finally {
       setBusy(false);
     }
   }
-  if (loading) return <Loading />;
   if (sessionError) return <ErrorNotice message={sessionError} />;
   if (session?.user?.kind !== "account") return <AuthGate account destination="/salles/nouvelle" />;
   return (

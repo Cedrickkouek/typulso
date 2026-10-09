@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import type { Locale } from "@/types/game";
+import { preferencesSchema } from "../validation";
 
 export interface Preferences {
   locale: Locale;
@@ -30,18 +31,8 @@ function getSnapshot() {
     loaded = true;
     try {
       const stored = JSON.parse(localStorage.getItem(key) || "null");
-      if (stored)
-        current = {
-          locale: stored.locale === "en" ? "en" : "fr",
-          theme: stored.theme === "dark" ? "dark" : "light",
-          reducedMotion: stored.reducedMotion === true,
-          sounds: stored.sounds === true,
-          effects: stored.effects !== false,
-          raceSounds: stored.raceSounds === true,
-          soundVolume: Number.isFinite(stored.soundVolume)
-            ? Math.max(0, Math.min(100, stored.soundVolume))
-            : 35,
-        };
+      const parsed = preferencesSchema.safeParse(stored);
+      if (parsed.success) current = parsed.data;
     } catch {
       /* Preferences are optional when storage is unavailable. */
     }
@@ -65,7 +56,7 @@ function subscribe(listener: () => void) {
   };
 }
 export function updatePreferences(value: Partial<Preferences>) {
-  current = { ...getSnapshot(), ...value };
+  current = preferencesSchema.parse({ ...getSnapshot(), ...value });
   try {
     localStorage.setItem(key, JSON.stringify(current));
   } catch {

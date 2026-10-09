@@ -34,7 +34,7 @@ const timeLabel = (seconds: number) =>
     .padStart(2, "0")}`;
 export function RoomPage({ id }: { id: string }) {
   const { t } = useTranslation();
-  const { session, loading, error: sessionError } = useSession();
+  const { session, error: sessionError } = useSession();
   const realtime = useRealtime();
   const router = useRouter();
   const query = useSearchParams();
@@ -235,7 +235,6 @@ export function RoomPage({ id }: { id: string }) {
       setCopyStatus(t("Copie manuellement le texte affiché.", "Copy the displayed text manually."));
     }
   }
-  if (loading) return <Loading />;
   if (roomUnavailable)
     return <Loading label={t("Retour à la page de jeu…", "Returning to the play page…")} />;
   if (sessionError) return <ErrorNotice message={sessionError} />;

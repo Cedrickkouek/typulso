@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useId, useState } from "react";
 import {
   ArrowRight,
   CodeXml,
@@ -15,9 +15,10 @@ import {
 } from "lucide-react";
 import { useSession, useTranslation } from "./providers";
 import { errorMessage } from "@/lib/i18n/errors";
+import { authenticationError, credentialsSchema, guestSchema } from "@/lib/validation";
 import { api, safeDestination } from "@/lib/client/api";
 import { command, disconnectRealtime } from "@/lib/client/realtime";
-import { AuthChoiceLink, AuthGate, ErrorNotice, Field, Heading, KeyScene, Loading } from "./ui";
+import { AuthChoiceLink, AuthGate, ErrorNotice, Field, Heading, KeyScene } from "./ui";
 
 function JoinForm({ colorful = false }: { colorful?: boolean }) {
   const { t, locale } = useTranslation();
@@ -187,7 +188,7 @@ export function JoinPage() {
 }
 function JoinPageContent({ initialCode }: { initialCode: string }) {
   const { t } = useTranslation();
-  const { session, loading } = useSession();
+  const { session, error: sessionError, refresh } = useSession();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -213,8 +214,8 @@ function JoinPageContent({ initialCode }: { initialCode: string }) {
         )}
       />
       {initialCode ? (
-        loading ? (
-          <Loading />
+        sessionError ? (
+          <ErrorNotice message={sessionError} retry={() => void refresh()} />
         ) : !session?.user ? (
           <AuthGate destination={`/rejoindre?code=${encodeURIComponent(initialCode)}`} />
         ) : (
@@ -237,6 +238,7 @@ function JoinPageContent({ initialCode }: { initialCode: string }) {
   );
 }
 export function AuthPage({ mode }: { mode: "login" | "register" | "guest" }) {
+  const formId = useId();
   const { t } = useTranslation();
   const { session, refresh } = useSession();
   const query = useSearchParams();
@@ -253,10 +255,11 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "guest" }) {
     setError(null);
     setBusy(true);
     try {
-      await api(
-        `/api/auth/${guest ? "guest" : register ? "register" : "login"}`,
-        guest ? { username: username.trim() } : { username: username.trim(), password },
+      const parsed = (guest ? guestSchema : credentialsSchema).safeParse(
+        guest ? { username } : { username, password },
       );
+      if (!parsed.success) throw new Error(authenticationError(parsed.error));
+      await api(`/api/auth/${guest ? "guest" : register ? "register" : "login"}`, parsed.data);
       disconnectRealtime();
       await refresh();
       router.push(destination);
@@ -327,7 +330,7 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "guest" }) {
           </>
         )}
         <Field
-          id="username"
+          id={`${mode}-${formId}-username`}
           label={t("Pseudo", "Nickname")}
           note={t(
             "De 3 à 24 caractères : lettres, chiffres, _ ou -.",
@@ -335,7 +338,7 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "guest" }) {
           )}
         >
           <input
-            id="username"
+            id={`${mode}-${formId}-username`}
             value={username}
             onChange={(event) => setUsername(event.target.value)}
             minLength={3}
@@ -343,17 +346,17 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "guest" }) {
             pattern={String.raw`[\p{L}\p{N}_\-]{3,24}`}
             required
             autoComplete="username"
-            aria-describedby="username-note"
+            aria-describedby={`${mode}-${formId}-username-note`}
           />
         </Field>
         {!guest && (
           <Field
-            id="password"
+            id={`${mode}-${formId}-password`}
             label={t("Mot de passe", "Password")}
             note={register ? t("Au moins 10 caractères.", "At least 10 characters.") : undefined}
           >
             <input
-              id="password"
+              id={`${mode}-${formId}-password`}
               type="password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -418,7 +421,7 @@ export function AuthPage({ mode }: { mode: "login" | "register" | "guest" }) {
 }
 export function InvitationPage({ token }: { token: string }) {
   const { t } = useTranslation();
-  const { session, loading } = useSession();
+  const { session, error: sessionError, refresh } = useSession();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -444,8 +447,8 @@ export function InvitationPage({ token }: { token: string }) {
           "This individual link opens a private room. Accept it to join the group.",
         )}
       />
-      {loading ? (
-        <Loading />
+      {sessionError ? (
+        <ErrorNotice message={sessionError} retry={() => void refresh()} />
       ) : !session?.user ? (
         <AuthGate destination={destination} />
       ) : (

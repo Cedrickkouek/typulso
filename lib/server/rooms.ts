@@ -31,6 +31,7 @@ import type {
   StoredResult,
 } from "../../types/game";
 import type { AuthSession } from "./auth";
+import { commandPayloadSchemas, commandSchema, uuidSchema } from "../validation";
 import { appUrl, digest, errorCode, limited, secret, ServiceError } from "./security";
 
 export interface RoomPlayer extends DomainPlayer {
@@ -43,42 +44,26 @@ export interface InternalRoom extends Omit<RoomSnapshot, "players" | "serverTime
   createdAt: number;
   lastTickAt: number;
 }
-const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const kinds = new Set([
-  "create",
-  "join",
-  "sync",
-  "ready",
-  "configure",
-  "start",
-  "input",
-  "leave",
-  "kick",
-  "role",
-  "invite",
-  "rematch",
-  "close",
-  "ability",
-  "quick",
-]);
 export function validateCommand(value: unknown): RoomCommand {
-  if (!value || typeof value !== "object" || Array.isArray(value))
+  const result = commandSchema.safeParse(value);
+  if (!result.success) throw new ServiceError("invalid_command");
+  try {
+    if (JSON.stringify(value).length > 18000) throw new Error();
+  } catch {
     throw new ServiceError("invalid_command");
-  const command = value as RoomCommand;
-  if (
-    !uuid.test(command.commandId || "") ||
-    !kinds.has(command.kind) ||
-    (command.roomId !== undefined && !uuid.test(command.roomId)) ||
-    (command.expectedVersion !== undefined &&
-      (!Number.isSafeInteger(command.expectedVersion) || command.expectedVersion < 1)) ||
-    (command.payload !== undefined &&
-      (!command.payload ||
-        typeof command.payload !== "object" ||
-        Array.isArray(command.payload))) ||
-    JSON.stringify(value).length > 18000
-  )
-    throw new ServiceError("invalid_command");
-  return command;
+  }
+  const command = result.data;
+  const payload = commandPayloadSchemas[command.kind].safeParse(command.payload ?? {});
+  if (!payload.success) {
+    const code =
+      command.kind === "input"
+        ? "invalid_input"
+        : ["create", "configure"].includes(command.kind)
+          ? "invalid_settings"
+          : "invalid_command";
+    throw new ServiceError(code);
+  }
+  return { ...command, payload: payload.data };
 }
 export function publicRoom(room: InternalRoom, actorId?: string, now = Date.now()): RoomSnapshot {
   const players: PlayerSnapshot[] = room.players
@@ -258,7 +243,8 @@ async function admit(
         payload.code.trim().toUpperCase(),
       ])
     ).rows[0]?.id;
-  else if (typeof payload.roomId === "string" && uuid.test(payload.roomId)) id = payload.roomId;
+  else if (typeof payload.roomId === "string" && uuidSchema.safeParse(payload.roomId).success)
+    id = payload.roomId;
   if (!id) throw new ServiceError("room_not_found", 404);
   const room = await load(db, id);
   if (room.phase === "closed" || room.phase === "interrupted")
@@ -629,7 +615,7 @@ export async function runCommand(session: AuthSession, input: unknown): Promise<
           if (
             payload.ability === "trap" &&
             (typeof payload.targetId !== "string" ||
-              !uuid.test(payload.targetId) ||
+              !uuidSchema.safeParse(payload.targetId).success ||
               nearestTrapRival(room.players, player.id)?.id !== payload.targetId)
           )
             throw new ServiceError("trap_unavailable", 409);
@@ -730,7 +716,7 @@ export async function runCommand(session: AuthSession, input: unknown): Promise<
   }
 }
 export async function roomForMember(id: string, actorId: string): Promise<InternalRoom | null> {
-  if (!uuid.test(id)) return null;
+  if (!uuidSchema.safeParse(id).success) return null;
   const row = (
     await getPool().query(
       "SELECT r.state FROM rooms r JOIN room_members m ON m.room_id=r.id WHERE r.id=$1 AND m.actor_id=$2 AND m.status<>'kicked'",
@@ -781,7 +767,7 @@ export async function profile(session: AuthSession): Promise<ProfileData> {
   };
 }
 export async function storedResult(id: string, session: AuthSession) {
-  if (!uuid.test(id)) throw new ServiceError("result_not_found", 404);
+  if (!uuidSchema.safeParse(id).success) throw new ServiceError("result_not_found", 404);
   const row = (
     await getPool().query("SELECT data FROM results WHERE id=$1 AND actor_id=$2", [
       id,

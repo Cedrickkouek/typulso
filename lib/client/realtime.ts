@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 import { io, type Socket } from "socket.io-client";
 import type { RoomCommand, RoomSnapshot, CommandResponse, CommandKind } from "@/types/game";
 import { api } from "./api";
+import { commandPayloadSchemas, commandSchema } from "../validation";
 
 interface RealtimeState {
   connected: boolean;
@@ -102,13 +103,25 @@ export async function command(
   payload: Record<string, unknown> = {},
   roomId?: string,
 ): Promise<CommandResponse & { ok: true }> {
-  const connection = await connectRealtime();
   const message: RoomCommand = {
     commandId: crypto.randomUUID(),
     kind,
     payload,
     ...(roomId ? { roomId } : {}),
   };
+  const envelope = commandSchema.safeParse(message);
+  if (!envelope.success) throw new Error("invalid_command");
+  const parsed = commandPayloadSchemas[kind].safeParse(payload);
+  if (!parsed.success)
+    throw new Error(
+      kind === "input"
+        ? "invalid_input"
+        : ["create", "configure"].includes(kind)
+          ? "invalid_settings"
+          : "invalid_command",
+    );
+  message.payload = parsed.data;
+  const connection = await connectRealtime();
   return new Promise((resolve, reject) => {
     connection
       .timeout(10000)

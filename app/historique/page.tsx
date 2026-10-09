@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import { ProfilePage } from "@/components/profile-pages";
+import { ProfileContent } from "@/components/server-data";
 import { Loading } from "@/components/ui";
 export default function Page() {
   return (
     <Suspense fallback={<Loading />}>
-      <ProfilePage history />
+      <ProfileContent history />
     </Suspense>
   );
 }

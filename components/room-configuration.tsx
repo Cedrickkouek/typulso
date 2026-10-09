@@ -4,6 +4,7 @@ import { Select } from "./select";
 import { useState } from "react";
 import type { RoomSettings } from "@/types/game";
 import { api } from "@/lib/client/api";
+import { DomainError, validateSettings } from "@/lib/domain/settings";
 import { useTranslation } from "./providers";
 import { ErrorNotice, Field } from "./ui";
 
@@ -28,10 +29,11 @@ export function RoomConfiguration({
     setChecking(true);
     setError(null);
     try {
-      await api("/api/content/preview", { settings });
-      await onSave(settings);
+      const validated = validateSettings(settings);
+      await api("/api/content/preview", { settings: validated });
+      await onSave(validated);
     } catch (error) {
-      setError((error as Error).message);
+      setError(error instanceof DomainError ? error.code.toLowerCase() : (error as Error).message);
     } finally {
       setChecking(false);
     }

@@ -17,17 +17,27 @@ import {
   Zap,
 } from "lucide-react";
 import type { ProfileData, StoredResult, RoomSnapshot } from "@/types/game";
-import { api, useApi } from "@/lib/client/api";
+import { api, useApi, type ApiSeed } from "@/lib/client/api";
 import { disconnectRealtime } from "@/lib/client/realtime";
 import { useSession, useTranslation } from "./providers";
 import { AuthGate, Avatar, Empty, ErrorNotice, Heading, Loading, Metric, Notice } from "./ui";
 import { Heatmap, ResultsPanel } from "./results";
 
-export function ProfilePage({ history = false }: { history?: boolean }) {
+export function ProfilePage({
+  history = false,
+  initial,
+}: {
+  history?: boolean;
+  initial?: ApiSeed<ProfileData>;
+}) {
   const { t } = useTranslation();
-  const { session, loading, refresh } = useSession();
+  const { session, error: sessionError, refresh } = useSession();
   const router = useRouter();
-  const profile = useApi<ProfileData>(session?.user ? "/api/profile" : null);
+  const profile = useApi<ProfileData>(
+    session?.user ? "/api/profile" : null,
+    initial,
+    session?.user?.id ?? "",
+  );
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [mode, setMode] = useState("all");
@@ -45,7 +55,7 @@ export function ProfilePage({ history = false }: { history?: boolean }) {
       setBusy(false);
     }
   }
-  if (loading) return <Loading />;
+  if (sessionError) return <ErrorNotice message={sessionError} retry={() => void refresh()} />;
   if (!session?.user)
     return <AuthGate progress destination={history ? "/historique" : "/profil"} />;
   if (profile.loading) return <Loading />;
@@ -295,13 +305,21 @@ export function ResultTable({ results }: { results: StoredResult[] }) {
     </div>
   );
 }
-export function ResultPage({ id }: { id: string }) {
+export function ResultPage({
+  id,
+  initial,
+}: {
+  id: string;
+  initial?: ApiSeed<{ result: StoredResult; room: RoomSnapshot | null }>;
+}) {
   const { t } = useTranslation();
-  const { session, loading } = useSession();
+  const { session, error: sessionError, refresh } = useSession();
   const result = useApi<{ result: StoredResult; room: RoomSnapshot | null }>(
     session?.user ? `/api/results/${encodeURIComponent(id)}` : null,
+    initial,
+    session?.user?.id ?? "",
   );
-  if (loading) return <Loading />;
+  if (sessionError) return <ErrorNotice message={sessionError} retry={() => void refresh()} />;
   if (!session?.user) return <AuthGate destination={`/resultats/${id}`} />;
   if (result.loading) return <Loading />;
   if (result.error) return <ErrorNotice message={result.error} retry={result.retry} />;

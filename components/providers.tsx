@@ -2,44 +2,41 @@
 
 import { configureRaceAudio, installRaceAudio } from "@/lib/client/race-audio";
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import type { SessionUser } from "@/types/game";
+import type { SessionData } from "@/types/game";
+import { sessionDataSchema } from "@/lib/validation";
 import { api } from "@/lib/client/api";
 import { usePreferences } from "@/lib/client/preferences";
 
-interface Session {
-  user: SessionUser | null;
-  oauth: { github: boolean; discord: boolean };
-}
-const SessionContext = createContext<{
-  session: Session | null;
-  loading: boolean;
+interface SessionState {
+  session: SessionData | null;
   error: string | null;
-  refresh: () => Promise<void>;
-}>({ session: null, loading: true, error: null, refresh: async () => {} });
-export function Providers({ children }: { children: React.ReactNode }) {
+}
+const SessionContext = createContext<SessionState & { refresh: () => Promise<void> }>({
+  session: null,
+  error: null,
+  refresh: async () => {},
+});
+export function Providers({
+  children,
+  initialState,
+}: {
+  children: React.ReactNode;
+  initialState: SessionState;
+}) {
   const preferences = usePreferences();
-  const [state, setState] = useState<{
-    session: Session | null;
-    loading: boolean;
-    error: string | null;
-  }>({ session: null, loading: true, error: null });
+  const [state, setState] = useState(initialState);
   const refresh = useCallback(async () => {
     try {
-      const session = await api<Session>("/api/session");
-      setState({ session, loading: false, error: null });
+      const session = await api<SessionData>(
+        "/api/session",
+        undefined,
+        undefined,
+        sessionDataSchema,
+      );
+      setState({ session, error: null });
     } catch (error) {
-      setState({ session: null, loading: false, error: (error as Error).message });
+      setState({ session: null, error: (error as Error).message });
     }
-  }, []);
-  useEffect(() => {
-    const controller = new AbortController();
-    api<Session>("/api/session", undefined, controller.signal)
-      .then((session) => setState({ session, loading: false, error: null }))
-      .catch((error) => {
-        if (error.name !== "AbortError")
-          setState({ session: null, loading: false, error: error.message });
-      });
-    return () => controller.abort();
   }, []);
   useEffect(() => installRaceAudio(), []);
   useEffect(() => {

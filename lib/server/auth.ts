@@ -3,7 +3,8 @@ import { hash, verify } from "@node-rs/argon2";
 import type { PoolClient } from "pg";
 import type { SessionUser } from "../../types/game";
 import { getPool, transaction } from "../../db";
-import { digest, limited, password, secret, ServiceError, username } from "./security";
+import { digest, limited, parseAuthBody, secret, ServiceError } from "./security";
+import { credentialsSchema, guestSchema, opaqueTokenSchema } from "../validation";
 
 export const SESSION_COOKIE = "typulso_session";
 export interface AuthSession {
@@ -64,8 +65,7 @@ export async function issueSession(actorId: string, kind: "account" | "guest", c
   return { token, kind };
 }
 export async function register(body: Record<string, unknown>, key: string) {
-  const name = username(body.username),
-    pass = password(body.password);
+  const { username: name, password: pass } = parseAuthBody(credentialsSchema, body);
   await limited(`register:${key}`, 6, 600);
   const encoded = await hash(pass, {
     algorithm: 2,
@@ -97,9 +97,8 @@ export async function register(body: Record<string, unknown>, key: string) {
 }
 let dummyHash: Promise<string> | undefined;
 export async function login(body: Record<string, unknown>, key: string) {
-  const name = username(body.username),
-    pass = password(body.password),
-    normalized = name.toLocaleLowerCase("fr");
+  const { username: name, password: pass } = parseAuthBody(credentialsSchema, body);
+  const normalized = name.toLocaleLowerCase("fr");
   await limited(`login:${key}`, 30, 600);
   await limited(`login-name:${normalized}`, 10, 600);
   const row = (await getPool().query("SELECT * FROM users WHERE username_key=$1", [normalized]))
@@ -113,7 +112,7 @@ export async function login(body: Record<string, unknown>, key: string) {
   }));
 }
 export async function guest(body: Record<string, unknown>, key: string) {
-  const name = username(body.username);
+  const { username: name } = parseAuthBody(guestSchema, body);
   await limited(`guest:${key}`, 30, 600);
   return transaction(async (client) => {
     const id = randomUUID();
@@ -141,15 +140,15 @@ export async function createRealtimeTicket(session: AuthSession) {
   return { ticket, url: process.env.NEXT_PUBLIC_REALTIME_URL || "http://127.0.0.1:3001" };
 }
 export async function consumeRealtimeTicket(ticket: unknown): Promise<AuthSession> {
-  if (typeof ticket !== "string" || ticket.length > 128)
-    throw new ServiceError("invalid_ticket", 401);
+  const parsed = opaqueTokenSchema.safeParse(ticket);
+  if (!parsed.success) throw new ServiceError("invalid_ticket", 401);
   return transaction(async (client) => {
     const result = await client.query(
       `UPDATE realtime_tickets t SET consumed_at=now() FROM sessions s,actors a
       WHERE t.token_hash=$1 AND t.consumed_at IS NULL AND t.expires_at>now() AND s.id=t.session_id AND s.revoked_at IS NULL AND s.expires_at>now()
       AND a.id=s.actor_id AND (a.kind='account' OR s.last_seen_at>now()-interval '12 hours')
       RETURNING s.id,s.actor_id,s.expires_at,a.username,a.kind,a.user_id`,
-      [digest(ticket)],
+      [digest(parsed.data)],
     );
     const row = result.rows[0];
     if (!row) throw new ServiceError("invalid_ticket", 401);

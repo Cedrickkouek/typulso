@@ -1,6 +1,13 @@
 import { createHash, randomBytes } from "node:crypto";
 import type { PoolClient } from "pg";
 import { getPool } from "../../db";
+import type { z } from "zod";
+import {
+  authenticationError,
+  jsonObjectSchema,
+  passwordSchema,
+  usernameSchema,
+} from "../validation";
 
 export class ServiceError extends Error {
   constructor(
@@ -44,23 +51,27 @@ export async function readJson(request: Request): Promise<Record<string, unknown
   const source = await request.text();
   if (source.length > 16000) throw new ServiceError("payload_too_large", 413);
   try {
-    const body = JSON.parse(source);
-    if (!body || Array.isArray(body) || typeof body !== "object") throw new Error();
-    return body;
+    const result = jsonObjectSchema.safeParse(JSON.parse(source));
+    if (!result.success) throw new Error();
+    return result.data;
   } catch {
     throw new ServiceError("invalid_json");
   }
 }
 export function username(value: unknown): string {
-  if (typeof value !== "string") throw new ServiceError("invalid_username");
-  const name = value.trim().normalize("NFC");
-  if (!/^[\p{L}\p{N}_-]{3,24}$/u.test(name)) throw new ServiceError("invalid_username");
-  return name;
+  const result = usernameSchema.safeParse(value);
+  if (!result.success) throw new ServiceError("invalid_username");
+  return result.data;
 }
 export function password(value: unknown): string {
-  if (typeof value !== "string" || value.length < 10 || value.length > 128)
-    throw new ServiceError("invalid_password");
-  return value;
+  const result = passwordSchema.safeParse(value);
+  if (!result.success) throw new ServiceError("invalid_password");
+  return result.data;
+}
+export function parseAuthBody<T>(schema: z.ZodType<T>, body: unknown): T {
+  const result = schema.safeParse(body);
+  if (!result.success) throw new ServiceError(authenticationError(result.error));
+  return result.data;
 }
 export function errorCode(error: unknown): string {
   if (error instanceof ServiceError) return error.code;

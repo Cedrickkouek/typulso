@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Providers } from "@/components/providers";
+import { SessionProvider } from "@/components/server-data";
+import { Loading } from "@/components/ui";
 import { AppShell } from "@/components/app-shell";
 import "./globals.css";
 import "./footer.css";
@@ -18,13 +19,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Suspense
           fallback={
             <main className="page-shell">
-              <p>Chargement de Typulso…</p>
+              <Loading />
             </main>
           }
         >
-          <Providers>
+          <SessionProvider>
             <AppShell>{children}</AppShell>
-          </Providers>
+          </SessionProvider>
         </Suspense>
       </body>
     </html>

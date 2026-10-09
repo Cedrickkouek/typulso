@@ -523,3 +523,17 @@ Les styles généraux de paragraphe imposaient une marge à la description; la r
 Contrôles applicatifs : formatage, lint, TypeScript, 69 tests unitaires réussis, 0 échec, 1 116 assertions, compilations web et temps réel. Les onze entrées dépendant de PostgreSQL restent ignorées dans cette passe; aucune donnée ou permission modifiée ne nécessite une nouvelle passe réseau. La base locale était indisponible au prérendu, mais les compilations ont terminé avec succès. La recette locale distingue le rendu corrigé de la vérification du prochain déploiement Railway.
 
 ![Accès à la création d’une salle, français clair](assets/app-v01/creation-acces-compte.jpg)
+
+## Recette Suspense et Zod · 9 octobre 2026
+
+J’ai exécuté les contrôles sur la version locale compilée, avec une base PostgreSQL temporaire séparée de mes données et de la production. Format, lint, types et compilations web/temps réel réussissent. La passe unitaire compte **76 tests réussis, 0 échec, 1 154 assertions**. Les entrées ignorées à cette étape appartiennent aux suites d’intégration exécutées ensuite : **11 tests réussis, 0 échec, 125 assertions** contre PostgreSQL, HTTP et Socket.IO.
+
+Les nouvelles vérifications refusent les objets HTTP malformés, les propriétés injectées, les types incorrects, les payloads de commandes invalides et les lots de frappe non conformes. La lecture du HTML de profil avec deux sessions indépendantes et une requête anonyme confirme que le contenu initial est rendu sur le serveur et que les identités ne sont pas partagées. Les scénarios existants de salon, de course, d’arcade et de permissions passent aussi.
+
+J’ai aussi rendu les identifiants des champs de compte uniques par formulaire : les pages conservées lors de la navigation ne peuvent plus associer deux libellés au même champ.
+
+Dans le navigateur local, un mot de passe trop court affiche une erreur de validation avant la connexion, traduite en français et en anglais. L’alerte reste lisible en clair et sombre, sans débordement à 390 px. Une lecture volontairement retardée sur la seule base temporaire rend le fallback Suspense visible dans le catalogue, tout en conservant l’en-tête et le pied de page. La capture suivante montre cette attente réelle; aucun résultat de joueur n’y est simulé.
+
+![Chargement Suspense du catalogue pendant une lecture locale retardée](assets/app-v01/suspense-chargement-2026-10-09.jpg)
+
+Ces contrôles locaux ne constituent pas une recette de production ni une nouvelle exécution distante de la CI.

@@ -33,6 +33,12 @@ flowchart LR
 | `types/game.ts` | Contrat partagé des commandes, états publics, résultats et profil. | Changement à répercuter sur tous les consommateurs. |
 | `tests/`, `e2e/` | Domaine, PostgreSQL, réseau et parcours navigateur. | Données isolées des utilisateurs de production. |
 
+## Chargements et validation · 9 octobre 2026
+
+J’utilise maintenant des composants serveur asynchrones sous **Suspense** pour la session initiale, le catalogue public, le profil, l’historique et les résultats enregistrés. Leurs écrans d’attente sont de vrais fallbacks pendant la lecture des données. Le client reçoit ces données initiales et ne lance pas immédiatement une deuxième requête identique. Les actualisations explicites et la connexion persistante Socket.IO conservent leurs états d’attente propres. La déduplication React de la session est limitée à un rendu serveur; je ne partage ni identité ni permission entre visiteurs. Le client masque les anciennes données dès que l’identité change.
+
+Les schémas **Zod 4** partagés dans `lib/validation.ts` vérifient les comptes et invités, les réglages complets ou partiels, les commandes et leurs payloads, les lots de frappe Unicode, la réponse de session et les préférences locales. Les objets de commande sont stricts, les nombres ne sont pas convertis depuis des chaînes et les lots de frappe gardent leurs limites. Les formulaires appliquent les mêmes schémas avant l’envoi; le serveur valide à nouveau. Je conserve ensuite les gardes métier : origine, session, rôle, phase, séquence, limite de débit et transaction. Zod complète ces gardes et ne remplace pas leur autorité.
+
 ## Authentification et admission
 
 **Pour la version actuelle, j’ai limité l’authentification des comptes au pseudonyme et au mot de passe.** Le serveur vérifie le mot de passe haché et crée une session; aucun courriel ni mécanisme de récupération n’est utilisé.

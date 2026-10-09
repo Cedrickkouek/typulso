@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import { CoursesPage } from "@/components/course-pages";
+import { CoursesContent } from "@/components/server-data";
 import { Loading } from "@/components/ui";
 export default function Page() {
   return (
     <Suspense fallback={<Loading />}>
-      <CoursesPage />
+      <CoursesContent />
     </Suspense>
   );
 }

@@ -7,6 +7,7 @@ import type {
   RoomSettings,
 } from "../../types/game";
 import { codepoints, DomainError } from "./settings";
+import { inputOperationsSchema } from "../validation";
 
 /** JSON-safe persisted state. Only the room service may authorize commands or accept sequences. */
 export interface DomainPlayer extends PlayerSnapshot {
@@ -112,39 +113,9 @@ export function initializePlayer(
 
 /** A command is a bounded edit batch, never a replacement buffer or an arbitrary paste. */
 export function validateInputOperations(input: unknown): InputOperation[] {
-  if (!Array.isArray(input) || input.length === 0 || input.length > 8) {
-    throw new DomainError(
-      "INVALID_INPUT",
-      "Une frappe doit contenir entre une et huit opérations.",
-    );
-  }
-  let inserted = 0;
-  return input.map((operation: unknown) => {
-    if (!operation || typeof operation !== "object" || Array.isArray(operation)) {
-      throw new DomainError("INVALID_INPUT", "Opération de frappe invalide.");
-    }
-    const op = operation as Record<string, unknown>;
-    if (op.kind === "delete" && Object.keys(op).length === 1) return { kind: "delete" };
-    if (op.kind !== "insert" || typeof op.text !== "string" || Object.keys(op).length !== 2) {
-      throw new DomainError("INVALID_INPUT", "Opération de frappe invalide.");
-    }
-    const text = op.text.normalize("NFC");
-    const characters = codepoints(text);
-    inserted += characters.length;
-    if (
-      characters.length < 1 ||
-      characters.length > 4 ||
-      inserted > 8 ||
-      /[\p{Cc}\p{Cf}\p{Cs}]/u.test(text)
-    ) {
-      throw new DomainError(
-        "INVALID_INPUT",
-        "Le collage ou un lot de frappe trop long est refusé.",
-      );
-    }
-    // Composition commits such as an accented letter are normalized before they are scored.
-    return { kind: "insert", text };
-  });
+  const result = inputOperationsSchema.safeParse(input);
+  if (!result.success) throw new DomainError("INVALID_INPUT", result.error.issues[0].message);
+  return result.data;
 }
 
 /** Current correct positions, not lifetime correct attempts, determine speed and visible progress. */

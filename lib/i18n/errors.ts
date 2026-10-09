@@ -4,6 +4,11 @@ const messages: Record<string, [string, string]> = {
     "Le service est indisponible. Réessaie dans un instant.",
     "The service is unavailable. Try again in a moment.",
   ],
+  invalid_json: ["Les données envoyées sont invalides.", "The submitted data is invalid."],
+  invalid_command: [
+    "Cette action contient des données invalides.",
+    "This action contains invalid data.",
+  ],
   invalid_username: [
     "Choisis un pseudo de 3 à 24 lettres, chiffres, _ ou -.",
     "Choose a nickname with 3 to 24 letters, numbers, _ or -.",
